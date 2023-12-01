@@ -21,8 +21,8 @@ export default function SingUpPage() {
     formState: { errors, isSubmitting },
   } = useForm<AuthformAreas>();
 
-  const handleSignUp: SubmitHandler<AuthformAreas> = (data) => {
-    console.log(data);
+  const handleSignUp: SubmitHandler<AuthformAreas> = async (data) => {
+    await new Promise((r) => setTimeout(r, 2000));
   };
 
   return (
@@ -77,7 +77,7 @@ export default function SingUpPage() {
         <PrimaryButton
           disabled={isSubmitting || errors.root?.message ? true : false}
         >
-          Sing Up
+          {isSubmitting ? "Singing Up..." : "Sing Up"}
         </PrimaryButton>
       </form>
     </section>

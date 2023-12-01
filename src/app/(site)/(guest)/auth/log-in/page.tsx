@@ -77,7 +77,7 @@ export default function LogInPage() {
         <PrimaryButton
           disabled={isSubmitting || errors.root?.message ? true : false}
         >
-          Log In
+          {isSubmitting ? "Loggin In..." : "Log In"}
         </PrimaryButton>
       </form>
     </section>
