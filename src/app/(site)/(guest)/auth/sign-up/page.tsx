@@ -8,6 +8,7 @@ import { PrimaryButton } from "@/components/ui/buttons/primary/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { singUpFormAreas } from "./sing-up.models";
+import { validateEmail } from "@/utils/validations/gmail";
 
 export default function SingUpPage() {
   const router = useRouter();
@@ -44,11 +45,19 @@ export default function SingUpPage() {
         <Input
           type="text"
           id="email"
-          label="email"
+          label="Email"
           placeholder="myemail@gmail.com"
           register={register}
-          error={null}
-          validationScheme={{ required: "email is required" }}
+          error={errors.email?.message ? errors.email : null}
+          validationScheme={{
+            required: { value: true, message: "email is required" },
+            validate: (value: string) => {
+              const isEmailCorrectFormat = validateEmail(value);
+
+              if (!isEmailCorrectFormat) return "Invalid email format";
+              else return true;
+            },
+          }}
         />
         <Input
           type="password"
@@ -56,10 +65,20 @@ export default function SingUpPage() {
           label="Password"
           placeholder="*********"
           register={register}
-          error={null}
-          validationScheme={{ required: "password is required" }}
+          error={errors.password?.message ? errors.password : null}
+          validationScheme={{
+            required: { value: true, message: "password is required" },
+            minLength: {
+              value: 8,
+              message: "password must be at least 8 characters",
+            },
+          }}
         />
-        <PrimaryButton>Sing Up</PrimaryButton>
+        <PrimaryButton
+          disabled={isSubmitting || errors.root?.message ? true : false}
+        >
+          Sing Up
+        </PrimaryButton>
       </form>
     </section>
   );

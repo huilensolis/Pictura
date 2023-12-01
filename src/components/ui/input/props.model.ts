@@ -1,5 +1,9 @@
 import React, { HTMLInputTypeAttribute } from "react";
-import { type UseFormRegister, type RegisterOptions } from "react-hook-form";
+import {
+  type UseFormRegister,
+  type RegisterOptions,
+  type FieldError,
+} from "react-hook-form";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -11,7 +15,7 @@ export interface InputProps
   disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   readOnly?: boolean;
-  error: string | null;
+  error: FieldError | null;
   validationScheme: RegisterOptions;
   register: UseFormRegister<any>;
 }
