@@ -4,5 +4,17 @@
 
 *:focus,
 :focus-visible {
-  outline: 2px solid #fb923c;
+  outline: 2px solid #10b981;
+}
+/* Change autocomplete styles in WebKit */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  apparance: none;
 }
