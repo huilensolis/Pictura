@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { PrimaryButton } from "@/components/ui/buttons/primary/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
-import { singUpFormAreas } from "./sing-up.models";
+import { AuthformAreas } from "../auth-form.models";
 import { validateEmail } from "@/utils/validations/gmail";
 
 export default function SingUpPage() {
@@ -19,9 +19,9 @@ export default function SingUpPage() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<singUpFormAreas>();
+  } = useForm<AuthformAreas>();
 
-  const handleSignUp: SubmitHandler<singUpFormAreas> = (data) => {
+  const handleSignUp: SubmitHandler<AuthformAreas> = (data) => {
     console.log(data);
   };
 
