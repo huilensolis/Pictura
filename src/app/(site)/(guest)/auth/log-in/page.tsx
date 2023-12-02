@@ -17,9 +17,8 @@ export default function LogInPage() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
-  } = useForm<AuthFormAreas>();
+  } = useForm<AuthFormAreas>({ mode: "onTouched" });
 
   const handleSignUp: SubmitHandler<AuthFormAreas> = (data) => {
     console.log(data);
