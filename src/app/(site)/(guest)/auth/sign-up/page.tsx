@@ -9,20 +9,35 @@ import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { AuthFormAreas } from "../auth-form.models";
 import { validateEmail } from "@/utils/validations/gmail";
+import { useState } from "react";
+import { Alert } from "@/components/ui/alert";
+import Link from "next/link";
 
 export default function SingUpPage() {
-  const router = useRouter();
+  const [wasEmailSent, setWasEmailSent] = useState<boolean>(false);
+  const [wasAnErrorSendingEmail, setWasAnErrorSendingEmail] =
+    useState<boolean>(false);
+
   const supabase = createClientComponentClient();
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
-  } = useForm<AuthFormAreas>();
+  } = useForm<AuthFormAreas>({ mode: "onTouched" });
 
   const handleSignUp: SubmitHandler<AuthFormAreas> = async (data) => {
-    await new Promise((r) => setTimeout(r, 2000));
+    try {
+      await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: { emailRedirectTo: `${location.origin}/auth/callback` },
+      });
+      setWasEmailSent(true);
+      setWasAnErrorSendingEmail(false);
+    } catch (error) {
+      setWasAnErrorSendingEmail(true);
+    }
   };
 
   return (
@@ -76,9 +91,55 @@ export default function SingUpPage() {
         />
         <PrimaryButton
           disabled={isSubmitting || errors.root?.message ? true : false}
+          style={{ marginTop: "0.5rem" }}
         >
           {isSubmitting ? "Singing Up..." : "Sing Up"}
         </PrimaryButton>
+        <div className="flex flex-col gap-2 mt-2">
+          <span className="text-neutral-600 dark:text-neutral-400 text-center">
+            have an account already?{" "}
+            <Link
+              href="/auth/log-in"
+              className="text-blue-500 dark:text-blue-400 font-bold hover:underline"
+            >
+              Log In
+            </Link>
+          </span>
+          <span className="text-neutral-600 dark:text-neutral-400 text-center">
+            Forgot your password?{" "}
+            <Link
+              href="/auth/recuperate-password"
+              className="text-blue-500 dark:text-blue-400 font-bold hover:underline"
+            >
+              Recuperate Password
+            </Link>
+          </span>
+        </div>
+        {wasEmailSent && (
+          <Alert
+            type="succes"
+            title="We sent you a confirmation email"
+            description="Check your inbox"
+            onClose={() => setWasEmailSent(false)}
+          />
+        )}
+        {wasAnErrorSendingEmail && (
+          <Alert
+            type="error"
+            title="Error"
+            description="There was an error sending the confirmation email, try again"
+            onClose={() => setWasAnErrorSendingEmail(false)}
+          >
+            <div>
+              <span className="text-neutral-600 dark:text-neutral-400">
+                If the error persist, please contact us on
+                <a href="https://www.x.com/picturaasdfasd" target="_blank">
+                  X/Twitter
+                </a>
+              </span>
+            </div>
+          </Alert>
+        )}
       </form>
     </section>
   );

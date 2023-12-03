@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Header } from "../components/header/header";
+import Image from "next/image";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,7 +11,15 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           {children}
         </div>
       </section>
-      <section className="h-full w-full bg-emerald-400 lg:inline-block hidden"></section>
+      <section className="h-full w-full bg-blue-500 dark:bg-blue-400 lg:inline-block hidden">
+        <Image
+          alt="blue gradient"
+          src="/BG20.png"
+          width={500}
+          height={1000}
+          className="object-cover object-top h-full w-full"
+        />
+      </section>
     </main>
   );
 }

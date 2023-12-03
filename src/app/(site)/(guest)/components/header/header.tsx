@@ -2,8 +2,17 @@ import Link from "next/link";
 import { type INavLink } from "./header.interface";
 import { Logo } from "@/components/ui/logo";
 import { ThemeSwitcher } from "@/components/feature/theme-switcher";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { SignOutBtn } from "./sign-out-btn";
 
-export function Header() {
+export async function Header() {
+  const supabase = createServerComponentClient({ cookies });
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   const AUTHLINKS: INavLink[] = [
     {
       title: "Log In",
@@ -14,7 +23,6 @@ export function Header() {
       href: "/auth/sign-up",
     },
   ];
-
   const NAVLINKS: INavLink[] = [
     {
       title: "Home",
@@ -40,18 +48,35 @@ export function Header() {
           ))}
           <ThemeSwitcher />
         </ul>
-        <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
-          {AUTHLINKS.map((link, index) => (
-            <li key={index} className="h-full">
+        {session && (
+          <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
+            <li>
               <Link
-                href={link.href}
+                href="/app"
                 className="flex justify-center items-center bg-neutral-50 rounded-xl h-10 px-3 text-neutral-800 font-semibold hover:bg-neutral-400"
               >
-                {link.title}
+                Launch App
               </Link>
             </li>
-          ))}
-        </ul>
+            <li className="h-full">
+              <SignOutBtn />
+            </li>
+          </ul>
+        )}
+        {!session && (
+          <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
+            {AUTHLINKS.map((link, index) => (
+              <li key={index} className="h-full">
+                <Link
+                  href={link.href}
+                  className="flex justify-center items-center bg-neutral-50 rounded-xl h-10 px-3 text-neutral-800 font-semibold hover:bg-neutral-400"
+                >
+                  {link.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </header>
     </div>
   );
