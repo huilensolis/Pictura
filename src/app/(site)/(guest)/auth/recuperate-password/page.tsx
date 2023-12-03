@@ -1,21 +1,20 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { PrimaryButton } from "@/components/ui/buttons/primary/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
-import { AuthFormAreas } from "../auth-form.models";
 import { validateEmail } from "@/utils/validations/gmail";
 import { useState } from "react";
 import { Alert } from "@/components/ui/alert";
 import Link from "next/link";
 
-export default function SingUpPage() {
+export default function LogInPage() {
+  const [errorSendingEmail, setErrorSendingEmail] = useState<boolean>(false);
   const [wasEmailSent, setWasEmailSent] = useState<boolean>(false);
-  const [wasAnErrorSendingEmail, setWasAnErrorSendingEmail] =
+  const [emailWasAlreadySentBefore, setEmailWasAlreadySentBefore] =
     useState<boolean>(false);
 
   const supabase = createClientComponentClient();
@@ -24,19 +23,33 @@ export default function SingUpPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<AuthFormAreas>({ mode: "onTouched" });
+  } = useForm<{ email: string }>({ mode: "onTouched" });
 
-  const handleSignUp: SubmitHandler<AuthFormAreas> = async (data) => {
+  const handleRecuperatePassword: SubmitHandler<{ email: string }> = async (
+    data,
+  ) => {
     try {
-      await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: { emailRedirectTo: `${location.origin}/auth/callback` },
+      const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+        redirectTo: "http://localhost:3000/auth/log-in",
       });
+      if (error && error.status !== 429) {
+        setErrorSendingEmail(true);
+        setWasEmailSent(false);
+        return;
+      }
+      if (error && error.status === 429) {
+        setEmailWasAlreadySentBefore(true);
+        setWasEmailSent(false);
+        return;
+      }
+
+      setErrorSendingEmail(false);
       setWasEmailSent(true);
-      setWasAnErrorSendingEmail(false);
+      setEmailWasAlreadySentBefore(false);
     } catch (error) {
-      setWasAnErrorSendingEmail(true);
+      setErrorSendingEmail(true);
+      setWasEmailSent(false);
+      setEmailWasAlreadySentBefore(false);
     }
   };
 
@@ -47,15 +60,15 @@ export default function SingUpPage() {
           <Logo />
         </div>
         <h1 className="text-neutral-900 dark:text-neutral-50 text-3xl font-medium">
-          Sing Up
+          Recuperate Password
         </h1>
         <p className="text-neutral-600 dark:text-neutral-400">
-          Get acces to a pixel art feed, create your profile and interact!
+          Write your email and we will send you a link to reset your password.
         </p>
       </article>
       <form
         className="flex flex-col gap-2"
-        onSubmit={handleSubmit(handleSignUp)}
+        onSubmit={handleSubmit(handleRecuperatePassword)}
       >
         <Input
           type="text"
@@ -74,25 +87,10 @@ export default function SingUpPage() {
             },
           }}
         />
-        <Input
-          type="password"
-          id="password"
-          label="Password"
-          placeholder="*********"
-          register={register}
-          error={errors.password?.message ? errors.password : null}
-          validationScheme={{
-            required: { value: true, message: "password is required" },
-            minLength: {
-              value: 8,
-              message: "password must be at least 8 characters",
-            },
-          }}
-        />
         <PrimaryButton
           disabled={isSubmitting || errors.root?.message ? true : false}
         >
-          {isSubmitting ? "Singing Up..." : "Sing Up"}
+          {isSubmitting ? "Sending Email..." : "Send Email"}
         </PrimaryButton>
         <div className="flex flex-col gap-2 mt-2">
           <span className="text-neutral-600 dark:text-neutral-400 text-center">
@@ -104,16 +102,15 @@ export default function SingUpPage() {
               Log In
             </Link>
           </span>
-          <span className="text-neutral-600 dark:text-neutral-400 text-center">
-            Forgot your password?{" "}
-            <Link
-              href="/auth/recuperate-password"
-              className="text-green-700 dark:text-green-300 font-bold hover:underline"
-            >
-              Recuperate Password
-            </Link>
-          </span>
         </div>
+        {errorSendingEmail && (
+          <Alert
+            type="error"
+            title="Error"
+            description="It looks liek this email is not registered in our platform"
+            onClose={() => setErrorSendingEmail(false)}
+          />
+        )}
         {wasEmailSent && (
           <Alert
             type="succes"
@@ -122,22 +119,13 @@ export default function SingUpPage() {
             onClose={() => setWasEmailSent(false)}
           />
         )}
-        {wasAnErrorSendingEmail && (
+        {emailWasAlreadySentBefore && (
           <Alert
             type="error"
-            title="Error"
-            description="There was an error sending the confirmation email, try again"
-            onClose={() => setWasAnErrorSendingEmail(false)}
-          >
-            <div>
-              <span className="text-neutral-600 dark:text-neutral-400">
-                If the error persist, please contact us on
-                <a href="https://www.x.com/picturaasdfasd" target="_blank">
-                  X/Twitter
-                </a>
-              </span>
-            </div>
-          </Alert>
+            title="We have already sent an email to recueprate your password"
+            description="For security reasons, you can not send many emails in a short period of time. Try again in a couple minutes!"
+            onClose={() => setWasEmailSent(false)}
+          />
         )}
       </form>
     </section>

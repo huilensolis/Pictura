@@ -3,16 +3,20 @@
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import Link from "next/link";
 import { PrimaryButton } from "@/components/ui/buttons/primary/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { AuthFormAreas } from "../auth-form.models";
 import { validateEmail } from "@/utils/validations/gmail";
+import { useState } from "react";
+import { Alert } from "@/components/ui/alert";
 
 export default function LogInPage() {
-  const router = useRouter();
+  const [errorLogginIn, setErrorLogginIn] = useState<boolean>(false);
+
   const supabase = createClientComponentClient();
+  const router = useRouter();
 
   const {
     register,
@@ -20,8 +24,21 @@ export default function LogInPage() {
     formState: { errors, isSubmitting },
   } = useForm<AuthFormAreas>({ mode: "onTouched" });
 
-  const handleSignUp: SubmitHandler<AuthFormAreas> = (data) => {
-    console.log(data);
+  const handleLogIn: SubmitHandler<AuthFormAreas> = async (data) => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        password: data.password,
+        email: data.email,
+      });
+      if (error) {
+        setErrorLogginIn(true);
+        return;
+      }
+      setErrorLogginIn(false);
+      router.push(`${location.origin}/app`);
+    } catch (error) {
+      setErrorLogginIn(true);
+    }
   };
 
   return (
@@ -39,7 +56,7 @@ export default function LogInPage() {
       </article>
       <form
         className="flex flex-col gap-2"
-        onSubmit={handleSubmit(handleSignUp)}
+        onSubmit={handleSubmit(handleLogIn)}
       >
         <Input
           type="text"
@@ -78,6 +95,54 @@ export default function LogInPage() {
         >
           {isSubmitting ? "Loggin In..." : "Log In"}
         </PrimaryButton>
+        <div className="flex flex-col gap-2 mt-2">
+          <span className="text-neutral-600 dark:text-neutral-400 text-center">
+            dont have an account yet?{" "}
+            <Link
+              href="/auth/sign-up"
+              className="text-green-700 dark:text-green-300 font-bold hover:underline"
+            >
+              Sing Up
+            </Link>
+          </span>
+          <span className="text-neutral-600 dark:text-neutral-400 text-center">
+            Forgot your password?{" "}
+            <Link
+              href="/auth/recuperate-password"
+              className="text-green-700 dark:text-green-300 font-bold hover:underline"
+            >
+              Recuperate Password
+            </Link>
+          </span>
+        </div>
+        {errorLogginIn && (
+          <Alert
+            type="error"
+            title="Error"
+            description="There has been an error trying to log in"
+            onClose={() => setErrorLogginIn(false)}
+          >
+            <div className="flex flex-col text-neutral-900 dark:text-neutral-50">
+              <span className="dark:text-red-500 text-red-600">
+                For security reasons, we can not know why the attemp failed.
+              </span>
+              <span>Make sure that:</span>
+              <ol>
+                <li>
+                  <span>- Your account exists</span>
+                </li>
+                <li>
+                  <span>- Your password is correct</span>
+                </li>
+                <li>
+                  <span>
+                    - You are using the correct authentication provider
+                  </span>
+                </li>
+              </ol>
+            </div>
+          </Alert>
+        )}
       </form>
     </section>
   );
