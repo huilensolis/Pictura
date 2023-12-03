@@ -100,7 +100,7 @@ export default function LogInPage() {
             dont have an account yet?{" "}
             <Link
               href="/auth/sign-up"
-              className="text-green-700 dark:text-green-300 font-bold hover:underline"
+              className="text-blue-500 dark:text-blue-400 font-bold hover:underline"
             >
               Sing Up
             </Link>
@@ -109,7 +109,7 @@ export default function LogInPage() {
             Forgot your password?{" "}
             <Link
               href="/auth/recuperate-password"
-              className="text-green-700 dark:text-green-300 font-bold hover:underline"
+              className="text-blue-500 dark:text-blue-400 font-bold hover:underline"
             >
               Recuperate Password
             </Link>

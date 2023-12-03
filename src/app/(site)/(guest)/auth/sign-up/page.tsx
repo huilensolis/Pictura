@@ -91,6 +91,7 @@ export default function SingUpPage() {
         />
         <PrimaryButton
           disabled={isSubmitting || errors.root?.message ? true : false}
+          style={{ marginTop: "0.5rem" }}
         >
           {isSubmitting ? "Singing Up..." : "Sing Up"}
         </PrimaryButton>
@@ -99,7 +100,7 @@ export default function SingUpPage() {
             have an account already?{" "}
             <Link
               href="/auth/log-in"
-              className="text-green-700 dark:text-green-300 font-bold hover:underline"
+              className="text-blue-500 dark:text-blue-400 font-bold hover:underline"
             >
               Log In
             </Link>
@@ -108,7 +109,7 @@ export default function SingUpPage() {
             Forgot your password?{" "}
             <Link
               href="/auth/recuperate-password"
-              className="text-green-700 dark:text-green-300 font-bold hover:underline"
+              className="text-blue-500 dark:text-blue-400 font-bold hover:underline"
             >
               Recuperate Password
             </Link>

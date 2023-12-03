@@ -89,6 +89,7 @@ export default function LogInPage() {
         />
         <PrimaryButton
           disabled={isSubmitting || errors.root?.message ? true : false}
+          style={{ marginTop: "0.5rem" }}
         >
           {isSubmitting ? "Sending Email..." : "Send Email"}
         </PrimaryButton>
@@ -97,7 +98,7 @@ export default function LogInPage() {
             have an account already?{" "}
             <Link
               href="/auth/log-in"
-              className="text-green-700 dark:text-green-300 font-bold hover:underline"
+              className="text-blue-500 dark:text-blue-400 font-bold hover:underline"
             >
               Log In
             </Link>
