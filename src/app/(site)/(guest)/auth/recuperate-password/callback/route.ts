@@ -14,6 +14,6 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.redirect(
-    `${requestUrl.origin}/app/account/settings/reset-password`
+    `${requestUrl.origin}/app/account/settings/reset-password`,
   );
 }

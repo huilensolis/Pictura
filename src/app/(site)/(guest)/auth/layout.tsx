@@ -1,14 +1,12 @@
 import { ReactNode } from "react";
 import { Header } from "../components/header/header";
 import Image from "next/image";
-import { protectRouteFromAuthUsers } from "../../../../utils/auth/server-side-validations";
 
 export default async function AuthLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  await protectRouteFromAuthUsers();
   return (
     <main className="flex w-full h-screen lg:px-0 px-2">
       <section className="w-full h-full flex flex-col items-center bg-neutral-100 dark:bg-neutral-900">
