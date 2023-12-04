@@ -11,9 +11,12 @@ import { AuthFormAreas } from "../auth-form.models";
 import { validateEmail } from "@/utils/validations/gmail";
 import { useState } from "react";
 import { Alert } from "@/components/ui/alert";
+import { useProtectRouteFromAuthUsers } from "@/utils/auth/client-side-validations";
 
 export default function LogInPage() {
   const [errorLogginIn, setErrorLogginIn] = useState<boolean>(false);
+
+  useProtectRouteFromAuthUsers();
 
   const supabase = createClientComponentClient();
   const router = useRouter();
@@ -91,13 +94,15 @@ export default function LogInPage() {
           }}
         />
         <PrimaryButton
-          disabled={isSubmitting || errors.root?.message ? true : false}
+          isDisabled={isSubmitting || errors.root?.message ? true : false}
+          isLoading={isSubmitting}
+          style={{ marginTop: "0.5rem" }}
         >
-          {isSubmitting ? "Loggin In..." : "Log In"}
+          Log In
         </PrimaryButton>
         <div className="flex flex-col gap-2 mt-2">
           <span className="text-neutral-600 dark:text-neutral-400 text-center">
-            dont have an account yet?{" "}
+            Dont have an account yet?{" "}
             <Link
               href="/auth/sign-up"
               className="text-blue-500 dark:text-blue-400 font-bold hover:underline"

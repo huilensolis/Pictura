@@ -5,7 +5,7 @@ import { InfoAlert } from "./info";
 import { SuccesAlert } from "./succes";
 import { WarningAlert } from "./warning";
 
-const AlertTypesComponents: AlertTypes = {
+const ALERTCOMPONENTTYPES: AlertTypes = {
   INFO: InfoAlert,
   WARNING: WarningAlert,
   SUCCES: SuccesAlert,
@@ -20,7 +20,8 @@ export function Alert({
   onClose,
 }: AlertProps) {
   const AlertComponent =
-    AlertTypesComponents[type.toUpperCase() as keyof AlertTypes];
+    ALERTCOMPONENTTYPES[type.toUpperCase() as keyof AlertTypes];
+
   if (!AlertComponent) {
     throw new Error("Alert type is not supported.");
   }

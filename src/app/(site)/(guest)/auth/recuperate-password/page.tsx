@@ -10,6 +10,8 @@ import { validateEmail } from "@/utils/validations/gmail";
 import { useState } from "react";
 import { Alert } from "@/components/ui/alert";
 import Link from "next/link";
+import { IForm } from "./recuperate-password.models";
+import { useProtectRouteFromAuthUsers } from "../../../../../utils/auth/client-side-validations";
 
 export default function LogInPage() {
   const [errorSendingEmail, setErrorSendingEmail] = useState<boolean>(false);
@@ -17,20 +19,20 @@ export default function LogInPage() {
   const [emailWasAlreadySentBefore, setEmailWasAlreadySentBefore] =
     useState<boolean>(false);
 
+  useProtectRouteFromAuthUsers();
+
   const supabase = createClientComponentClient();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<{ email: string }>({ mode: "onTouched" });
+  } = useForm<IForm>({ mode: "onTouched" });
 
-  const handleRecuperatePassword: SubmitHandler<{ email: string }> = async (
-    data,
-  ) => {
+  const handleRecuperatePassword: SubmitHandler<IForm> = async (data) => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: "http://localhost:3000/auth/log-in",
+        redirectTo: `${location.origin}/auth/recuperate-password/callback`,
       });
       if (error && error.status !== 429) {
         setErrorSendingEmail(true);
@@ -88,10 +90,11 @@ export default function LogInPage() {
           }}
         />
         <PrimaryButton
-          disabled={isSubmitting || errors.root?.message ? true : false}
+          isDisabled={isSubmitting || errors.root?.message ? true : false}
           style={{ marginTop: "0.5rem" }}
+          isLoading={isSubmitting}
         >
-          {isSubmitting ? "Sending Email..." : "Send Email"}
+          Send Password Recuperation Email
         </PrimaryButton>
         <div className="flex flex-col gap-2 mt-2">
           <span className="text-neutral-600 dark:text-neutral-400 text-center">
@@ -108,14 +111,14 @@ export default function LogInPage() {
           <Alert
             type="error"
             title="Error"
-            description="It looks liek this email is not registered in our platform"
+            description="It looks like this email is not registered in our platform"
             onClose={() => setErrorSendingEmail(false)}
           />
         )}
         {wasEmailSent && (
           <Alert
             type="succes"
-            title="We sent you a confirmation email"
+            title="We sent you an email to valdiate your identity"
             description="Check your inbox"
             onClose={() => setWasEmailSent(false)}
           />
@@ -123,7 +126,7 @@ export default function LogInPage() {
         {emailWasAlreadySentBefore && (
           <Alert
             type="error"
-            title="We have already sent an email to recueprate your password"
+            title="We have already sent an email to recuperate your password"
             description="For security reasons, you can not send many emails in a short period of time. Try again in a couple minutes!"
             onClose={() => setWasEmailSent(false)}
           />

@@ -4,7 +4,7 @@
 
 *:focus,
 :focus-visible {
-  outline: 2px solid #10b981;
+  outline: 2px solid #3b82f6;
 }
 /* Change autocomplete styles in WebKit */
 input:-webkit-autofill,

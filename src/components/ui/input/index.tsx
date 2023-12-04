@@ -31,9 +31,6 @@ export function Input({
   if (value) {
     inputProps.value = value;
   }
-
-  if (id.toLowerCase() !== id) throw new Error("id must be lowercase");
-
   return (
     <div className="flex flex-col">
       <label
@@ -48,7 +45,7 @@ export function Input({
         {...extraPropsForInput}
         className={`${
           error
-            ? "bg-red-200 border border-red-300 dark:border-red-600 dark:bg-neutral-800"
+            ? "bg-red-200 border border-red-300 dark:border-red-600 dark:bg-neutral-800 focus:outline-none focus-visible:outline-none focus:border-[3px] focus:dark:border-red-600"
             : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600"
         } rounded-lg focus:text-neutral-900 text-neutral-600 py-2 px-3 dark:focus:text-neutral-50 dark:text-neutral-400 dark:placeholder:text-neutral-500`}
         {...register(id, validationScheme)}
