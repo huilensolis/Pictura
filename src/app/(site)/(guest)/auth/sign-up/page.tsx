@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -12,11 +11,14 @@ import { validateEmail } from "@/utils/validations/gmail";
 import { useState } from "react";
 import { Alert } from "@/components/ui/alert";
 import Link from "next/link";
+import { useProtectRouteFromAuthUsers } from "../../../../../utils/auth/client-side-validations";
 
 export default function SingUpPage() {
   const [wasEmailSent, setWasEmailSent] = useState<boolean>(false);
   const [wasAnErrorSendingEmail, setWasAnErrorSendingEmail] =
     useState<boolean>(false);
+
+  useProtectRouteFromAuthUsers();
 
   const supabase = createClientComponentClient();
 
@@ -31,7 +33,9 @@ export default function SingUpPage() {
       await supabase.auth.signUp({
         email: data.email,
         password: data.password,
-        options: { emailRedirectTo: `${location.origin}/auth/callback` },
+        options: {
+          emailRedirectTo: `${location.origin}/auth/sign-up/callback`,
+        },
       });
       setWasEmailSent(true);
       setWasAnErrorSendingEmail(false);
@@ -90,14 +94,15 @@ export default function SingUpPage() {
           }}
         />
         <PrimaryButton
-          disabled={isSubmitting || errors.root?.message ? true : false}
+          isDisabled={isSubmitting || errors.root?.message ? true : false}
+          isLoading={isSubmitting}
           style={{ marginTop: "0.5rem" }}
         >
-          {isSubmitting ? "Singing Up..." : "Sing Up"}
+          Sign Up
         </PrimaryButton>
         <div className="flex flex-col gap-2 mt-2">
           <span className="text-neutral-600 dark:text-neutral-400 text-center">
-            have an account already?{" "}
+            Already have an account?{" "}
             <Link
               href="/auth/log-in"
               className="text-blue-500 dark:text-blue-400 font-bold hover:underline"
