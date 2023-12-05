@@ -1,9 +1,8 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { redirect } from "next/navigation";
 
 export async function protectRouteFromUnauthUsers() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = getSuapabaseServerComponent();
 
   const {
     data: { session },
@@ -16,7 +15,7 @@ export async function protectRouteFromUnauthUsers() {
 }
 
 export async function protectRouteFromAuthUsers() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = getSuapabaseServerComponent();
 
   const {
     data: { session },

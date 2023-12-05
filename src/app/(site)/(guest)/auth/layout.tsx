@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 import { Header } from "../components/header/header";
 import Image from "next/image";
 
+export const dynamic = "force-static";
+
 export default async function AuthLayout({
   children,
 }: {
