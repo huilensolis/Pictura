@@ -2,12 +2,11 @@ import Link from "next/link";
 import { type INavLink } from "./header.interface";
 import { Logo } from "@/components/ui/logo";
 import { ThemeSwitcher } from "@/components/feature/theme-switcher";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 import { SignOutBtn } from "./sign-out-btn";
+import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 
 export async function Header() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = getSuapabaseServerComponent();
 
   const {
     data: { session },
