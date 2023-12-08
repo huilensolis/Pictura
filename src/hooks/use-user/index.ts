@@ -1,5 +1,6 @@
 "use client";
 
+import { Database } from "@/supabase/types";
 import {
   type Session,
   createClientComponentClient,
@@ -7,41 +8,35 @@ import {
 import { useEffect, useState } from "react";
 
 export function useUser() {
-  const [session, setSession] = useState<Session | null>(null);
-  //const [user, setUser] = useState(null);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [user, setUser] =
+    useState<Database["public"]["Tables"]["users"]["Row"]>(null);
 
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
 
   useEffect(() => {
     async function getSession() {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-
-      if (!session || error) return;
-
-      setSession(session);
+      setLoading(true);
+      try {
+        const {
+          data: { session },
+          error: error,
+        } = await supabase.auth.getSession();
+        if (!session || error) {
+          return setSession(null);
+        }
+        setUser(session.user ?? null);
+      } catch (error) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     }
     getSession();
-  }, [supabase.auth]);
-
-  // useEffect(() => {
-  //   async function getUser() {
-  //     const {
-  //       data: { user: userFromAuth },
-  //       error,
-  //     } = await supabase.auth.getUser();
-  //     if (!user || error) return;
-  //     setUser(userFromAuth);
-  //   }
-  //   if (session) {
-  //     getUser();
-  //   }
-  // }, [session]);
+  }, []);
 
   async function updatePassword(password: string) {
-    if (!session) return;
+    if (!user) return;
 
     try {
       await supabase.auth.updateUser({ password });
@@ -51,5 +46,18 @@ export function useUser() {
     }
   }
 
-  return { updatePassword };
+  async function validateIfUsernameIsAvailabe(
+    username: string,
+  ): Promise<boolean> {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("username", username)
+      .single();
+
+    if (!data || error) return true;
+    return false;
+  }
+
+  return { updatePassword, validateIfUsernameIsAvailabe, user, isLoading };
 }

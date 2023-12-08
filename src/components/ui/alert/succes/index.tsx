@@ -12,7 +12,7 @@ export function SuccesAlert({
   }
 
   return (
-    <div className="mt-12 mx-4 px-4 rounded-md border-l-4 border-green-500 bg-green-50 dark:bg-green-500/[0.1] md:max-w-2xl md:mx-auto md:px-8 w-full">
+    <div className="px-4 rounded-md border-l-4 border-green-500 bg-green-50 dark:bg-green-500/[0.1] md:max-w-2xl md:mx-auto md:px-8 w-full">
       <div className="flex justify-between py-3">
         <div className="flex">
           <div>
