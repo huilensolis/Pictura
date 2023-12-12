@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export function useTheme() {
   const [theme, setTheme] = useState<"dark" | "light">(() => {
-    if (!localStorage) return "light";
+    if (typeof localStorage === "undefined") return "light";
 
     if (
       localStorage.theme === "dark" ||
@@ -17,7 +17,7 @@ export function useTheme() {
   });
 
   useEffect(() => {
-    if (!localStorage) return;
+    if (typeof localStorage === "undefined") return;
 
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -29,14 +29,16 @@ export function useTheme() {
   }, [theme]);
 
   function setDarkTheme() {
-    if (!document || !localStorage) return;
+    if (typeof localStorage === "undefined" || typeof document === "undefined")
+      return;
     document.documentElement.classList.add("dark");
     localStorage.theme = "dark";
     setTheme("dark");
   }
 
   function setLightTheme() {
-    if (!document || !localStorage) return;
+    if (typeof localStorage === "undefined" || typeof document === "undefined")
+      return;
     document.documentElement.classList.remove("dark");
     localStorage.theme = "light";
     setTheme("light");
