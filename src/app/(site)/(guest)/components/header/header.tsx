@@ -8,7 +8,7 @@ import { useUser } from "@/hooks/use-user";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export async function Header() {
+export function Header() {
   const { user } = useUser();
 
   const AUTHLINKS: INavLink[] = [
