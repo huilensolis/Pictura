@@ -24,15 +24,16 @@ export function ProfileConfigUsernameAndName() {
   const { validateIfUsernameIsAvailabe } = useUser();
   const { debouncedValue: debouncedSearchValue } = useDebounce(
     searchValue,
-    500,
+    500
   );
 
   useEffect(() => {
     async function validateUsername() {
       setIsLoading(true);
       try {
-        const isThisUsernameAvailable =
-          await validateIfUsernameIsAvailabe(debouncedSearchValue);
+        const isThisUsernameAvailable = await validateIfUsernameIsAvailabe(
+          debouncedSearchValue
+        );
         setIsUsernameAvailable(isThisUsernameAvailable);
       } catch (error) {
         setIsUsernameAvailable(false);
@@ -42,6 +43,7 @@ export function ProfileConfigUsernameAndName() {
     if (debouncedSearchValue) {
       validateUsername();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchValue]);
 
   const {
@@ -55,16 +57,23 @@ export function ProfileConfigUsernameAndName() {
   const { user } = useUser();
 
   async function onSubmit(data: IFormUsernameNameAreas) {
-    if (!data.username | !data.name) return;
-    if (!typeof data.username === "string" || !typeof data.name === "string")
+    if (!data.username || !data.name) return;
+    if (typeof data.username !== "string" || typeof data.name !== "string")
       return;
 
+    if (!user || user.id) return;
+
     try {
-      await updateUserProfile({ username: data.username, name: data.name });
+      await updateUserProfile(
+        {
+          username: data.username,
+          name: data.name,
+        } as any,
+        user?.id
+      );
       setErrorWhileUpdatingData(false);
       setSuccesWhileUpdatingData(true);
     } catch (error) {
-      console.log(error);
       setErrorWhileUpdatingData(true);
       setSuccesWhileUpdatingData(false);
     }
@@ -133,6 +142,7 @@ export function ProfileConfigUsernameAndName() {
         <div className="m-4">
           <Alert
             type="succes"
+            description="Data Updated"
             title="Data Updated"
             onClose={() => setSuccesWhileUpdatingData(false)}
           />

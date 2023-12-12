@@ -1,10 +1,9 @@
+"use client";
+
 import { Database } from "@/supabase/types";
 import { useSupabase } from "../use-supabase";
-import { useUser } from "../use-user";
 
 export function useUserProfile() {
-  const { user } = useUser();
-
   const { supabase } = useSupabase();
 
   async function createUserProfile(userId: string) {
@@ -18,34 +17,39 @@ export function useUserProfile() {
 
   async function updateUserProfile(
     values: Database["public"]["Tables"]["profiles"]["Row"],
+    userId: string
   ) {
-    const { error, data } = await getCurrentUserProfile();
-    if (!data || error) {
-      await createUserProfile(user.id);
-    }
     try {
-      await supabase.from("profiles").update(values).eq("user_id", user.id);
+      const { error } = await supabase
+        .from("profiles")
+        .update(values)
+        .eq("user_id", userId)
+        .single();
+      if (error) return Promise.reject(error);
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
-  async function getCurrentUserProfile(): {
-    error: unknwon | null;
+  async function getCurrentUserProfile(userId: string): Promise<{
     data: Database["public"]["Tables"]["profiles"]["Row"] | null;
-  } {
+    error: unknown;
+  }> {
     try {
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("user_id", user.id);
-      if (!data || error) return Promise.reject(error);
-      return Promise.resolve({ data });
+        .eq("user_id", userId)
+        .single();
+
+      if (!data || error) return Promise.reject({ error });
+
+      return Promise.resolve({ data, error });
     } catch (error) {
-      return Promise.reject({ error });
+      return Promise.resolve({ error, data: null });
     }
   }
 
-  return { updateUserProfile, createUserProfile };
+  return { updateUserProfile, createUserProfile, getCurrentUserProfile };
 }

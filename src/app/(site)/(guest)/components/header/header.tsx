@@ -1,16 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { type INavLink } from "./header.interface";
 import { Logo } from "@/components/ui/logo";
 import { ThemeSwitcher } from "@/components/feature/theme-switcher";
-import { SignOutBtn } from "./sign-out-btn";
-import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
+import { useUser } from "@/hooks/use-user";
+import { useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export async function Header() {
-  const supabase = getSuapabaseServerComponent();
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const { user } = useUser();
 
   const AUTHLINKS: INavLink[] = [
     {
@@ -32,7 +31,13 @@ export async function Header() {
       href: "/about",
     },
   ];
+  const router = useRouter();
 
+  const supabase = createClientComponentClient();
+  async function handleLogOut() {
+    await supabase.auth.signOut();
+    router.refresh();
+  }
   return (
     <div className="p-2 w-full max-w-4xl">
       <header className="w-full flex items-center justify-between bg-neutral-800 p-[5px] text-neutral-50 rounded-2xl dark:bg-neutral-800">
@@ -47,7 +52,7 @@ export async function Header() {
           ))}
           <ThemeSwitcher />
         </ul>
-        {session && (
+        {user && (
           <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
             <li>
               <Link
@@ -57,12 +62,17 @@ export async function Header() {
                 Launch App
               </Link>
             </li>
-            <li className="h-full">
-              <SignOutBtn />
+            <li>
+              <button
+                className="flex justify-center items-center bg-neutral-50 rounded-xl h-10 px-3 text-neutral-800 font-semibold hover:bg-neutral-400"
+                onClick={handleLogOut}
+              >
+                Log Out
+              </button>
             </li>
           </ul>
         )}
-        {!session && (
+        {!user && (
           <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
             {AUTHLINKS.map((link, index) => (
               <li key={index} className="h-full">

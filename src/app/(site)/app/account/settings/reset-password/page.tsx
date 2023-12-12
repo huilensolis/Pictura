@@ -2,7 +2,7 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { PrimaryButton } from "@/components/ui/buttons/primary/primary";
+import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { useState } from "react";
@@ -33,8 +33,6 @@ export default function ResetPasswordPage() {
       setWasAnErrorUpdatingPassword(true);
     }
   };
-
-  console.log(errors);
 
   return (
     <section className="flex flex-col gap-6 max-w-[530px]">
@@ -88,7 +86,6 @@ export default function ResetPasswordPage() {
             validate: (value: string) => {
               const password = getValues("password");
               const confirmPassword = value;
-              console.log("validating");
               if (password !== confirmPassword) return "passwords do not match";
               else return true;
             },

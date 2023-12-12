@@ -2,8 +2,6 @@ import { ReactNode } from "react";
 import { Header } from "../components/header/header";
 import Image from "next/image";
 
-export const dynamic = "force-static";
-
 export default async function AuthLayout({
   children,
 }: {
@@ -12,7 +10,7 @@ export default async function AuthLayout({
   return (
     <main className="flex w-full h-screen lg:px-0 px-4 bg-neutral-100 dark:bg-neutral-900">
       <section className="w-full h-full flex flex-col items-center">
-        <Header />
+        {/* <Header /> */}
         <div className="h-full w-full flex flex-col justify-center items-center">
           {children}
         </div>

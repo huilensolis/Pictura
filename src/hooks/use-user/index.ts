@@ -1,38 +1,33 @@
 "use client";
 
-import { Database } from "@/supabase/types";
-import {
-  type Session,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { type User } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
+import { useSupabase } from "../use-supabase";
 
 export function useUser() {
-  const [isLoading, setLoading] = useState<boolean>(true);
-  const [user, setUser] =
-    useState<Database["public"]["Tables"]["users"]["Row"]>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const supabase = createClientComponentClient<Database>();
+  const { supabase } = useSupabase();
 
   useEffect(() => {
-    async function getSession() {
-      setLoading(true);
+    async function syncCurrentUser() {
       try {
         const {
-          data: { session },
-          error: error,
-        } = await supabase.auth.getSession();
-        if (!session || error) {
-          return setSession(null);
-        }
-        setUser(session.user ?? null);
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) setUser(user);
+        else setUser(null);
       } catch (error) {
         setUser(null);
-      } finally {
-        setLoading(false);
       }
+      setIsLoading(false);
     }
-    getSession();
+    if (!isLoading) {
+      setIsLoading(true);
+      syncCurrentUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function updatePassword(password: string) {
@@ -47,7 +42,7 @@ export function useUser() {
   }
 
   async function validateIfUsernameIsAvailabe(
-    username: string,
+    username: string
   ): Promise<boolean> {
     const { data, error } = await supabase
       .from("profiles")
@@ -59,5 +54,5 @@ export function useUser() {
     return false;
   }
 
-  return { updatePassword, validateIfUsernameIsAvailabe, user, isLoading };
+  return { updatePassword, validateIfUsernameIsAvailabe, user };
 }

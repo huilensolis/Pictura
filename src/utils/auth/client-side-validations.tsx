@@ -10,7 +10,7 @@ export function useProtectRouteFromUnauthUsers() {
 
   const router = useRouter();
 
-  const { user, isLoading } = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     async function checkSession() {
@@ -26,18 +26,17 @@ export function useProtectRouteFromUnauthUsers() {
     if (window) {
       window.addEventListener(
         "visibilitychange",
-        checkSessionIfTabMakesVisibleAgain,
+        checkSessionIfTabMakesVisibleAgain
       );
     }
-    if (!isLoading) {
-      checkSession();
-    }
+
+    checkSession();
 
     return () => {
       if (window)
         window.removeEventListener(
           "visibilitychange",
-          checkSessionIfTabMakesVisibleAgain,
+          checkSessionIfTabMakesVisibleAgain
         );
     };
   }, [user]);
@@ -66,7 +65,7 @@ export function useProtectRouteFromAuthUsers() {
     if (window) {
       window.addEventListener(
         "visibilitychange",
-        checkSessionIfTabMakesVisibleAgain,
+        checkSessionIfTabMakesVisibleAgain
       );
     }
     checkSession();
@@ -75,7 +74,7 @@ export function useProtectRouteFromAuthUsers() {
       if (window)
         window.removeEventListener(
           "visibilitychange",
-          checkSessionIfTabMakesVisibleAgain,
+          checkSessionIfTabMakesVisibleAgain
         );
     };
   }, [isUserLoggedIn, user]);
