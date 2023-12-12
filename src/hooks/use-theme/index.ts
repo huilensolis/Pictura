@@ -17,8 +17,6 @@ export function useTheme() {
   });
 
   useEffect(() => {
-    if (typeof localStorage === "undefined") return;
-
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
       localStorage.theme = "dark";
