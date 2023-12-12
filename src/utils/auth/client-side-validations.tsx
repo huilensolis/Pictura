@@ -1,30 +1,22 @@
 "use client";
 
-import {
-  Session,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { useUser } from "@/hooks/use-user";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export function useProtectRouteFromUnauthUsers() {
-  const [session, setSession] = useState<Session | null>(null);
-  const [error, setError] = useState<boolean>(false);
+  const [isCheckingUser, setIsCheckingUser] = useState<boolean>(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
 
   const router = useRouter();
 
+  const { user } = useUser();
+
   useEffect(() => {
-    const supabase = createClientComponentClient();
     async function checkSession() {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-      if (error) {
-        setError(true);
-        return;
-      }
-      setSession(session);
+      setIsCheckingUser(true);
+      setIsUserLoggedIn(Boolean(user));
+      setIsCheckingUser(true);
     }
     function checkSessionIfTabMakesVisibleAgain() {
       if (document.visibilityState === "visible") {
@@ -37,6 +29,7 @@ export function useProtectRouteFromUnauthUsers() {
         checkSessionIfTabMakesVisibleAgain
       );
     }
+
     checkSession();
 
     return () => {
@@ -46,39 +39,36 @@ export function useProtectRouteFromUnauthUsers() {
           checkSessionIfTabMakesVisibleAgain
         );
     };
-  }, [session]);
+  }, [user]);
 
-  if (!session || error) {
+  if (!isUserLoggedIn && !isCheckingUser) {
     router.push("/auth/sign-up");
   }
 }
 
 export function useProtectRouteFromAuthUsers() {
-  const [session, setSession] = useState<Session | null>(null);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(false);
 
   const router = useRouter();
 
-  useEffect(() => {
-    const supabase = createClientComponentClient();
-    async function checkSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setSession(session);
-    }
+  const { user } = useUser();
 
+  useEffect(() => {
+    async function checkSession() {
+      setIsUserLoggedIn(Boolean(user));
+    }
     function checkSessionIfTabMakesVisibleAgain() {
       if (document.visibilityState === "visible") {
         checkSession();
       }
     }
-    checkSession();
     if (window) {
       window.addEventListener(
         "visibilitychange",
         checkSessionIfTabMakesVisibleAgain
       );
     }
+    checkSession();
 
     return () => {
       if (window)
@@ -87,9 +77,9 @@ export function useProtectRouteFromAuthUsers() {
           checkSessionIfTabMakesVisibleAgain
         );
     };
-  }, [session]);
+  }, [isUserLoggedIn, user]);
 
-  if (session) {
+  if (isUserLoggedIn) {
     router.push("/app");
   }
 }

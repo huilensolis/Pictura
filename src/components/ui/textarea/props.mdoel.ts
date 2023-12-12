@@ -1,19 +1,18 @@
-import React, { HTMLInputTypeAttribute } from "react";
+import React from "react";
 import {
   type UseFormRegister,
   type RegisterOptions,
   type FieldError,
 } from "react-hook-form";
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface TextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
-  type: HTMLInputTypeAttribute;
   placeholder?: string;
   id: string;
   defaultValue?: string | number;
   disabled?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   readOnly?: boolean;
   error: FieldError | null;
   validationScheme: RegisterOptions;

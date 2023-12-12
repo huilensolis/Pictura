@@ -5,7 +5,6 @@ export function validateEmail(email: string): boolean {
     EmailSchema.parse(email);
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }

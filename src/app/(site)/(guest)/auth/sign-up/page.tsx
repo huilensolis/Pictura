@@ -3,7 +3,7 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { PrimaryButton } from "@/components/ui/buttons/primary/primary";
+import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { AuthFormAreas } from "../auth-form.models";
@@ -30,13 +30,16 @@ export default function SingUpPage() {
 
   const handleSignUp: SubmitHandler<AuthFormAreas> = async (data) => {
     try {
-      await supabase.auth.signUp({
+      const res = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
           emailRedirectTo: `${location.origin}/auth/sign-up/callback`,
         },
       });
+      if (res.error) {
+        return setWasAnErrorSendingEmail(true);
+      }
       setWasEmailSent(true);
       setWasAnErrorSendingEmail(false);
     } catch (error) {
@@ -110,7 +113,7 @@ export default function SingUpPage() {
               Log In
             </Link>
           </span>
-          <span className="text-neutral-600 dark:text-neutral-400 text-center">
+          <span className="flex md:flex-row flex-col items-center justify-center gap-1 text-neutral-600 dark:text-neutral-400 text-center">
             Forgot your password?{" "}
             <Link
               href="/auth/recuperate-password"

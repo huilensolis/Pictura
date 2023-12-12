@@ -1,47 +1,37 @@
 "use client";
 
-import {
-  type Session,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import { type User } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
+import { useSupabase } from "../use-supabase";
 
 export function useUser() {
-  const [session, setSession] = useState<Session | null>(null);
-  //const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const supabase = createClientComponentClient();
+  const { supabase } = useSupabase();
 
   useEffect(() => {
-    async function getSession() {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-
-      if (!session || error) return;
-
-      setSession(session);
+    async function syncCurrentUser() {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) setUser(user);
+        else setUser(null);
+      } catch (error) {
+        setUser(null);
+      }
+      setIsLoading(false);
     }
-    getSession();
-  }, [supabase.auth]);
-
-  // useEffect(() => {
-  //   async function getUser() {
-  //     const {
-  //       data: { user: userFromAuth },
-  //       error,
-  //     } = await supabase.auth.getUser();
-  //     if (!user || error) return;
-  //     setUser(userFromAuth);
-  //   }
-  //   if (session) {
-  //     getUser();
-  //   }
-  // }, [session]);
+    if (!isLoading) {
+      setIsLoading(true);
+      syncCurrentUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function updatePassword(password: string) {
-    if (!session) return;
+    if (!user) return;
 
     try {
       await supabase.auth.updateUser({ password });
@@ -51,5 +41,18 @@ export function useUser() {
     }
   }
 
-  return { updatePassword };
+  async function validateIfUsernameIsAvailabe(
+    username: string
+  ): Promise<boolean> {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("username", username)
+      .single();
+
+    if (!data || error) return true;
+    return false;
+  }
+
+  return { updatePassword, validateIfUsernameIsAvailabe, user };
 }

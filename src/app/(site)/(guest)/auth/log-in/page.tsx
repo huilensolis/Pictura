@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
-import { PrimaryButton } from "@/components/ui/buttons/primary/primary";
+import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { AuthFormAreas } from "../auth-form.models";
@@ -110,7 +110,7 @@ export default function LogInPage() {
               Sing Up
             </Link>
           </span>
-          <span className="text-neutral-600 dark:text-neutral-400 text-center">
+          <span className="flex md:flex-row flex-col items-center justify-center gap-1 text-neutral-600 dark:text-neutral-400 text-center">
             Forgot your password?{" "}
             <Link
               href="/auth/recuperate-password"

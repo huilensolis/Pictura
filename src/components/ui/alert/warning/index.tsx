@@ -2,7 +2,7 @@ import { AlertItemProps } from "../alert.models";
 
 export function WarningAlert({ title, description, children }: AlertItemProps) {
   return (
-    <div className="mt-12 mx-4 px-4 rounded-md bg-amber-50 dark:bg-amber-500/[0.1] md:max-w-2xl md:mx-auto md:px-8 w-full">
+    <div className="px-4 rounded-md bg-amber-50 dark:bg-amber-500/[0.1] md:max-w-2xl md:mx-auto md:px-8 w-full">
       <div className="py-3">
         <div className="flex">
           <div>

@@ -1,34 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import "@theme-toggles/react/css/Within.css";
 import { Within } from "@theme-toggles/react";
+import { useTheme } from "../../../hooks/use-theme";
 
 export function ThemeSwitcher() {
-  const [isToggled, setIsToggled] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-      localStorage.theme = "dark";
-      setIsToggled(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isToggled]);
+  const { theme, setDarkTheme, setLightTheme } = useTheme();
 
   function toggleTheme() {
-    if (localStorage.theme === "dark") {
-      localStorage.theme = "light";
+    if (theme === "dark") {
+      setLightTheme();
     } else {
-      localStorage.theme = "dark";
+      setDarkTheme();
     }
-    setIsToggled(!isToggled);
   }
 
-  return <Within duration={750} onToggle={toggleTheme} toggled={isToggled} />;
+  return (
+    <Within duration={750} onToggle={toggleTheme} toggled={theme === "dark"} />
+  );
 }

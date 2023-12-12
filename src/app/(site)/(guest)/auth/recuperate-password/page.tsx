@@ -3,7 +3,7 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { PrimaryButton } from "@/components/ui/buttons/primary/primary";
+import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { validateEmail } from "@/utils/validations/gmail";
