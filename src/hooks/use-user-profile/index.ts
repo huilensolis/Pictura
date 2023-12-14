@@ -7,7 +7,7 @@ import { ProfileStore } from "@/zustand/profile";
 export function useUserProfile() {
   const { supabase } = useSupabase();
 
-  const profileStoreData = ProfileStore((store) => store.data);
+  const userProfileData = ProfileStore((store) => store.data);
   const updateProfileStore = ProfileStore((store) => store.updateStoreData);
 
   async function createUserProfile(userId: string) {
@@ -63,6 +63,15 @@ export function useUserProfile() {
     }
   }
 
+  async function uploadNewUserProfileValuesFromStore(userId: string) {
+    try {
+      await updateUserProfile(userProfileData, userId);
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   async function validateIfUsernameIsAvailabe(
     username: string,
     userId: string,
@@ -90,6 +99,7 @@ export function useUserProfile() {
     createUserProfile,
     getCurrentUserProfile,
     syncStoreProfileData,
+    uploadNewUserProfileValuesFromStore,
     updateProfileStoreData,
     validateIfUsernameIsAvailabe,
   };

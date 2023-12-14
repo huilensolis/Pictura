@@ -9,6 +9,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { Database } from "@/supabase/types";
+import { ProfileStore } from "@/zustand/profile";
 
 export function ProfileConfigUsernameAndName() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,6 +24,9 @@ export function ProfileConfigUsernameAndName() {
   } = useUserProfile();
 
   const { user } = useUser();
+
+  const userName = ProfileStore((state) => state.data.username);
+  const name = ProfileStore((state) => state.data.name);
 
   const { debouncedValue: debouncedSearchValue } = useDebounce(
     searchValue,
@@ -83,7 +87,7 @@ export function ProfileConfigUsernameAndName() {
   }
 
   return (
-    <form className="w-full">
+    <div className="w-full">
       <Input
         type="text"
         placeholder="Username"
@@ -91,6 +95,7 @@ export function ProfileConfigUsernameAndName() {
         id="username"
         disabled={false}
         register={register}
+        defaultValue={userName ?? ""}
         validationScheme={{
           required: "Area required",
           validate: () => {
@@ -126,6 +131,7 @@ export function ProfileConfigUsernameAndName() {
         id="name"
         disabled={false}
         register={register}
+        defaultValue={name ?? ""}
         validationScheme={{
           required: "Area required",
           onChange: (e: ChangeEvent<HTMLInputElement>) =>
@@ -133,6 +139,6 @@ export function ProfileConfigUsernameAndName() {
         }}
         error={errors.name ? errors.name : null}
       />
-    </form>
+    </div>
   );
 }
