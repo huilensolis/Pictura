@@ -2,9 +2,13 @@
 
 import { Database } from "@/supabase/types";
 import { useSupabase } from "../use-supabase";
+import { ProfileStore } from "@/zustand/profile";
 
 export function useUserProfile() {
   const { supabase } = useSupabase();
+
+  const profileStoreData = ProfileStore((store) => store.data);
+  const updateProfileStore = ProfileStore((store) => store.updateStoreData);
 
   async function createUserProfile(userId: string) {
     try {
@@ -17,7 +21,7 @@ export function useUserProfile() {
 
   async function updateUserProfile(
     values: Database["public"]["Tables"]["profiles"]["Row"],
-    userId: string
+    userId: string,
   ) {
     try {
       const { error } = await supabase
@@ -30,6 +34,14 @@ export function useUserProfile() {
     } catch (error) {
       return Promise.reject(error);
     }
+  }
+
+  async function syncStoreProfileData() {}
+
+  function updateProfileStoreData(
+    data: Database["public"]["Tables"]["profiles"]["Row"],
+  ) {
+    updateProfileStore(data);
   }
 
   async function getCurrentUserProfile(userId: string): Promise<{
@@ -51,5 +63,34 @@ export function useUserProfile() {
     }
   }
 
-  return { updateUserProfile, createUserProfile, getCurrentUserProfile };
+  async function validateIfUsernameIsAvailabe(
+    username: string,
+    userId: string,
+  ): Promise<boolean> {
+    const { data: currentUserProfile, error: errorFetchingUserProfile } =
+      await getCurrentUserProfile(userId);
+
+    if (errorFetchingUserProfile) {
+      await createUserProfile(userId);
+    }
+
+    if (username === currentUserProfile?.username) return true;
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("username", username)
+      .single();
+
+    if (!data || error) return true;
+    return false;
+  }
+  return {
+    updateUserProfile,
+    createUserProfile,
+    getCurrentUserProfile,
+    syncStoreProfileData,
+    updateProfileStoreData,
+    validateIfUsernameIsAvailabe,
+  };
 }

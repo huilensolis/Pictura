@@ -22,8 +22,13 @@
       "@/*": ["./src/*"],
       "@/components/*": ["./src/components/*"],
       "@/utils/*": ["./src/utils/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@/supabase/*": ["./src/supabase/*"]
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/supabase/*": ["./src/supabase/*"],
+      "@/zustand/*": ["./src/zustand/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/models/*": ["./src/models/*"],
+      "@/interceptors/*": ["./src/interceptors/*"],
+      "@/adapaters/*": ["./src/adapters/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
