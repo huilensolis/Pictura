@@ -5,11 +5,10 @@ import { useForm } from "react-hook-form";
 import { IFormUsernameNameAreas } from "./form.models";
 import { useUser } from "@/hooks/use-user";
 import { useDebounce } from "@/hooks/use-debounce";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { Database } from "@/supabase/types";
-import { ProfileStore } from "@/zustand/profile";
 
 export function ProfileConfigUsernameAndName() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -17,16 +16,9 @@ export function ProfileConfigUsernameAndName() {
   const [isUsernameAvailable, setIsUsernameAvailable] =
     useState<boolean>(false);
 
-  const {
-    updateUserProfile,
-    updateProfileStoreData,
-    validateIfUsernameIsAvailabe,
-  } = useUserProfile();
+  const { updateUserProfile, validateIfUsernameIsAvailabe } = useUserProfile();
 
   const { user } = useUser();
-
-  const userName = ProfileStore((state) => state.data.username);
-  const name = ProfileStore((state) => state.data.name);
 
   const { debouncedValue: debouncedSearchValue } = useDebounce(
     searchValue,
@@ -52,7 +44,6 @@ export function ProfileConfigUsernameAndName() {
         user?.id &&
         !errors.username
       ) {
-        console.log(!errors.username);
         try {
           await updateUserProfile(
             {
@@ -60,9 +51,6 @@ export function ProfileConfigUsernameAndName() {
             } as Database["public"]["Tables"]["profiles"]["Row"],
             user.id,
           );
-          updateProfileStoreData({
-            username: debouncedSearchValue,
-          } as Database["public"]["Tables"]["profiles"]["Row"]);
         } catch (error) {
           //
         }
@@ -79,13 +67,6 @@ export function ProfileConfigUsernameAndName() {
     formState: { errors },
   } = useForm<IFormUsernameNameAreas>({ reValidateMode: "onChange" });
 
-  function updateProfileName(name: string) {
-    if (errors.name) return;
-    updateProfileStoreData({
-      name,
-    } as Database["public"]["Tables"]["profiles"]["Row"]);
-  }
-
   return (
     <div className="w-full">
       <Input
@@ -95,7 +76,6 @@ export function ProfileConfigUsernameAndName() {
         id="username"
         disabled={false}
         register={register}
-        defaultValue={userName ?? ""}
         validationScheme={{
           required: "Area required",
           validate: () => {
@@ -131,11 +111,8 @@ export function ProfileConfigUsernameAndName() {
         id="name"
         disabled={false}
         register={register}
-        defaultValue={name ?? ""}
         validationScheme={{
           required: "Area required",
-          onChange: (e: ChangeEvent<HTMLInputElement>) =>
-            updateProfileName(e.target.value),
         }}
         error={errors.name ? errors.name : null}
       />

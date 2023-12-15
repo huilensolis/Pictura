@@ -28,7 +28,7 @@ export function ProfileConfigExtra() {
 
   const { errors } = formState;
 
-  const { getCurrentUserProfile, updateProfileStoreData } = useUserProfile();
+  const { getCurrentUserProfile } = useUserProfile();
 
   useEffect(() => {
     async function fetchDefaultValues() {
@@ -52,27 +52,6 @@ export function ProfileConfigExtra() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  function updateProfileStoreDescription(description: string) {
-    if (errors.description) return;
-    updateProfileStoreData({
-      description,
-    } as Database["public"]["Tables"]["profiles"]["Row"]);
-  }
-
-  function updateProfileStoreLocation(location: string) {
-    if (errors.location) return;
-    updateProfileStoreData({
-      location,
-    } as Database["public"]["Tables"]["profiles"]["Row"]);
-  }
-
-  function updateProfileStoreWebsite(website: string) {
-    if (errors.website) return;
-    updateProfileStoreData({
-      website,
-    } as Database["public"]["Tables"]["profiles"]["Row"]);
-  }
-
   return (
     <div className="w-full flex flex-col gap-2 h-[contet]">
       <TextArea
@@ -81,8 +60,6 @@ export function ProfileConfigExtra() {
         validationScheme={{
           required: false,
           maxLength: { value: 160, message: "Maximum of 160 characters" },
-          onChange: (e: ChangeEvent<HTMLTextAreaElement>) =>
-            updateProfileStoreDescription(e.target.value),
         }}
         disabled={false}
         register={register}
@@ -101,8 +78,6 @@ Want to connect? check out my portfolio bellow.`}
           required: false,
           minLength: { value: 3, message: "Minimum of 3 characters" },
           maxLength: { value: 80, message: "Maximum of 80 characters" },
-          onChange: (e: ChangeEvent<HTMLTextAreaElement>) =>
-            updateProfileStoreLocation(e.target.value),
         }}
         register={register}
         error={errors.location ?? null}
@@ -129,8 +104,6 @@ Want to connect? check out my portfolio bellow.`}
               return "invalid url format";
             }
           },
-          onChange: (e: ChangeEvent<HTMLTextAreaElement>) =>
-            updateProfileStoreWebsite(e.target.value),
         }}
         placeholder="https://my-portfolio.com"
       />

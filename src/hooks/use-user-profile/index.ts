@@ -2,13 +2,9 @@
 
 import { Database } from "@/supabase/types";
 import { useSupabase } from "../use-supabase";
-import { ProfileStore } from "@/zustand/profile";
 
 export function useUserProfile() {
   const { supabase } = useSupabase();
-
-  const userProfileData = ProfileStore((store) => store.data);
-  const updateProfileStore = ProfileStore((store) => store.updateStoreData);
 
   async function createUserProfile(userId: string) {
     try {
@@ -38,12 +34,6 @@ export function useUserProfile() {
 
   async function syncStoreProfileData() {}
 
-  function updateProfileStoreData(
-    data: Database["public"]["Tables"]["profiles"]["Row"],
-  ) {
-    updateProfileStore(data);
-  }
-
   async function getCurrentUserProfile(userId: string): Promise<{
     data: Database["public"]["Tables"]["profiles"]["Row"] | null;
     error: unknown;
@@ -60,15 +50,6 @@ export function useUserProfile() {
       return Promise.resolve({ data, error });
     } catch (error) {
       return Promise.resolve({ error, data: null });
-    }
-  }
-
-  async function uploadNewUserProfileValuesFromStore(userId: string) {
-    try {
-      await updateUserProfile(userProfileData, userId);
-      return Promise.resolve();
-    } catch (error) {
-      return Promise.reject(error);
     }
   }
 
@@ -99,8 +80,6 @@ export function useUserProfile() {
     createUserProfile,
     getCurrentUserProfile,
     syncStoreProfileData,
-    uploadNewUserProfileValuesFromStore,
-    updateProfileStoreData,
     validateIfUsernameIsAvailabe,
   };
 }
