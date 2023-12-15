@@ -17,7 +17,7 @@ export function useUserProfile() {
 
   async function updateUserProfile(
     values: Database["public"]["Tables"]["profiles"]["Row"],
-    userId: string
+    userId: string,
   ) {
     try {
       const { error } = await supabase
@@ -31,6 +31,8 @@ export function useUserProfile() {
       return Promise.reject(error);
     }
   }
+
+  async function syncStoreProfileData() {}
 
   async function getCurrentUserProfile(userId: string): Promise<{
     data: Database["public"]["Tables"]["profiles"]["Row"] | null;
@@ -51,5 +53,33 @@ export function useUserProfile() {
     }
   }
 
-  return { updateUserProfile, createUserProfile, getCurrentUserProfile };
+  async function validateIfUsernameIsAvailabe(
+    username: string,
+    userId: string,
+  ): Promise<boolean> {
+    const { data: currentUserProfile, error: errorFetchingUserProfile } =
+      await getCurrentUserProfile(userId);
+
+    if (errorFetchingUserProfile) {
+      await createUserProfile(userId);
+    }
+
+    if (username === currentUserProfile?.username) return true;
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("username", username)
+      .single();
+
+    if (!data || error) return true;
+    return false;
+  }
+  return {
+    updateUserProfile,
+    createUserProfile,
+    getCurrentUserProfile,
+    syncStoreProfileData,
+    validateIfUsernameIsAvailabe,
+  };
 }

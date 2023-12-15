@@ -3,6 +3,7 @@
 import { type User } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import { useSupabase } from "../use-supabase";
+import { useUserProfile } from "../use-user-profile";
 
 export function useUser() {
   const [user, setUser] = useState<User | null>(null);
@@ -41,18 +42,5 @@ export function useUser() {
     }
   }
 
-  async function validateIfUsernameIsAvailabe(
-    username: string
-  ): Promise<boolean> {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("username", username)
-      .single();
-
-    if (!data || error) return true;
-    return false;
-  }
-
-  return { updatePassword, validateIfUsernameIsAvailabe, user };
+  return { updatePassword, user };
 }
