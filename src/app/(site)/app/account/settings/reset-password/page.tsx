@@ -10,6 +10,7 @@ import { Alert } from "@/components/ui/alert";
 import Link from "next/link";
 import { Iform } from "./form.models";
 import { useUser } from "@/hooks/use-user";
+import { Heading } from "@/components/ui/typography/heading";
 
 export default function ResetPasswordPage() {
   const [wasPasswordUpated, setPasswordUpdated] = useState<boolean>(false);
@@ -37,12 +38,7 @@ export default function ResetPasswordPage() {
   return (
     <section className="flex flex-col gap-6 max-w-[530px]">
       <article className="flex flex-col gap-2">
-        <div className="mb-2">
-          <Logo />
-        </div>
-        <h1 className="text-neutral-900 dark:text-neutral-50 text-3xl font-medium">
-          Reset Password
-        </h1>
+        <Heading level={6}>Reset Password</Heading>
         <p className="text-neutral-600 dark:text-neutral-400">
           Type your new password, make sure to rememer it next time.
         </p>

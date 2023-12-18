@@ -10,8 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "cm-gray": "#1A1A1A",
-        "cm-lighter-gray": "#242424",
+        "cm-darker-gray": "#161616",
+        "cm-gray": "#1C1C1C",
+        "cm-lighter-gray": "#2C2C2C",
       },
     },
   },

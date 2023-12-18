@@ -1,16 +1,14 @@
-import { PrimaryButton } from "@/components/ui/buttons/primary";
-
 export function ProfileConfigPictures() {
   return (
     <form className="w-full h-full flex flex-col gap-2 items-center justify-center relative">
       <div className="w-full h-40 relative rounded-2xl overflow-hidden mb-10">
-        <div className="w-full h-full absolute top-0 left-0 bg-blue-400 pointer-events-none flex gap-2 items-center justify-center">
+        <div className="w-full h-full absolute top-0 left-0 bg-cm-lighter-gray pointer-events-none flex gap-2 items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="1em"
             height="1em"
             viewBox="0 0 24 24"
-            className="text-neutral-200"
+            className="text-neutral-200 hover:cursor-pointer"
           >
             <path
               fill="currentColor"
@@ -21,17 +19,16 @@ export function ProfileConfigPictures() {
             Add banner
           </label>
         </div>
-        {/* should i use label tag even if it is going to be hidden? <label></label> */}
         <input
           type="file"
           id="profile-banner"
           name="profile-picture"
-          className="bg-neutral-200 border border-neutral-600 w-full h-full cursor-pointer"
+          className="bg-transparent outline-none border-none w-full h-full cursor-pointer p-6"
         />
       </div>
-      <div className="h-20 w-20 rounded-3xl border-2 border-neutral-40 overflow-hidden absolute left-5 top-28">
+      <div className="h-20 w-20 rounded-3xl border-2 border-cm-gray overflow-hidden absolute left-5 top-28">
         <div className="relative w-full h-full">
-          <div className="w-full h-full absolute top-0 left-0 bg-blue-400 pointer-events-none z-10 flex items-center justify-center">
+          <div className="w-full h-full absolute top-0 left-0 bg-cm-lighter-gray pointer-events-none z-10 flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1em"
@@ -45,16 +42,14 @@ export function ProfileConfigPictures() {
               ></path>
             </svg>
           </div>
-          {/* should i use label tag even if it is going to be hidden? <label></label> */}
           <input
             type="file"
             id="profile-picture"
             name="profile-picture"
-            className="w-full h-full cursor-pointer"
+            className="w-full h-full p-6 cursor-pointer border-transparent "
           />
         </div>
       </div>
-      <PrimaryButton>Save</PrimaryButton>
     </form>
   );
 }
