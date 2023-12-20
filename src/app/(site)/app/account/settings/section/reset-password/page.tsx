@@ -36,7 +36,7 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <section className="flex flex-col gap-6 max-w-[530px]">
+    <section className="flex flex-col gap-6 w-full">
       <article className="flex flex-col gap-2">
         <Heading level={6}>Reset Password</Heading>
         <p className="text-neutral-600 dark:text-neutral-400">

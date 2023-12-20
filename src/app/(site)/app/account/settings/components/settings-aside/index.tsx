@@ -2,6 +2,7 @@
 
 import { Aside } from "@/components/feature/aside-menu";
 import { ILink } from "@/components/feature/aside-menu/shared.models";
+import { BackwardsNav } from "@/components/feature/nav/backwards";
 import {
   CircleUserIcon,
   CreditCardIcon,
@@ -34,7 +35,10 @@ const LINKS: ILink[] = [
 
 export function SettingsAside() {
   return (
-    <div className="sticky top-0">
+    <div className="w-full h-full bg-neutral-200">
+      <div className="w-full px-8 pt-5">
+        <BackwardsNav />
+      </div>
       <Aside
         header={{
           title: "Account Settings",

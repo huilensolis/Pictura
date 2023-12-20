@@ -1,13 +1,21 @@
 import { ReactNode } from "react";
-import { SettingsAside } from "./components/settings-aside";
+import { SettingsAside } from "../components/settings-aside";
+import { BackwardsNav } from "@/components/feature/nav/backwards";
 
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (
     <div className="w-full h-full flex justify-start items-start">
-      <SettingsAside />
+      <div className="lg:inline-block hidden w-[25rem] h-screen h-full sticky top-0 border-r border-neutral-300 dark:border-neutral-700">
+        <SettingsAside />
+      </div>
       <div className="flex flex-col w-full min-h-screen h-full">
         <div className="w-full flex items-start justify-center min-h-screen h-full">
           <div className="flex flex-col gap-4 w-full max-w-2xl items-center justify-start py-10 sm:px-0 px-5">
+            <header className="w-full flex">
+              <div className="inline-block lg:hidden">
+                <BackwardsNav />
+              </div>
+            </header>
             {children}
           </div>
         </div>

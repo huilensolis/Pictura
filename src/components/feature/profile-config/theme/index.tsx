@@ -5,9 +5,9 @@ import { useTheme } from "@/hooks/use-theme";
 export function ProfileConfigTheme() {
   const { setDarkTheme, setLightTheme } = useTheme();
   return (
-    <div className="flex gap-2 justify-center items-center">
+    <div className="w-full flex gap-2 justify-center items-center">
       <button
-        className={`py-16 px-32 flex justify-center items-center bg-neutral-800 rounded-xl border-2 border-transparent dark:border-blue-500 focus:outline-none`}
+        className={`w-full py-16 px-32 flex justify-center items-center bg-neutral-800 rounded-xl border-2 border-transparent dark:border-blue-500 focus:outline-none`}
         onClick={setDarkTheme}
       >
         <svg
@@ -27,7 +27,7 @@ export function ProfileConfigTheme() {
         </svg>
       </button>
       <button
-        className={`py-16 px-32 flex justify-center items-center bg-neutral-50 rounded-xl border-2 dark:border-transparent border-blue-500 focus:outline-none`}
+        className={`w-full py-16 px-32 flex justify-center items-center bg-neutral-50 rounded-xl border-2 dark:border-transparent border-blue-500 focus:outline-none`}
         onClick={setLightTheme}
       >
         <svg

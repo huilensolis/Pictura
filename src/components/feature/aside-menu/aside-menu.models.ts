@@ -1,4 +1,3 @@
-import { IArticleProps } from "@/components/ui/article/article.models";
 import { ILink } from "./shared.models";
 
 type IAsideHeader = {
@@ -9,4 +8,5 @@ type IAsideHeader = {
 export type IAsideMenuProps = {
   links: ILink[];
   header: IAsideHeader;
+  showBorderOnLinks?: boolean;
 };
