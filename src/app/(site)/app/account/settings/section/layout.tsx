@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { SettingsAside } from "../components/settings-aside";
 import { BackwardsNav } from "@/components/feature/nav/backwards";
+import Image from "next/image";
 
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (
@@ -25,7 +26,7 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
   );
 }
 
-export function SettingsFooter() {
+function SettingsFooter() {
   return (
     <footer className="bg-neutral-200 rounded-lg shadow dark:bg-cm-gray">
       <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
@@ -34,7 +35,7 @@ export function SettingsFooter() {
             href="https://flowbite.com/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
-            <img
+            <Image
               src="https://flowbite.com/docs/images/logo.svg"
               className="h-8"
               alt="Flowbite Logo"

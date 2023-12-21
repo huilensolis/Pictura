@@ -54,7 +54,7 @@ const LINKS: ILink[] = [
   },
 ];
 
-export function SettingsMenu() {
+function SettingsMenu() {
   return (
     <Aside
       header={{
