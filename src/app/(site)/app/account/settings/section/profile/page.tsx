@@ -1,9 +1,9 @@
 "use client";
 
-import { ProfileConfigExtra } from "@/components/feature/profile-config/extra";
-import { ProfileConfigPictures } from "@/components/feature/profile-config/pictures";
-import { ProfileConfigUsernameAndName } from "@/components/feature/profile-config/username-name";
 import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
+import { ProfileConfigPictures } from "./components/pictures";
+import { ProfileConfigUsernameAndName } from "./components/username-name";
+import { ProfileConfigExtra } from "./components/extra";
 
 export default function ProfileConfigPage() {
   useProtectRouteFromUnauthUsers();

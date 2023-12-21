@@ -1,4 +1,4 @@
-import { ProfileConfigTheme } from "@/components/feature/profile-config/theme";
+import { ProfileConfigTheme } from "@/app/(site)/app/account/settings/section/profile/components/profile-config/theme";
 import { Heading } from "@/components/ui/typography/heading";
 
 export default function SettingsAccesibilityPage() {

@@ -37,7 +37,7 @@ const LINKS: ILink[] = [
 export function SettingsAside() {
   return (
     <div className="w-full h-full bg-neutral-200 dark:bg-cm-gray">
-      <div className="px-8 pt-5">
+      <div className="px-5 pt-5">
         <Link
           href="/app/account/settings/"
           className="w-max flex justify-center items-center p-2 bg-neutral-300 dark:bg-neutral-700 rounded-xl dark:text-neutral-200 text-neutral-900"

@@ -11,7 +11,7 @@ export function Aside({
 }: IAsideMenuProps) {
   return (
     <nav className="w-full h-full dark:bg-cm-gray bg-neutral-200 p-5">
-      <article className="flex flex-col w-full pl-3">
+      <article className="flex flex-col w-full">
         <Heading extraClasses="font-semibold" level={8}>
           {title}
         </Heading>

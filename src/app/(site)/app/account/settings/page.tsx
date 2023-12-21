@@ -14,7 +14,7 @@ export default function SettingsPage() {
   return (
     <div className="w-full flex justify-center items-start bg-neutral-200 dark:bg-cm-gray h-screen">
       <div className="w-full max-w-2xl flex flex-col items-center justify-center">
-        <div className="w-full flex px-8 pt-10">
+        <div className="w-full flex px-5 pt-10">
           <BackwardsNav />
         </div>
         <div className="w-full">
