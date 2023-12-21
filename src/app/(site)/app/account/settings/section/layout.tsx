@@ -5,7 +5,7 @@ import { BackwardsNav } from "@/components/feature/nav/backwards";
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (
     <div className="w-full h-full flex justify-start items-start">
-      <div className="lg:inline-block hidden w-[25rem] h-screen h-full sticky top-0 border-r border-neutral-300 dark:border-neutral-700">
+      <div className="lg:inline-block hidden w-[25rem] h-screen sticky top-0 border-r border-neutral-300 dark:border-neutral-700">
         <SettingsAside />
       </div>
       <div className="flex flex-col w-full min-h-screen h-full">
