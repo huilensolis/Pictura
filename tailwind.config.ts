@@ -8,7 +8,13 @@ const config: Config = {
   ],
   darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "cm-darker-gray": "#161616",
+        "cm-gray": "#1C1C1C",
+        "cm-lighter-gray": "#2C2C2C",
+      },
+    },
   },
   plugins: [],
 };
