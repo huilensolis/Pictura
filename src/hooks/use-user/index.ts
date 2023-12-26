@@ -3,7 +3,6 @@
 import { type User } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import { useSupabase } from "../use-supabase";
-import { useUserProfile } from "../use-user-profile";
 
 export function useUser() {
   const [user, setUser] = useState<User | null>(null);
@@ -42,5 +41,5 @@ export function useUser() {
     }
   }
 
-  return { updatePassword, user };
+  return { updatePassword, user, isLoading };
 }
