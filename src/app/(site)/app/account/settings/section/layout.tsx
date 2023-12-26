@@ -11,7 +11,7 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
       </div>
       <div className="flex flex-col w-full min-h-screen h-full">
         <div className="w-full flex items-start justify-center min-h-screen h-full">
-          <div className="flex flex-col gap-4 w-full max-w-2xl items-center justify-start py-10 sm:px-0 px-5">
+          <div className="flex flex-col gap-4 w-full max-w-2xl items-center justify-start py-10 lg:px-0 px-5">
             <header className="w-full flex">
               <div className="inline-block lg:hidden">
                 <BackwardsNav />
@@ -39,6 +39,8 @@ function SettingsFooter() {
               src="https://flowbite.com/docs/images/logo.svg"
               className="h-8"
               alt="Flowbite Logo"
+              width={32}
+              height={32}
             />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               Flowbite
