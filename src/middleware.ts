@@ -15,10 +15,10 @@ export async function middleware(req: NextRequest) {
   const url = new URL(req.url);
 
   const isPathUnauthenticated = ONLY_UNAUTHENTICATED_USERS_PATHS.some((path) =>
-    url.pathname.includes(path)
+    url.pathname.includes(path),
   );
   const isPathAuthenticated = ONLY_AUTHENTICATED_USERS_PATHS.some((path) =>
-    url.pathname.includes(path)
+    url.pathname.includes(path),
   );
 
   // if the path is authenticated, we only allow authenticated users
@@ -34,6 +34,7 @@ export async function middleware(req: NextRequest) {
   // if the path is only for unauthenticated users, we only allow unauthenticated users
   if (isPathUnauthenticated) {
     if (session) {
+      console.log({ session });
       console.log("path is protected for authenticated users, redirecting");
       return NextResponse.redirect(`${req.nextUrl.origin}/`);
     } else {

@@ -9,7 +9,10 @@ export async function protectRouteFromUnauthUsers() {
     error,
   } = await supabase.auth.getSession();
   if (!session || error) {
-    console.log("there is no session, redirecting to sing up");
+    console.log({
+      message: "there is no session, redirecting to sing up",
+      session: session,
+    });
     redirect("/auth/sign-up");
   }
 }

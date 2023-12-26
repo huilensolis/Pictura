@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@/hooks/use-user";
+import { useSession } from "@/hooks/use-session";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -10,12 +10,12 @@ export function useProtectRouteFromUnauthUsers() {
 
   const router = useRouter();
 
-  const { user } = useUser();
+  const { session } = useSession();
 
   useEffect(() => {
     async function checkSession() {
       setIsCheckingUser(true);
-      setIsUserLoggedIn(Boolean(user));
+      setIsUserLoggedIn(Boolean(session));
       setIsCheckingUser(true);
     }
     function checkSessionIfTabMakesVisibleAgain() {
@@ -26,7 +26,7 @@ export function useProtectRouteFromUnauthUsers() {
     if (window) {
       window.addEventListener(
         "visibilitychange",
-        checkSessionIfTabMakesVisibleAgain
+        checkSessionIfTabMakesVisibleAgain,
       );
     }
 
@@ -36,10 +36,10 @@ export function useProtectRouteFromUnauthUsers() {
       if (window)
         window.removeEventListener(
           "visibilitychange",
-          checkSessionIfTabMakesVisibleAgain
+          checkSessionIfTabMakesVisibleAgain,
         );
     };
-  }, [user]);
+  }, [session]);
 
   if (!isUserLoggedIn && !isCheckingUser) {
     router.push("/auth/sign-up");
@@ -51,11 +51,11 @@ export function useProtectRouteFromAuthUsers() {
 
   const router = useRouter();
 
-  const { user } = useUser();
+  const { session } = useSession();
 
   useEffect(() => {
     async function checkSession() {
-      setIsUserLoggedIn(Boolean(user));
+      setIsUserLoggedIn(Boolean(session));
     }
     function checkSessionIfTabMakesVisibleAgain() {
       if (document.visibilityState === "visible") {
@@ -65,7 +65,7 @@ export function useProtectRouteFromAuthUsers() {
     if (window) {
       window.addEventListener(
         "visibilitychange",
-        checkSessionIfTabMakesVisibleAgain
+        checkSessionIfTabMakesVisibleAgain,
       );
     }
     checkSession();
@@ -74,10 +74,10 @@ export function useProtectRouteFromAuthUsers() {
       if (window)
         window.removeEventListener(
           "visibilitychange",
-          checkSessionIfTabMakesVisibleAgain
+          checkSessionIfTabMakesVisibleAgain,
         );
     };
-  }, [isUserLoggedIn, user]);
+  }, [isUserLoggedIn, session]);
 
   if (isUserLoggedIn) {
     router.push("/app");
