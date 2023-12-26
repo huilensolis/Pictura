@@ -7,16 +7,6 @@ import { ThemeSwitcher } from "@/components/feature/theme-switcher";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/hooks/use-session";
 
-const AUTHLINKS: INavLink[] = [
-  {
-    title: "Log In",
-    href: "/auth/log-in",
-  },
-  {
-    title: "Sign Up",
-    href: "/auth/sign-up",
-  },
-];
 const NAVLINKS: INavLink[] = [
   {
     title: "Home",
@@ -77,7 +67,7 @@ function AuthenticatedButtons({ onLogout }: { onLogout: () => void }) {
       <li>
         <Link
           href="/app"
-          className="flex justify-center items-center bg-neutral-50 rounded-xl h-10 px-3 text-neutral-800 font-semibold hover:bg-neutral-400"
+          className="flex justify-center items-center bg-blue-600 rounded-xl h-10 px-3 text-neutral-50 font-semibold hover:brightness-105"
         >
           Launch App
         </Link>
@@ -97,16 +87,23 @@ function AuthenticatedButtons({ onLogout }: { onLogout: () => void }) {
 function UnauthenticatedLinks() {
   return (
     <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
-      {AUTHLINKS.map((link, index) => (
-        <li key={index} className="h-full">
-          <Link
-            href={link.href}
-            className="flex justify-center items-center bg-neutral-50 rounded-xl h-10 px-3 text-neutral-800 font-semibold hover:bg-neutral-400"
-          >
-            {link.title}
-          </Link>
-        </li>
-      ))}
+      <li className="h-full">
+        <Link
+          href="/auth/sign-up"
+          className="flex justify-center items-center bg-neutral-50 rounded-xl h-10 px-3 text-neutral-800 font-semibold hover:bg-neutral-400"
+        >
+          Sign Up
+        </Link>
+      </li>
+
+      <li className="h-full">
+        <Link
+          href="/auth/log-in"
+          className="flex justify-center items-center bg-blue-600 rounded-xl h-10 px-3 text-neutral-50 font-semibold hover:brightness-105"
+        >
+          Log In
+        </Link>
+      </li>
     </ul>
   );
 }
