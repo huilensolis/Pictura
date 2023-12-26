@@ -19,9 +19,9 @@ export function AsideNavLink({ title, href, icon: Icon }: ILink) {
       }`}
     >
       <Icon
-        className={`w-6 h-6 text-neutral-900 ${
+        className={`w-6 h-6 ${
           isActive
-            ? "dark:text-neutral-50 text-neutral-900"
+            ? "dark:text-neutral-50"
             : "dark:group-hover:text-neutral-50 group-hover:text-neutral-900 dark:text-neutral-400 text-neutral-500"
         }`}
       />
