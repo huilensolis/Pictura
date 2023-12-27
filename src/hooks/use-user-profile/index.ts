@@ -45,11 +45,9 @@ export function useUserProfile() {
         .eq("user_id", userId)
         .single();
 
-      if (!data || error) return Promise.reject({ error });
-
-      return Promise.resolve({ data, error });
+      return { data, error };
     } catch (error) {
-      return Promise.resolve({ error, data: null });
+      return { error, data: null };
     }
   }
 

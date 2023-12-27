@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { IFormUsernameNameAreas } from "./form.models";
+import { IFormUsernameArea } from "./form.models";
 import { useUser } from "@/hooks/use-user";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useEffect, useState } from "react";
@@ -10,7 +10,11 @@ import { useUserProfile } from "@/hooks/use-user-profile";
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { Database } from "@/supabase/types";
 
-export function ProfileConfigUsernameAndName() {
+export function ProfileConfigUsername({
+  defaultUsername = "",
+}: {
+  defaultUsername?: string;
+}) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const [isUsernameAvailable, setIsUsernameAvailable] =
@@ -65,7 +69,7 @@ export function ProfileConfigUsernameAndName() {
   const {
     register,
     formState: { errors },
-  } = useForm<IFormUsernameNameAreas>({ reValidateMode: "onChange" });
+  } = useForm<IFormUsernameArea>({ reValidateMode: "onChange" });
 
   return (
     <div className="w-full">
@@ -76,6 +80,7 @@ export function ProfileConfigUsernameAndName() {
         id="username"
         disabled={false}
         register={register}
+        defaultValue={defaultUsername}
         validationScheme={{
           required: "Area required",
           validate: () => {
@@ -104,18 +109,6 @@ export function ProfileConfigUsernameAndName() {
           </span>
         </div>
       )}
-      <Input
-        type="text"
-        placeholder="Name"
-        label="name"
-        id="name"
-        disabled={false}
-        register={register}
-        validationScheme={{
-          required: "Area required",
-        }}
-        error={errors.name ? errors.name : null}
-      />
     </div>
   );
 }
