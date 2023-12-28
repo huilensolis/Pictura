@@ -87,7 +87,7 @@ export function ProfileConfigUsername({
             if (!isUsernameAvailable) return false;
             return true;
           },
-          onChange(event) {
+          onChange(event: React.ChangeEvent<HTMLInputElement>) {
             setSearchValue(event.target.value);
           },
         }}
