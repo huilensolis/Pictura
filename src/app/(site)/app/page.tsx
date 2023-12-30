@@ -1,7 +1,7 @@
 "use client";
 
 import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
-import { MobileNavMenu } from "./mobile-nav";
+import { MobileNavMenu } from "./components/mobile-nav";
 import { Feed } from "./components/feed";
 import { AppRightAside } from "./components/right-aside";
 import { AppLeftAside } from "./components/left-aside";
