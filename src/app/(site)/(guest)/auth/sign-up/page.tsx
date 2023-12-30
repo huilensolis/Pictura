@@ -70,7 +70,7 @@ export default function SingUpPage() {
           label="Email"
           placeholder="myemail@gmail.com"
           register={register}
-          error={errors.email?.message ? errors.email : null}
+          error={errors.email}
           validationScheme={{
             required: { value: true, message: "email is required" },
             validate: (value: string) => {
@@ -87,7 +87,7 @@ export default function SingUpPage() {
           label="Password"
           placeholder="*********"
           register={register}
-          error={errors.password?.message ? errors.password : null}
+          error={errors.password}
           validationScheme={{
             required: { value: true, message: "password is required" },
             minLength: {

@@ -78,7 +78,7 @@ export default function LogInPage() {
           label="Email"
           placeholder="myemail@gmail.com"
           register={register}
-          error={errors.email?.message ? errors.email : null}
+          error={errors.email}
           validationScheme={{
             required: { value: true, message: "email is required" },
             validate: (value: string) => {

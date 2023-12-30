@@ -87,11 +87,11 @@ export function ProfileConfigUsername({
             if (!isUsernameAvailable) return false;
             return true;
           },
-          onChange(event) {
+          onChange(event: React.ChangeEvent<HTMLInputElement>) {
             setSearchValue(event.target.value);
           },
         }}
-        error={errors.username ? errors.username : null}
+        error={errors.username}
       />
       {!isLoading &&
         debouncedSearchValue &&

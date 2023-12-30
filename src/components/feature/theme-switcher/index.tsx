@@ -16,6 +16,11 @@ export function ThemeSwitcher() {
   }
 
   return (
-    <Within duration={750} onToggle={toggleTheme} toggled={theme === "dark"} />
+    <Within
+      duration={750}
+      onToggle={toggleTheme}
+      toggled={theme === "dark"}
+      placeholder={null}
+    />
   );
 }

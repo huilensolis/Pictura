@@ -3,7 +3,7 @@
 import { InputProps } from "./props.model";
 
 export function Input({
-  error = null,
+  error,
   type,
   label,
   id,
