@@ -38,7 +38,7 @@ export default function ProfileConfigPage() {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<ProfileFormAreas>({ mode: "onTouched" });
 
@@ -64,18 +64,83 @@ export default function ProfileConfigPage() {
     const formatedData: Database["public"]["Tables"]["profiles"]["Row"] = {
       name: data.name,
       website: data.website,
-      avatar_url: "",
-      banner_url: "",
       location: data.location,
       description: data.description,
     } as Database["public"]["Tables"]["profiles"]["Row"];
+
+    if (data.banner) {
+      try {
+        const bannerImageFile = data.banner[0];
+
+        if (!bannerImageFile) {
+          throw new Error("");
+        }
+        const formData = new FormData();
+        formData.append("image", bannerImageFile);
+
+        const res = await fetch("/api/cloudinary/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          throw new Error("server response wen wrong");
+        }
+
+        const responseBody = await res.json();
+
+        if (!responseBody.data.image.secure_url) {
+          throw new Error("the server returned no data");
+        }
+
+        formatedData.banner_url = responseBody.data.image.secure_url;
+      } catch {
+        setErrorUpdatingData(
+          "there is been an error updating your banner picture",
+        );
+      }
+    }
+
+    if (data.avatar) {
+      try {
+        const avatarImageFile = data.avatar[0];
+
+        if (!avatarImageFile) {
+          throw new Error("");
+        }
+        const formData = new FormData();
+        formData.append("image", avatarImageFile);
+
+        const res = await fetch("/api/cloudinary/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          throw new Error("server response wen wrong");
+        }
+
+        const responseBody = await res.json();
+
+        if (!responseBody.data.image.secure_url) {
+          throw new Error("the server returned no data");
+        }
+
+        formatedData.avatar_url = responseBody.data.image.secure_url;
+      } catch (error) {
+        console.log(error);
+        setErrorUpdatingData(
+          "there is been an error updating your avatar picture",
+        );
+      }
+    }
 
     try {
       setIsUpdatingData(true);
       await updateUserProfile(formatedData, user?.id as string);
       setErrorUpdatingData(null);
       setIsUpdatingData(false);
-      router.refresh();
+      // router.refresh();
     } catch (error) {
       setErrorUpdatingData("There has been an error updating your profile : (");
       setIsUpdatingData(false);
@@ -89,26 +154,31 @@ export default function ProfileConfigPage() {
         <form
           className="w-full flex flex-col gap-2"
           onSubmit={handleSubmit(updateProfile)}
+          encType="multipart/form-data"
         >
-          <div className="relative flex h-full w-full mb-20">
+          <div className="relative flex h-full w-full mb-10">
             <div className="w-full h-56">
               <ImagePicker
-                label="Header"
-                id="header"
+                label="Banner"
+                id="banner"
                 register={register}
-                validationScheme={{ required: false }}
-                error={errors.header ?? null}
+                validationScheme={{
+                  required: false,
+                }}
+                error={errors.banner as any}
                 imagePlaceHolderClasses="w-full h-full rounded-lg"
+                placeholderImageUrl={userProfileDefaultData?.banner_url ?? null}
               />
             </div>
-            <div className="h-full absolute -bottom-40 left-5">
+            <div className="h-32 w-32 absolute -bottom-10 left-5">
               <ImagePicker
-                label="picture"
-                id="picture"
+                label="Avatar"
+                id="avatar"
                 register={register}
                 validationScheme={{ required: false }}
-                error={errors.picture ?? null}
-                imagePlaceHolderClasses="w-32 h-32 rounded-full border-neutral-200 dark:border-cm-gray border-2"
+                error={errors.avatar as any}
+                placeholderImageUrl={userProfileDefaultData?.avatar_url ?? null}
+                imagePlaceHolderClasses="w-32 h-32 rounded-full border-neutral-200 dark:border-cm-darker-gray border-2"
               />
             </div>
           </div>
@@ -126,7 +196,7 @@ export default function ProfileConfigPage() {
             validationScheme={{
               required: "Area required",
             }}
-            error={errors.name ? errors.name : null}
+            error={errors.name}
           />
           <TextArea
             id="description"
@@ -154,7 +224,7 @@ Want to connect? check out my portfolio bellow.`}
               maxLength: { value: 80, message: "Maximum of 80 characters" },
             }}
             register={register}
-            error={errors.location ?? null}
+            error={errors.location}
             placeholder="Cordoba, Argentina"
           />
           <Input
@@ -163,7 +233,7 @@ Want to connect? check out my portfolio bellow.`}
             label="Any website you would like to share on your profile?"
             defaultValue={userProfileDefaultData?.website ?? ""}
             register={register}
-            error={errors.website ?? null}
+            error={errors.website}
             validationScheme={{
               required: false,
               minLength: { value: 4, message: "Minimum of 4 characters" },
@@ -182,7 +252,10 @@ Want to connect? check out my portfolio bellow.`}
             placeholder="https://my-portfolio.com"
           />
           <div className="mt-1">
-            <PrimaryButton type="submit" isLoading={isUpdatingData}>
+            <PrimaryButton
+              type="submit"
+              isLoading={isUpdatingData || isSubmitting}
+            >
               Save
             </PrimaryButton>
           </div>
@@ -191,6 +264,7 @@ Want to connect? check out my portfolio bellow.`}
               type="error"
               title="Error updating profile"
               description={errorUpdatingData}
+              onClose={() => setErrorUpdatingData(null)}
             />
           )}
         </form>

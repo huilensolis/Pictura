@@ -53,7 +53,7 @@ export default function ResetPasswordPage() {
           label="password"
           placeholder="********"
           register={register}
-          error={errors.password?.message ? errors.password : null}
+          error={errors.password}
           validationScheme={{
             required: { value: true, message: "new Password is required" },
             minLength: {
@@ -68,11 +68,7 @@ export default function ResetPasswordPage() {
           label="Confirm Password"
           placeholder="********"
           register={register}
-          error={
-            errors["confirm-password"]?.message
-              ? errors["confirm-password"]
-              : null
-          }
+          error={errors["confirm-password"]}
           validationScheme={{
             required: { value: true, message: "new Password is required" },
             minLength: {

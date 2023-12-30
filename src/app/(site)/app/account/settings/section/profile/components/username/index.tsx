@@ -91,7 +91,7 @@ export function ProfileConfigUsername({
             setSearchValue(event.target.value);
           },
         }}
-        error={errors.username ? errors.username : null}
+        error={errors.username}
       />
       {!isLoading &&
         debouncedSearchValue &&

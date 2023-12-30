@@ -5,7 +5,7 @@ import { ImagePickerProps } from "./props.model";
 import { ChangeEvent, useState } from "react";
 
 export function ImagePicker({
-  error = null,
+  error,
   label,
   id,
   disabled = false,
@@ -24,10 +24,14 @@ export function ImagePicker({
   };
 
   function handleImageSelected(e: ChangeEvent<HTMLInputElement>) {
-    if (e.target.files[0]) {
-      const imageUrl = URL.createObjectURL(e.target.files[0]);
-      setBackgroundImage(imageUrl);
-    }
+    const files = e.target.files as any as File[];
+
+    const selectedFile = files[0] as File;
+
+    if (!files || files.length === 0 || !selectedFile) return;
+
+    const imageUrl = URL.createObjectURL(selectedFile);
+    setBackgroundImage(imageUrl);
   }
 
   return (
@@ -36,15 +40,19 @@ export function ImagePicker({
         className={`${
           error
             ? "bg-red-200 border-red-300 dark:border-red-600 dark:bg-neutral-800 focus:outline-red-400 focus:dark:border-red-600"
-            : "bg-neutral-300 dark:bg-neutral-800 border-transparent dark:border-transparent"
-        } border h-full w-full flex items-center justify-center relative cursor-pointer bg-cover object-cover bg-center bg-no-repeat ${imagePlaceHolderClasses}`}
+            : "bg-neutral-300 dark:bg-neutral-800"
+        } border border-neutral-200 dark:border-cm-gray h-full w-full flex items-center justify-center relative cursor-pointer bg-cover object-cover bg-center bg-no-repeat ${imagePlaceHolderClasses}`}
         style={{
-          backgroundImage: `url(${
-            backgroundImage ?? placeholderImageUrl ?? ""
-          })`,
+          backgroundImage: `${
+            placeholderImageUrl
+              ? `url(${placeholderImageUrl})`
+              : backgroundImage
+                ? `url(${backgroundImage})`
+                : "none"
+          }`,
         }}
       >
-        {!backgroundImage && (
+        {!backgroundImage && !placeholderImageUrl && (
           <ImagePlusIcon className="text-neutral-400 dark:text-neutral-400" />
         )}
         <input

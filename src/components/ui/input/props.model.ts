@@ -12,7 +12,7 @@ export interface InputProps
   placeholder?: string;
   id: string;
   disabled?: boolean;
-  error: FieldError | null;
+  error: FieldError | undefined;
   validationScheme: RegisterOptions;
   register: UseFormRegister<any>;
 }
