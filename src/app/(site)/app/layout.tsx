@@ -1,10 +1,14 @@
 import { SyncTheme } from "@/components/feature/syncTheme";
 import { ReactNode } from "react";
+import { AppLeftAside } from "./components/left-aside";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex justify-center items-center w-full h-full min-h-screen bg-neutral-200 dark:bg-cm-darker-gray">
-      <div className="min-h-screen w-full flex flex-col justify-start items-center max-w-[1400px]">
+      <div className="min-h-screen w-full flex justify-center items-start max-w-[1400px] relative">
+        <div className="sm:flex hidden sticky top-0 left-0 w-full max-w-[300px] h-full min-h-screen border-r border-neutral-300 dark:border-cm-lighter-gray">
+          <AppLeftAside />
+        </div>
         {children}
         <SyncTheme />
       </div>
