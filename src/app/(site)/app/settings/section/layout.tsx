@@ -11,7 +11,7 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
       </div>
       <div className="flex flex-col w-full min-h-screen h-full">
         <div className="w-full flex items-start justify-center min-h-screen h-full">
-          <div className="flex flex-col gap-4 w-full max-w-2xl items-center justify-start py-10 lg:px-0 px-5">
+          <div className="flex flex-col gap-4 w-full max-w-2xl items-center justify-start py-10 px-5">
             <header className="w-full flex">
               <div className="inline-block lg:hidden">
                 <BackwardsNav />
