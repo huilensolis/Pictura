@@ -3,7 +3,6 @@
 import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
 import { MobileNavMenu } from "./components/mobile-nav";
 import { Feed } from "./components/feed";
-import { AppRightAside } from "./components/right-aside";
 
 export default function AppPage() {
   useProtectRouteFromUnauthUsers();
@@ -23,9 +22,6 @@ function DesktopPage() {
   return (
     <div className="w-full h-full flex justify-start">
       <Feed />
-      <div className="w-full h-full max-w-sm hidden xl:flex">
-        <AppRightAside />
-      </div>
     </div>
   );
 }
