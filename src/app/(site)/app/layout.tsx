@@ -1,6 +1,7 @@
 import { SyncTheme } from "@/components/feature/syncTheme";
 import { ReactNode } from "react";
 import { AppLeftAside } from "./components/left-aside";
+import { AppRightAside } from "./components/right-aside";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,6 +11,9 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           <AppLeftAside />
         </div>
         {children}
+        <div className="w-full h-full max-w-sm hidden xl:flex">
+          <AppRightAside />
+        </div>
         <SyncTheme />
       </div>
     </div>
