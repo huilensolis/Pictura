@@ -5,6 +5,7 @@ export class ImageFileSystem {
   image: File;
   allowedFileTypes: string[];
   imagePath: string | null;
+  imageDirPath: string | null;
 
   constructor(
     image: File,
@@ -19,6 +20,7 @@ export class ImageFileSystem {
     this.image = image;
     this.allowedFileTypes = allowedFileTypes;
     this.imagePath = null;
+    this.imageDirPath = null;
   }
 
   async saveIntoFileSystem(): Promise<void> {
@@ -29,6 +31,7 @@ export class ImageFileSystem {
     }
 
     const temporalDirectory = await fs.mkdtemp("mommentary-folder-");
+    this.imageDirPath = temporalDirectory;
 
     try {
       const isFileTypeValid = this.allowedFileTypes.some(
@@ -45,7 +48,6 @@ export class ImageFileSystem {
         temporalDirectory,
         `${new Date().getTime().toString()}.${fileExtension}`,
       );
-
       this.imagePath = path;
 
       const imageBuffer = Buffer.from(await this.image.arrayBuffer());
@@ -68,9 +70,11 @@ export class ImageFileSystem {
 
   async deleteFromFileSystem(): Promise<void> {
     if (!this.imagePath) return Promise.reject("no image path found");
+    if (!this.imageDirPath) return Promise.reject("no image path found");
 
     try {
       await fs.rm(this.imagePath, { recursive: true, force: true });
+      await fs.rm(this.imageDirPath, { recursive: true, force: true });
       return Promise.resolve();
     } catch (error) {
       console.log({ erroronDeleting: error });
