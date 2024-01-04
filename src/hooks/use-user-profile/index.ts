@@ -2,13 +2,52 @@
 
 import { Database } from "@/supabase/types";
 import { useSupabase } from "../use-supabase";
+import { useUser } from "../use-user";
+import { useEffect, useState } from "react";
 
 export function useUserProfile() {
+  const { isLoading: isLoadingUser, user } = useUser();
+  const [isLoading, setLoading] = useState<boolean>(true);
+
+  const [userProfile, setUserProfile] = useState<
+    Database["public"]["Tables"]["profiles"]["Row"] | null
+  >();
+
+  useEffect(() => {
+    console.log({ user, isLoadingUser });
+    if (!isLoadingUser && user && !userProfile) setLoading(false);
+  }, [isLoadingUser]);
+
   const { supabase } = useSupabase();
 
-  async function createUserProfile(userId: string) {
+  useEffect(() => {
+    async function fetchUserProfile(userId: string) {
+      setLoading(true);
+      const { error, data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", userId)
+        .single();
+
+      if (error || !data) {
+        setLoading(false);
+        return setUserProfile(null);
+      }
+
+      setUserProfile(data);
+      setLoading(false);
+    }
+
+    if (!isLoadingUser && user?.id) {
+      fetchUserProfile(user?.id);
+    }
+  }, [isLoadingUser]);
+
+  async function createUserProfile() {
+    if (isLoading) throw new Error("Loading user profile");
+    if (!user) throw new Error("User not found");
     try {
-      await supabase.from("profiles").insert({ user_id: userId });
+      await supabase.from("profiles").insert({ user_id: user?.id });
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
@@ -17,52 +56,36 @@ export function useUserProfile() {
 
   async function updateUserProfile(
     values: Database["public"]["Tables"]["profiles"]["Row"],
-    userId: string,
   ) {
+    if (isLoading) throw new Error("Loading user profile");
+    if (!user) throw new Error("User not found");
     try {
+      setLoading(true);
       const { error } = await supabase
         .from("profiles")
         .update(values)
-        .eq("user_id", userId)
+        .eq("user_id", user.id)
         .single();
       if (error) return Promise.reject(error);
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
-    }
-  }
-
-  async function syncStoreProfileData() {}
-
-  async function getCurrentUserProfile(userId: string): Promise<{
-    data: Database["public"]["Tables"]["profiles"]["Row"] | null;
-    error: unknown;
-  }> {
-    try {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", userId)
-        .single();
-
-      return { data, error };
-    } catch (error) {
-      return { error, data: null };
+    } finally {
+      setLoading(false);
     }
   }
 
   async function validateIfUsernameIsAvailabe(
     username: string,
-    userId: string,
   ): Promise<boolean> {
-    const { data: currentUserProfile, error: errorFetchingUserProfile } =
-      await getCurrentUserProfile(userId);
+    if (isLoading) throw new Error("Loading user profile");
+    if (!user) throw new Error("User not found");
 
-    if (errorFetchingUserProfile) {
-      await createUserProfile(userId);
+    if (!userProfile) {
+      await createUserProfile();
     }
 
-    if (username === currentUserProfile?.username) return true;
+    if (username === userProfile?.username) return true;
 
     const { data, error } = await supabase
       .from("profiles")
@@ -73,11 +96,12 @@ export function useUserProfile() {
     if (!data || error) return true;
     return false;
   }
+
   return {
+    isLoading,
+    userProfile,
     updateUserProfile,
     createUserProfile,
-    getCurrentUserProfile,
-    syncStoreProfileData,
     validateIfUsernameIsAvailabe,
   };
 }

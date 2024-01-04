@@ -8,15 +8,10 @@ import {
   SearchIcon,
   SettingsIcon,
   StarIcon,
-  Wand2Icon,
 } from "lucide-react";
-import { AsideNavLink } from "@/components/feature/aside-menu/components/nav-item";
 import { usePathname } from "next/navigation";
 import { useUserProfile } from "@/hooks/use-user-profile";
-import { useEffect, useState } from "react";
 import { Database } from "@/supabase/types";
-import { useUser } from "@/hooks/use-user";
-import { Heading } from "@/components/ui/typography/heading";
 
 // each navLink must start with '/'
 const LINKS: ILink[] = [
@@ -114,34 +109,7 @@ export function CustomNavLink({ title, href, icon: Icon }: ILink) {
 }
 
 function UserProfile() {
-  const [userProfile, setUserProfile] = useState<
-    Database["public"]["Tables"]["profiles"]["Row"] | null
-  >(null);
-  const [error, setError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { getCurrentUserProfile } = useUserProfile();
-  const { user, isLoading: IsLoadingUser } = useUser();
-
-  useEffect(() => {
-    async function syncUserProfile(userId: string) {
-      setIsLoading(true);
-      const { data, error } = await getCurrentUserProfile(userId);
-      if (error || !data) {
-        setError(true);
-        setIsLoading(false);
-        return;
-      }
-      setUserProfile(data);
-      setError(false);
-      setIsLoading(false);
-    }
-
-    if (!isLoading && !IsLoadingUser && user && user.id) {
-      syncUserProfile(user.id);
-    }
-  }, [IsLoadingUser]);
-
+  const { userProfile, isLoading: isLoadingUserProfile } = useUserProfile();
   const UserProfileSkeleton = () => <div>skeleton</div>;
 
   const ActualUserProfile = ({
@@ -168,17 +136,15 @@ function UserProfile() {
       <LinkIcon className="ml-5 text-neutral-900 dark:text-neutral-50" />
     </article>
   );
-  const ErrorComponent = () => <>error</>;
 
   return (
     <>
-      {isLoading && <UserProfileSkeleton />}
-      {!isLoading && userProfile && !error && (
+      {isLoadingUserProfile && <UserProfileSkeleton />}
+      {!isLoadingUserProfile && userProfile && (
         <Link href={`/app/account/${userProfile.username}`}>
           <ActualUserProfile userProfile={userProfile} />
         </Link>
       )}
-      {error && !isLoading && <ErrorComponent />}
     </>
   );
 }

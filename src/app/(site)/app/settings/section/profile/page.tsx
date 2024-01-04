@@ -15,22 +15,19 @@ import { Database } from "@/supabase/types";
 import { Alert } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { ImagePicker } from "@/components/ui/image-picker";
+import { postImage } from "@/services/api/upload-image";
 
 export default function ProfileConfigPage() {
-  const [isFetchingDefaultValues, setIsFetchingDefaultValues] =
-    useState<boolean>(true);
-  const [userProfileDefaultData, setUserProfileDefaultData] = useState<
-    Database["public"]["Tables"]["profiles"]["Row"] | null
-  >(null);
-
   const [isUpdatingData, setIsUpdatingData] = useState<boolean>(false);
   const [errorUpdatingData, setErrorUpdatingData] = useState<string | null>(
     null,
   );
 
-  const { getCurrentUserProfile, updateUserProfile } = useUserProfile();
-
-  const { user, isLoading: isUserLoading } = useUser();
+  const {
+    userProfile,
+    isLoading: isLoadingUserProfile,
+    updateUserProfile,
+  } = useUserProfile();
 
   useProtectRouteFromUnauthUsers();
 
@@ -41,24 +38,6 @@ export default function ProfileConfigPage() {
     formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<ProfileFormAreas>({ mode: "onTouched" });
-
-  useEffect(() => {
-    async function SyncCurrentUserProfile(userId: string) {
-      setIsFetchingDefaultValues(true);
-
-      const { data } = await getCurrentUserProfile(userId);
-
-      if (data) {
-        setUserProfileDefaultData(data);
-      }
-
-      setIsFetchingDefaultValues(false);
-    }
-
-    if (user?.id && !isUserLoading) {
-      SyncCurrentUserProfile(user.id);
-    }
-  }, [user]);
 
   async function updateProfile(data: ProfileFormAreas) {
     const formatedData: Database["public"]["Tables"]["profiles"]["Row"] = {
@@ -75,25 +54,14 @@ export default function ProfileConfigPage() {
         if (!bannerImageFile) {
           throw new Error("");
         }
-        const formData = new FormData();
-        formData.append("image", bannerImageFile);
 
-        const res = await fetch("/api/cloudinary/upload", {
-          method: "POST",
-          body: formData,
-        });
+        const { error, assetSecureUrl } = await postImage(bannerImageFile);
 
-        if (!res.ok) {
+        if (error || !assetSecureUrl) {
           throw new Error("server response wen wrong");
         }
 
-        const responseBody = await res.json();
-
-        if (!responseBody.data.image.secure_url) {
-          throw new Error("the server returned no data");
-        }
-
-        formatedData.banner_url = responseBody.data.image.secure_url;
+        formatedData.banner_url = assetSecureUrl;
       } catch {
         setErrorUpdatingData(
           "there is been an error updating your banner picture",
@@ -108,25 +76,13 @@ export default function ProfileConfigPage() {
         if (!avatarImageFile) {
           throw new Error("");
         }
-        const formData = new FormData();
-        formData.append("image", avatarImageFile);
+        const { error, assetSecureUrl } = await postImage(avatarImageFile);
 
-        const res = await fetch("/api/cloudinary/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!res.ok) {
+        if (error || !assetSecureUrl) {
           throw new Error("server response wen wrong");
         }
 
-        const responseBody = await res.json();
-
-        if (!responseBody.data.image.secure_url) {
-          throw new Error("the server returned no data");
-        }
-
-        formatedData.avatar_url = responseBody.data.image.secure_url;
+        formatedData.avatar_url = assetSecureUrl;
       } catch (error) {
         console.log(error);
         setErrorUpdatingData(
@@ -137,10 +93,10 @@ export default function ProfileConfigPage() {
 
     try {
       setIsUpdatingData(true);
-      await updateUserProfile(formatedData, user?.id as string);
+      await updateUserProfile(formatedData);
       setErrorUpdatingData(null);
       setIsUpdatingData(false);
-      // router.refresh();
+      router.refresh();
     } catch (error) {
       setErrorUpdatingData("There has been an error updating your profile : (");
       setIsUpdatingData(false);
@@ -149,8 +105,8 @@ export default function ProfileConfigPage() {
 
   return (
     <>
-      {isFetchingDefaultValues && <FormSkeleton />}
-      {!isFetchingDefaultValues && (
+      {isLoadingUserProfile && <FormSkeleton />}
+      {!isLoadingUserProfile && (
         <form
           className="w-full flex flex-col gap-2"
           onSubmit={handleSubmit(updateProfile)}
@@ -167,7 +123,7 @@ export default function ProfileConfigPage() {
                 }}
                 error={errors.banner as any}
                 imagePlaceHolderClasses="w-full h-full rounded-lg"
-                placeholderImageUrl={userProfileDefaultData?.banner_url ?? null}
+                placeholderImageUrl={userProfile?.banner_url ?? null}
               />
             </div>
             <div className="h-32 w-32 absolute -bottom-10 left-5">
@@ -177,13 +133,13 @@ export default function ProfileConfigPage() {
                 register={register}
                 validationScheme={{ required: false }}
                 error={errors.avatar as any}
-                placeholderImageUrl={userProfileDefaultData?.avatar_url ?? null}
+                placeholderImageUrl={userProfile?.avatar_url ?? null}
                 imagePlaceHolderClasses="w-32 h-32 rounded-full border-neutral-200 dark:border-cm-darker-gray border-2"
               />
             </div>
           </div>
           <ProfileConfigUsername
-            defaultUsername={userProfileDefaultData?.username ?? ""}
+            defaultUsername={userProfile?.username ?? ""}
           />
           <Input
             type="text"
@@ -192,7 +148,7 @@ export default function ProfileConfigPage() {
             id="name"
             disabled={false}
             register={register}
-            defaultValue={userProfileDefaultData?.name ?? ""}
+            defaultValue={userProfile?.name ?? ""}
             validationScheme={{
               required: "Area required",
             }}
@@ -208,7 +164,7 @@ export default function ProfileConfigPage() {
             disabled={false}
             register={register}
             error={errors.description ?? null}
-            defaultValue={userProfileDefaultData?.description ?? ""}
+            defaultValue={userProfile?.description ?? ""}
             placeholder={`Hello there! I am Huilen Solis, a Frontend Engineer seeking his first development job. I am a pixel art enthusiasm. I like pixel art wallpapers and lofi gif backgrounds!
 
 Want to connect? check out my portfolio bellow.`}
@@ -217,7 +173,7 @@ Want to connect? check out my portfolio bellow.`}
             type="text"
             id="location"
             label="Location"
-            defaultValue={userProfileDefaultData?.location ?? ""}
+            defaultValue={userProfile?.location ?? ""}
             validationScheme={{
               required: false,
               minLength: { value: 3, message: "Minimum of 3 characters" },
@@ -231,7 +187,7 @@ Want to connect? check out my portfolio bellow.`}
             type="url"
             id="website"
             label="Any website you would like to share on your profile?"
-            defaultValue={userProfileDefaultData?.website ?? ""}
+            defaultValue={userProfile?.website ?? ""}
             register={register}
             error={errors.website}
             validationScheme={{

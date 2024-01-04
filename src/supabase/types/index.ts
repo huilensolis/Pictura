@@ -32,6 +32,41 @@ export interface Database {
           },
         ];
       };
+      posts: {
+        Row: {
+          asset_url: string;
+          created_at: string;
+          id: number;
+          profile_id: string;
+          title: string;
+          user_id: string;
+        };
+        Insert: {
+          asset_url: string;
+          created_at?: string;
+          id?: number;
+          profile_id: string;
+          user_id: string;
+          title: string;
+        };
+        Update: {
+          asset_url?: string;
+          created_at?: string;
+          id?: number;
+          profile_id?: string;
+          user_id: string;
+          title: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "posts_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       prices: {
         Row: {
           active: boolean | null;
@@ -120,34 +155,33 @@ export interface Database {
           created_at: string;
           description: string | null;
           id: string;
-          is_private: boolean | null;
           location: string | null;
           name: string | null;
-          user_id: string | null;
+          user_id: string;
           username: string | null;
           website: string | null;
         };
         Insert: {
           avatar_url?: string | null;
+          banner_url?: string | null;
           created_at?: string;
           description?: string | null;
           id?: string;
-          is_private?: boolean | null;
           location?: string | null;
           name?: string | null;
-          user_id?: string | null;
+          user_id: string;
           username?: string | null;
           website?: string | null;
         };
         Update: {
           avatar_url?: string | null;
+          banner_url?: string | null;
           created_at?: string;
           description?: string | null;
           id?: string;
-          is_private?: boolean | null;
           location?: string | null;
           name?: string | null;
-          user_id?: string | null;
+          user_id?: string;
           username?: string | null;
           website?: string | null;
         };

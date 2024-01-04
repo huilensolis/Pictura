@@ -41,7 +41,6 @@ export async function POST(req: Request) {
     console.log({ error });
     return Response.error();
   } finally {
-    console.log("running finally");
     await Image.deleteFromFileSystem();
   }
 }

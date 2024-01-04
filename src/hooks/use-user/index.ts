@@ -6,7 +6,7 @@ import { useSupabase } from "../use-supabase";
 
 export function useUser() {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { supabase } = useSupabase();
 
@@ -23,10 +23,7 @@ export function useUser() {
       }
       setIsLoading(false);
     }
-    if (!isLoading) {
-      setIsLoading(true);
-      syncCurrentUser();
-    }
+    syncCurrentUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
