@@ -28,10 +28,7 @@ export async function Feed() {
       {doPostsExist && (
         <ul className="flex flex-col">
           {posts.map((post) => (
-            <li
-              key={post.id}
-              className="w-full max-h-[50rem] overflow-y-hidden"
-            >
+            <li key={post.id} className="w-full h-full overflow-y-hidden">
               <Post
                 post={post}
                 doesUserOwnPost={getIfUserOwnsPost(post.user_id)}

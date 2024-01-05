@@ -9,6 +9,7 @@ import { FormAreas } from "./new-post.models";
 import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { postImage } from "@/services/api/upload-image";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 
 export function NewPostBox() {
   const [formImageSrc, setFormImageSrc] = useState<string | null>(null);
@@ -23,7 +24,7 @@ export function NewPostBox() {
   });
 
   const { userProfile, isLoading: isLoadingUserProfile } = useUserProfile();
-
+  const router = useRouter();
   const {
     register,
     formState: { errors, isSubmitting, isValid },
@@ -77,6 +78,7 @@ export function NewPostBox() {
       });
       UnSelectImage();
       resetField("title");
+      router.refresh();
     } catch (e) {
       console.log(e);
       setFormSubmitingState({
