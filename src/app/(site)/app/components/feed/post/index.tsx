@@ -1,12 +1,13 @@
-import { Heading } from "@/components/ui/typography/heading";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { Database } from "@/supabase/types";
 import { PostOptions } from "./components/options";
 
 export async function Post({
   post,
+  doesUserOwnPost,
 }: {
   post: Database["public"]["Tables"]["posts"]["Row"];
+  doesUserOwnPost: boolean;
 }) {
   const { title, profile_id, asset_url } = post;
 
@@ -24,17 +25,22 @@ export async function Post({
         <section className="w-full flex flex-col items-start justify-center gap-4">
           {postOwnerProfile && (
             <section className="flex gap-4 w-full items-center justify-start">
-              <img
-                src={postOwnerProfile.avatar_url}
-                className="w-14 h-14 rounded-full object-cover object-center"
-              />
+              {postOwnerProfile.avatar_url ? (
+                <img
+                  src={postOwnerProfile.avatar_url}
+                  className="w-14 h-14 rounded-full object-cover object-center"
+                  alt={post.title}
+                />
+              ) : (
+                <div className="h-14 w-14 rounded-full bg-neutral-300" />
+              )}
               <h3 className="text-neutral-800 font-medium text-xl">
                 {postOwnerProfile.name}
               </h3>
             </section>
           )}
         </section>
-        <PostOptions />
+        <PostOptions post_id={post.id} doesUserOwnPost={doesUserOwnPost} />
       </header>
       <section className="px-5 pb-5">
         <h3 className="text-neutral-800 font-bold text-2xl">{title}</h3>

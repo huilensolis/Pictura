@@ -14,7 +14,6 @@ export function useUserProfile() {
   >();
 
   useEffect(() => {
-    console.log({ user, isLoadingUser });
     if (!isLoadingUser && user && !userProfile) setLoading(false);
   }, [isLoadingUser]);
 

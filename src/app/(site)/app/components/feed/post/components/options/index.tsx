@@ -1,16 +1,54 @@
 "use client";
 
+import { useSupabase } from "@/hooks/use-supabase";
 import { MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Option } from "./option.models";
+import { PrimaryButton } from "@/components/ui/buttons/primary";
 
-export function PostOptions() {
-  const POST_OPTIONS: { action: () => void; title: string }[] = [
-    { title: "Edit", action: () => {} },
-    { title: "Delete", action: () => {} },
-    { title: "Report", action: () => {} },
-    { title: "Share", action: () => {} },
-  ];
+export function PostOptions({
+  post_id,
+}: {
+  post_id: number;
+  doesUserOwnPost: boolean;
+}) {
+  const { supabase } = useSupabase();
+
+  const router = useRouter();
+
   const [showDropdown, setShowDropdown] = useState(false);
+  const [indexOfOptionLoading, setIndexOfOptionLoading] = useState<
+    number | null
+  >(null);
+
+  const OWNER_OPTIONS: Option[] = [
+    { title: "Edit", action: () => {} },
+    {
+      title: "Delete",
+      action: async () => {
+        const indexOfOption = 1;
+        setIndexOfOptionLoading(indexOfOption);
+        try {
+          const { error } = await supabase
+            .from("posts")
+            .delete()
+            .eq("id", post_id)
+            .single();
+          console.log({ error });
+          setIndexOfOptionLoading(null);
+          if (error) throw new Error("Error trying to delete");
+          router.refresh();
+        } catch (e) {
+          //
+        }
+      },
+    },
+  ];
+
+  const PUBLIC_OPTIONS: Option[] = [{ title: "Share", action: () => {} }];
+
+  const FINAL_OPTIONS = [...OWNER_OPTIONS, ...PUBLIC_OPTIONS];
 
   function toggleDropdown() {
     setShowDropdown(!showDropdown);
@@ -30,11 +68,15 @@ export function PostOptions() {
           id="dropdown"
           className="flex flex-col z-10 absolute top-12 right-0 w-48 bg-neutral-700 rounded-md overflow-hidden"
         >
-          {POST_OPTIONS.map((option) => (
+          {FINAL_OPTIONS.map((option, index) => (
             <li key={option.title}>
-              <button className="bg-neutral-800 text-neutral-200 font-medium text-start px-12 py-3 w-full hover:brightness-125 transition-all delay-75">
+              <PrimaryButton
+                isDisabled={indexOfOptionLoading === index}
+                isLoading={indexOfOptionLoading === index}
+                onClick={option.action}
+              >
                 {option.title}
-              </button>
+              </PrimaryButton>
             </li>
           ))}
         </ul>
