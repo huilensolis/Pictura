@@ -1,12 +1,10 @@
-"use client";
-
-import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
 import { MobileNavMenu } from "./components/mobile-nav";
 import { Feed } from "./components/feed";
 import { NewPostBox } from "./components/new-post-box";
+import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
 
 export default function AppPage() {
-  useProtectRouteFromUnauthUsers();
+  protectRouteFromUnauthUsers();
   return (
     <div className="w-full h-full flex min-h-screen">
       <div className="sm:grid hidden w-full h-full min-h-screen">
