@@ -33,10 +33,8 @@ export function ProfileConfigUsername({
     async function validateUsername() {
       setIsLoading(true);
       try {
-        const isThisUsernameAvailable = await validateIfUsernameIsAvailabe(
-          debouncedSearchValue,
-          user?.id as string,
-        );
+        const isThisUsernameAvailable =
+          await validateIfUsernameIsAvailabe(debouncedSearchValue);
         setIsUsernameAvailable(isThisUsernameAvailable);
       } catch (error) {
         setIsUsernameAvailable(false);
@@ -49,12 +47,9 @@ export function ProfileConfigUsername({
         !errors.username
       ) {
         try {
-          await updateUserProfile(
-            {
-              username: debouncedSearchValue,
-            } as Database["public"]["Tables"]["profiles"]["Row"],
-            user.id,
-          );
+          await updateUserProfile({
+            username: debouncedSearchValue,
+          } as Database["public"]["Tables"]["profiles"]["Row"]);
         } catch (error) {
           //
         }

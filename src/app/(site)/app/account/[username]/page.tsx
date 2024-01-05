@@ -27,9 +27,6 @@ async function UserProfile({ username }: { username: string }) {
     .single();
 
   const doesUserProfileExist = Boolean(data && !error);
-  const isUserProfilePublic = Boolean(
-    doesUserProfileExist && data?.is_private === false,
-  );
 
   function Profile({
     data,
@@ -108,7 +105,7 @@ async function UserProfile({ username }: { username: string }) {
 
   return (
     <div className="w-full h-full">
-      {doesUserProfileExist && isUserProfilePublic && data ? (
+      {doesUserProfileExist && data ? (
         <Profile data={data} />
       ) : (
         <UserProfileNotFound />
