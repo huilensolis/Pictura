@@ -15,9 +15,12 @@ export async function Feed() {
   return (
     <main className="w-full h-full bg-orange-300">
       {doPostsExist && (
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col">
           {posts.map((post) => (
-            <li key={post.id} className="w-full max-h-[50rem]">
+            <li
+              key={post.id}
+              className="w-full max-h-[50rem] overflow-y-hidden"
+            >
               <Post post={post} />
             </li>
           ))}
