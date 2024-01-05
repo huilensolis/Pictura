@@ -39,7 +39,7 @@ const LINKS: ILink[] = [
 
 export function AppLeftAside() {
   return (
-    <aside className="h-screen w-full flex flex-col items-end gap-1 px-4 py-20 bg-neutral-200 dark:bg-cm-gray">
+    <aside className="h-screen w-full flex flex-col items-end gap-1 px-4 py-2 bg-neutral-200 dark:bg-cm-gray">
       <div className="w-max h-full flex flex-col justify-between gap-4">
         <div className="flex w-full h-full flex-col gap-4">
           <header className="pl-2 flex font-bold items-center gap-3"></header>
