@@ -1,15 +1,15 @@
 "use client";
 
 import { useUserProfile } from "@/hooks/use-user-profile";
-import { Database } from "@/supabase/types";
-import { Image, Trash } from "lucide-react";
+import { Trash, Image } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FormAreas } from "./new-post.models";
 import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { postImage } from "@/services/api/upload-image";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
+import { useSupabase } from "@/hooks/use-supabase";
+import { useBase64Image } from "@/hooks/use-base-64-image";
 
 export function NewPostBox() {
   const [formImageSrc, setFormImageSrc] = useState<string | null>(null);
@@ -24,27 +24,36 @@ export function NewPostBox() {
   });
 
   const { userProfile, isLoading: isLoadingUserProfile } = useUserProfile();
+
   const router = useRouter();
+
   const {
     register,
     formState: { errors, isSubmitting, isValid },
     handleSubmit,
     watch,
     resetField,
-    getValues,
   } = useForm<FormAreas>({ mode: "onChange" });
 
-  const supabase = createClientComponentClient<Database>();
+  const { parseImageToBase64 } = useBase64Image();
+
+  const { supabase } = useSupabase();
 
   async function publishPost(data: FormAreas) {
     if (!userProfile) return;
 
-    const image = getValues("media")[0];
+    const image = data.media[0];
+    const title = data.title;
 
-    if (!data) return;
+    if (!image || !title) return;
 
     try {
-      const { error: postImageError, assetSecureUrl } = await postImage(image);
+      const base64Image = await parseImageToBase64({ image });
+      if (!base64Image) throw new Error("No base64Image");
+
+      const { error: postImageError, assetSecureUrl } = await postImage({
+        image: base64Image,
+      });
       if (postImageError || !assetSecureUrl) {
         throw new Error(
           postImageError || "There is no assetSecureUrl from the response",
@@ -55,7 +64,7 @@ export function NewPostBox() {
         .from("posts")
         .insert({
           asset_url: assetSecureUrl,
-          title: data.title,
+          title: title,
           profile_id: userProfile?.id,
           user_id: userProfile.user_id,
         })

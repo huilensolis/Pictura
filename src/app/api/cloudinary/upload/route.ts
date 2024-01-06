@@ -1,27 +1,19 @@
 import cloudinary from "@/services/cloudinary";
-import { ImageFileSystem } from "@/utils/image-file-system";
 
 export async function POST(req: Request) {
-  const formData = await req.formData();
-
-  const image = formData.get("image") as File;
-
-  if (!image) {
-    return Response.json({ message: "no image found in request" });
-  }
-
-  const Image = new ImageFileSystem(image);
-
   try {
-    await Image.saveIntoFileSystem();
-    const imagePath = Image.getImagePath();
+    const reqBody: { image: string | null } = await req.json();
+    const { image } = reqBody;
 
-    if (!imagePath) {
-      throw new Error("image not found");
+    if (!image) {
+      throw new Error("invalid image");
     }
     const imageFromCloudinary = await cloudinary.v2.uploader.upload(
-      imagePath,
-      {},
+      image,
+      {
+        resource_type: "image",
+        discard_original_filename: true,
+      },
       (error, result) => {
         if (error || !result) {
           return null;
@@ -38,10 +30,8 @@ export async function POST(req: Request) {
       data: { image: { secure_url: imageFromCloudinary.secure_url } },
     });
   } catch (error) {
-    console.log({ error });
-    return Response.error();
-  } finally {
-    console.log("deleting image");
-    await Image.deleteFromFileSystem();
+    const response = Response;
+    response.error();
+    return Response.json({ error: error });
   }
 }
