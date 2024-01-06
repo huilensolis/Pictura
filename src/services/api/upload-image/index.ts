@@ -1,5 +1,3 @@
-import { Image } from "./request.models";
-
 type IResponse = {
   error: any;
   assetSecureUrl: string | null;

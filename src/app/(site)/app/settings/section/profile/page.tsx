@@ -16,6 +16,7 @@ import { Alert } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { ImagePicker } from "@/components/ui/image-picker";
 import { postImage } from "@/services/api/upload-image";
+import { useBase64Image } from "@/hooks/use-base-64-image";
 
 export default function ProfileConfigPage() {
   const [isUpdatingData, setIsUpdatingData] = useState<boolean>(false);
@@ -39,6 +40,8 @@ export default function ProfileConfigPage() {
     handleSubmit,
   } = useForm<ProfileFormAreas>({ mode: "onTouched" });
 
+  const { parseImageToBase64 } = useBase64Image();
+
   async function updateProfile(data: ProfileFormAreas) {
     const formatedData: Database["public"]["Tables"]["profiles"]["Row"] = {
       name: data.name,
@@ -55,7 +58,14 @@ export default function ProfileConfigPage() {
           throw new Error("");
         }
 
-        const { error, assetSecureUrl } = await postImage(bannerImageFile);
+        const base64Image = await parseImageToBase64({
+          image: bannerImageFile,
+        });
+        if (!base64Image) throw new Error("No base64Image");
+
+        const { error, assetSecureUrl } = await postImage({
+          image: base64Image,
+        });
 
         if (error || !assetSecureUrl) {
           throw new Error("server response wen wrong");
@@ -76,7 +86,14 @@ export default function ProfileConfigPage() {
         if (!avatarImageFile) {
           throw new Error("");
         }
-        const { error, assetSecureUrl } = await postImage(avatarImageFile);
+        const base64Image = await parseImageToBase64({
+          image: avatarImageFile,
+        });
+        if (!base64Image) throw new Error("No base64Image");
+
+        const { error, assetSecureUrl } = await postImage({
+          image: base64Image,
+        });
 
         if (error || !assetSecureUrl) {
           throw new Error("server response wen wrong");
