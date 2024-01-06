@@ -3,14 +3,19 @@ type IResponse = {
   assetSecureUrl: string | null;
 };
 
-export async function postImage(image: File): Promise<IResponse> {
+/**
+ * sends a POST request to the project API
+ * @param an image in base64 format.
+ */
+export async function postImage({
+  image,
+}: {
+  image: string; // base 64
+}): Promise<IResponse> {
   try {
-    const formData = new FormData();
-    formData.append("image", image);
-
     const res = await fetch("/api/cloudinary/upload", {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({ image }),
     });
 
     const resBody = await res.json();

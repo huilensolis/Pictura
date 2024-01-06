@@ -44,10 +44,10 @@ export function ImagePicker({
         } border border-neutral-200 dark:border-cm-gray h-full w-full flex items-center justify-center relative cursor-pointer bg-cover object-cover bg-center bg-no-repeat ${imagePlaceHolderClasses}`}
         style={{
           backgroundImage: `${
-            placeholderImageUrl
-              ? `url(${placeholderImageUrl})`
-              : backgroundImage
-                ? `url(${backgroundImage})`
+            backgroundImage
+              ? `url(${backgroundImage})`
+              : placeholderImageUrl
+                ? `url(${placeholderImageUrl})`
                 : "none"
           }`,
         }}
