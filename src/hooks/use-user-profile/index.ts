@@ -15,6 +15,7 @@ export function useUserProfile() {
 
   useEffect(() => {
     if (!isLoadingUser && user && !userProfile) setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingUser]);
 
   const { supabase } = useSupabase();
@@ -40,6 +41,7 @@ export function useUserProfile() {
     if (!isLoadingUser && user?.id) {
       fetchUserProfile(user?.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingUser]);
 
   async function createUserProfile() {

@@ -3,6 +3,8 @@ import { Feed } from "./components/feed";
 import { NewPostBox } from "./components/new-post-box";
 import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
 
+export const dynamic = "force-dynamic";
+
 export default function AppPage() {
   protectRouteFromUnauthUsers();
   return (

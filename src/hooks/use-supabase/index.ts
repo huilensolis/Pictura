@@ -1,3 +1,4 @@
+"use client";
 import { Database } from "@/supabase/types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 

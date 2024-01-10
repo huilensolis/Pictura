@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
@@ -9,7 +9,6 @@ import { TextArea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { ProfileFormAreas } from "./form.models";
 import { useUserProfile } from "@/hooks/use-user-profile";
-import { useUser } from "@/hooks/use-user";
 import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Database } from "@/supabase/types";
 import { Alert } from "@/components/ui/alert";
