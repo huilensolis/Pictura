@@ -3,6 +3,6 @@ import { cookies } from "next/headers";
 import { Database } from "../types";
 
 export function getSuapabaseServerComponent() {
-  cookies().getAll();
-  return createServerComponentClient<Database>({ cookies });
+  const cookiesStore = cookies();
+  return createServerComponentClient<Database>({ cookies: () => cookiesStore });
 }
