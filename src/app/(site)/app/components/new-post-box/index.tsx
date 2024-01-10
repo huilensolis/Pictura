@@ -105,10 +105,7 @@ export function NewPostBox() {
 
   return (
     <div>
-      <form
-        className="flex flex-col gap-5 p-5"
-        onSubmit={handleSubmit(publishPost)}
-      >
+      <form className="flex flex-col p-5" onSubmit={handleSubmit(publishPost)}>
         <div className="flex gap-4">
           {isLoadingUserProfile ? (
             <div className="h-14 w-14 bg-neutral-400 rounded-full" />
@@ -126,7 +123,7 @@ export function NewPostBox() {
               <input
                 type="text"
                 placeholder="What have you drew?"
-                className="bg-transparent h-max text-2xl max-w-full text-neutral-800 font-bold placeholder:font-medium placeholder:text-neutral-600 focus:outline-none"
+                className="bg-transparent h-max text-2xl max-w-full text-neutral-800 dark:text-neutral-300 font-bold placeholder:font-medium placeholder:text-neutral-600 dark:placeholder:text-neutral-500 focus:outline-none"
                 {...register("title", {
                   maxLength: {
                     value: 50,
@@ -145,7 +142,7 @@ export function NewPostBox() {
               )}
             </div>
             {formImageSrc && (
-              <div className="h-full w-full relative">
+              <div className="h-full w-full relative mb-5">
                 <img
                   src={formImageSrc}
                   className="w-full max-w-full max-h-96 rounded-md object-center object-cover"
@@ -161,11 +158,15 @@ export function NewPostBox() {
           </div>
         </div>
         <section className="pl-[4.5rem] flex justify-between">
-          <div className="flex items-center justify-center border-l border-neutral-300">
-            <div className="cursor-pointer relative w-10 h-10 p-4 hover:bg-neutral-300 rounded-sm flex items-center justify-center">
+          <div className="flex items-center justify-center border-l border-neutral-400 dark:border-neutral-600">
+            <div className="cursor-pointer relative w-10 h-10 p-4 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray rounded-sm flex items-center justify-center">
               <label htmlFor="image" className="cursor-pointer">
                 <Image
-                  className={`h-6 w-6 ${errors.media && "text-red-500"}`}
+                  className={`h-6 w-6 ${
+                    errors.media
+                      ? "text-red-500"
+                      : "text-neutral-800 dark:text-neutral-300"
+                  }`}
                 />
               </label>
               <input
