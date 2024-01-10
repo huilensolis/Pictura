@@ -30,8 +30,10 @@ export default function SettingsPage() {
     </div>
   );
 }
-
-const LINKS: ILink[] = [
+interface ITLink extends ILink {
+  title: string;
+}
+const LINKS: ITLink[] = [
   {
     title: "Edit Profile",
     icon: CircleUserIcon,

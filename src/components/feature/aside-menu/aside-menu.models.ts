@@ -5,8 +5,12 @@ type IAsideHeader = {
   subtitle: string;
 };
 
+interface ITLink extends ILink {
+  title?: string;
+}
+
 export type IAsideMenuProps = {
-  links: ILink[];
-  header: IAsideHeader;
+  links: ITLink[];
+  header?: IAsideHeader;
   showBorderOnLinks?: boolean;
 };
