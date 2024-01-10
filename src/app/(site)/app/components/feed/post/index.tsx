@@ -20,7 +20,7 @@ export async function Post({
     .single();
 
   return (
-    <article className="w-full h-full bg-neutral-200 border border-neutral-300 overflow-hidden">
+    <article className="w-full h-full bg-neutral-200 dark:bg-neutral-900 border-y border-neutral-300 dark:border-cm-lighter-gray overflow-hidden">
       <header className="flex items-center justify-between px-5 py-5">
         <section className="w-full flex flex-col items-start justify-center gap-4">
           {postOwnerProfile && (
@@ -34,7 +34,7 @@ export async function Post({
               ) : (
                 <div className="h-14 w-14 rounded-full bg-neutral-300" />
               )}
-              <h3 className="text-neutral-800 font-medium text-xl">
+              <h3 className="text-neutral-800 dark:text-neutral-300 font-semibold text-xl">
                 {postOwnerProfile.name}
               </h3>
             </section>
@@ -43,7 +43,9 @@ export async function Post({
         <PostOptions post_id={post.id} doesUserOwnPost={doesUserOwnPost} />
       </header>
       <section className="px-5 pb-5">
-        <h3 className="text-neutral-800 font-bold text-2xl">{title}</h3>
+        <h3 className="text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
+          {title}
+        </h3>
       </section>
       <img
         src={asset_url}
