@@ -12,6 +12,7 @@ import {
 import { usePathname } from "next/navigation";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { Database } from "@/supabase/types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // each navLink must start with '/'
 const LINKS: ILink[] = [
@@ -110,36 +111,48 @@ export function CustomNavLink({ title, href, icon: Icon }: ILink) {
 
 function UserProfile() {
   const { userProfile, isLoading: isLoadingUserProfile } = useUserProfile();
-  const UserProfileSkeleton = () => <div>skeleton</div>;
 
-  const ActualUserProfile = ({
+  function ActualUserProfile({
     userProfile,
   }: {
     userProfile: Database["public"]["Tables"]["profiles"]["Row"];
-  }) => (
-    <article className="flex items-center gap-4 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray transition-all delay-75 py-2 px-4 rounded-full">
-      <img
-        alt={`${userProfile?.name ?? ""}'s Profile Picture`}
-        className="w-12 h-12 rounded-full object-cover object-center aspect-square"
-        height="50"
-        width="50"
-        src={userProfile?.avatar_url ?? ""}
-      />
-      <div>
-        <span className="text-neutral-800 dark:text-neutral-50 font-semibold text-lg">
-          {userProfile?.name ?? ""}
-        </span>
-        <p className="text-neutral-600 dark:text-gray-300">
-          @{userProfile?.username ?? ""}
-        </p>
-      </div>
-      <LinkIcon className="ml-5 text-neutral-900 dark:text-neutral-50" />
-    </article>
-  );
+  }) {
+    const getShortName = (name: string, maxLength: number) => {
+      if (name.length <= maxLength) return name;
+
+      const dots = Array(3).fill(".");
+
+      const stringDesiredLength = maxLength - dots.length;
+
+      const shortname = name.split("").slice(0, stringDesiredLength).join("");
+
+      return shortname + dots.join("");
+    };
+    return (
+      <article className="flex items-center gap-4 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray transition-all delay-75 py-2 px-4 rounded-full">
+        <img
+          alt={`${userProfile?.name ?? ""}'s Profile Picture`}
+          className="w-12 h-12 rounded-full object-cover object-center aspect-square"
+          height="50"
+          width="50"
+          src={userProfile?.avatar_url ?? ""}
+        />
+        <div>
+          <span className="text-neutral-800 dark:text-neutral-50 font-semibold text-lg">
+            {getShortName(userProfile.name ?? "no name yet", 12)}
+          </span>
+          <p className="text-neutral-600 dark:text-gray-300">
+            @{getShortName(userProfile.username ?? "no username yet", 12)}
+          </p>
+        </div>
+        <LinkIcon className="ml-5 text-neutral-900 dark:text-neutral-50" />
+      </article>
+    );
+  }
 
   return (
     <>
-      {isLoadingUserProfile && <UserProfileSkeleton />}
+      {isLoadingUserProfile && <Skeleton className="w-64 h-16 rounded-full" />}
       {!isLoadingUserProfile && userProfile && (
         <Link href={`/app/account/${userProfile.username}`}>
           <ActualUserProfile userProfile={userProfile} />
