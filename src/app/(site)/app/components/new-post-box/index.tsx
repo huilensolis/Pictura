@@ -158,7 +158,7 @@ export function NewPostBox() {
           </div>
         </div>
         <section className="pl-[4.5rem] flex justify-between">
-          <div className="flex items-center justify-center border-l border-neutral-400 dark:border-neutral-600">
+          <div className="flex items-center justify-center border-l border-neutral-600 dark:border-neutral-600">
             <div className="cursor-pointer relative w-10 h-10 p-4 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray rounded-sm flex items-center justify-center">
               <label htmlFor="image" className="cursor-pointer">
                 <Image
