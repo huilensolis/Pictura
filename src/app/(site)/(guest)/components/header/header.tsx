@@ -6,6 +6,7 @@ import { Logo } from "@/components/ui/logo";
 import { ThemeSwitcher } from "@/components/feature/theme-switcher";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/hooks/use-session";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const NAVLINKS: INavLink[] = [
   {
@@ -55,8 +56,8 @@ export function Header() {
 function ButtonsKeleton() {
   return (
     <div className="flex gap-2 animate-pulse transition-colors delay-75">
-      <figure className="bg-neutral-400 rounded-xl h-10 px-14" />
-      <figure className="bg-neutral-400 rounded-xl h-10 px-14" />
+      <Skeleton className="w-20 h-10 rounded-xl" />
+      <Skeleton className="w-20 h-10 rounded-xl" />
     </div>
   );
 }

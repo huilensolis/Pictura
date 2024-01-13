@@ -2,6 +2,8 @@ import { MobileNavMenu } from "./components/mobile-nav";
 import { Feed } from "./components/feed";
 import { NewPostBox } from "./components/new-post-box";
 import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +25,21 @@ function DesktopLayout() {
   return (
     <div className="w-full h-full flex flex-col justify-start">
       <NewPostBox />
-      <Feed />
+      <Suspense
+        fallback={
+          <ul className="w-full flex flex-col">
+            {Array(8)
+              .fill("")
+              .map((_, i) => (
+                <li key={i}>
+                  <Skeleton className="h-[700px] w-full border-t border-neutral-300 dark:border-cm-lighter-gray" />
+                </li>
+              ))}
+          </ul>
+        }
+      >
+        <Feed />
+      </Suspense>
     </div>
   );
 }

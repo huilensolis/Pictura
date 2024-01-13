@@ -10,6 +10,7 @@ import { postImage } from "@/services/api/upload-image";
 import { useRouter } from "next/navigation";
 import { useSupabase } from "@/hooks/use-supabase";
 import { useBase64Image } from "@/hooks/use-base-64-image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function NewPostBox() {
   const [formImageSrc, setFormImageSrc] = useState<string | null>(null);
@@ -108,7 +109,7 @@ export function NewPostBox() {
       <form className="flex flex-col p-5" onSubmit={handleSubmit(publishPost)}>
         <div className="flex gap-4">
           {isLoadingUserProfile ? (
-            <div className="h-14 w-14 bg-neutral-400 rounded-full" />
+            <Skeleton className="h-14 w-14 rounded-full flex-none" />
           ) : (
             userProfile &&
             userProfile.avatar_url && (
@@ -158,7 +159,7 @@ export function NewPostBox() {
           </div>
         </div>
         <section className="pl-[4.5rem] flex justify-between">
-          <div className="flex items-center justify-center border-l border-neutral-400 dark:border-neutral-600">
+          <div className="flex items-center justify-center border-l border-neutral-600 dark:border-neutral-600">
             <div className="cursor-pointer relative w-10 h-10 p-4 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray rounded-sm flex items-center justify-center">
               <label htmlFor="image" className="cursor-pointer">
                 <Image
