@@ -21,20 +21,20 @@ export async function Post({
     .single();
 
   return (
-    <article className="w-full h-full bg-neutral-200 dark:bg-neutral-900 border-y border-neutral-300 dark:border-cm-lighter-gray overflow-hidden">
+    <article className="w-full h-full bg-neutral-200 dark:bg-neutral-900 border-t border-neutral-300 dark:border-cm-lighter-gray overflow-hidden">
       <header className="flex items-center justify-between px-5 py-5">
         <section className="w-full flex flex-col items-start justify-center gap-4">
           {postOwnerProfile && (
-            <section className="flex gap-4 w-full items-center justify-start">
+            <section className="flex flex-none gap-4 w-full items-center justify-start">
               {postOwnerProfile.avatar_url ? (
                 <LazyImage
                   src={postOwnerProfile.avatar_url}
                   alt={post.title}
-                  className="w-14 h-14 rounded-full object-cover object-center"
-                  skeletonClassName="w-14 h-14 rounded-full"
+                  className="w-12 h-12 rounded-full object-cover object-center"
+                  skeletonClassName="w-12 h-12 rounded-full"
                 />
               ) : (
-                <div className="h-14 w-14 rounded-full bg-neutral-300" />
+                <div className="h-12 w-12 rounded-full bg-neutral-300" />
               )}
               <h3 className="text-neutral-800 dark:text-neutral-300 font-semibold text-xl">
                 {postOwnerProfile.name}

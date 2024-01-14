@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useSupabase } from "@/hooks/use-supabase";
 import { useBase64Image } from "@/hooks/use-base-64-image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LazyImage } from "@/components/feature/lazy-image";
 
 export function NewPostBox() {
   const [formImageSrc, setFormImageSrc] = useState<string | null>(null);
@@ -113,9 +114,11 @@ export function NewPostBox() {
           ) : (
             userProfile &&
             userProfile.avatar_url && (
-              <img
+              <LazyImage
                 src={userProfile.avatar_url}
-                className="h-14 w-14 rounded-full object-cover object-center"
+                alt={userProfile.username ?? userProfile.name ?? ""}
+                className="h-12 w-12 rounded-full object-cover object-center"
+                skeletonClassName="h-12 w-12 rounded-full"
               />
             )
           )}

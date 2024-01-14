@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { Database } from "@/supabase/types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LazyImage } from "@/components/feature/lazy-image";
 
 // each navLink must start with '/'
 const LINKS: ILink[] = [
@@ -130,11 +131,10 @@ function UserProfile() {
     };
     return (
       <article className="flex items-center gap-4 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray transition-all delay-75 py-2 px-4 rounded-full">
-        <img
+        <LazyImage
           alt={`${userProfile?.name ?? ""}'s Profile Picture`}
           className="w-12 h-12 rounded-full object-cover object-center aspect-square"
-          height="50"
-          width="50"
+          skeletonClassName="w-12 h-12 rounded-full"
           src={userProfile?.avatar_url ?? ""}
         />
         <div>
