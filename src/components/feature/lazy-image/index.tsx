@@ -2,7 +2,7 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { ImageOff } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function LazyImage({
   src,
@@ -17,6 +17,7 @@ export function LazyImage({
 }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
+  const [isOnViewPort, setIsOnViewPort] = useState<boolean>(false);
 
   const handleImageLoad = () => {
     setLoading(false);
@@ -30,7 +31,10 @@ export function LazyImage({
 
   useEffect(() => {
     const img = new Image();
-    img.src = src;
+
+    if (isOnViewPort) {
+      img.src = src;
+    }
 
     img.onload = handleImageLoad;
     img.onerror = handleImageError;
@@ -39,14 +43,49 @@ export function LazyImage({
       img.onerror = null;
       img.onload = null;
     };
+  }, [src, isOnViewPort]);
+
+  const imageContainerRef = useRef(null);
+
+  useEffect(() => {
+    const options: IntersectionObserverInit = {
+      root: null, // we set the root to null, so it takes the screen viewport as the root element. for more info, read https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+      rootMargin: "1000px 0px",
+      threshold: 0,
+    };
+
+    function callback(entries: IntersectionObserverEntry[], _observer: any) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsOnViewPort(!isOnViewPort);
+        } else {
+          setIsOnViewPort(false);
+        }
+      });
+    }
+
+    const observer = new IntersectionObserver(callback, options);
+
+    if (imageContainerRef.current && !error) {
+      observer.observe(imageContainerRef.current);
+    }
+
+    return () => {
+      if (imageContainerRef.current && !error) {
+        observer.unobserve(imageContainerRef.current);
+        observer.disconnect();
+      }
+    };
   }, [src]);
 
   return (
-    <>
-      <img src={src} alt={alt} className={loading ? "hidden" : className} />
+    <div ref={imageContainerRef}>
+      {isOnViewPort && !error && (
+        <img src={src} alt={alt} className={loading ? "hidden" : className} />
+      )}
       {loading && !error && <Skeleton className={skeletonClassName} />}
       {error && <ErrorComponent containerClassName={skeletonClassName} />}
-    </>
+    </div>
   );
 }
 

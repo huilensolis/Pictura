@@ -53,7 +53,7 @@ export async function Post({
         src={asset_url}
         alt={title}
         className="w-full h-full object-cover object-center"
-        skeletonClassName="w-full h-80"
+        skeletonClassName="w-full h-[500px]"
       />
     </article>
   );
