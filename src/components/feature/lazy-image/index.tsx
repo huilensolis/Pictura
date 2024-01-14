@@ -57,7 +57,7 @@ export function LazyImage({
     function callback(entries: IntersectionObserverEntry[], _observer: any) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setIsOnViewPort(!isOnViewPort);
+          setIsOnViewPort(true);
         } else {
           setIsOnViewPort(false);
         }
