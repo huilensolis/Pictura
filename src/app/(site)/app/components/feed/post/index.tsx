@@ -1,6 +1,7 @@
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { Database } from "@/supabase/types";
 import { PostOptions } from "./components/options";
+import { LazyImage } from "@/components/feature/lazy-image";
 
 export async function Post({
   post,
@@ -26,10 +27,11 @@ export async function Post({
           {postOwnerProfile && (
             <section className="flex gap-4 w-full items-center justify-start">
               {postOwnerProfile.avatar_url ? (
-                <img
+                <LazyImage
                   src={postOwnerProfile.avatar_url}
-                  className="w-14 h-14 rounded-full object-cover object-center"
                   alt={post.title}
+                  className="w-14 h-14 rounded-full object-cover object-center"
+                  skeletonClassName="w-14 h-14 rounded-full"
                 />
               ) : (
                 <div className="h-14 w-14 rounded-full bg-neutral-300" />
@@ -47,9 +49,11 @@ export async function Post({
           {title}
         </h3>
       </section>
-      <img
+      <LazyImage
         src={asset_url}
+        alt={title}
         className="w-full h-full object-cover object-center"
+        skeletonClassName="w-full h-80"
       />
     </article>
   );
