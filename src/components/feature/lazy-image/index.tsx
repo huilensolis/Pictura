@@ -79,7 +79,7 @@ export function LazyImage({
   }, [src]);
 
   return (
-    <div ref={imageContainerRef} className="flex flex-none">
+    <div ref={imageContainerRef} className={`flex flex-none ${className}`}>
       {isOnViewPort && !error && (
         <img src={src} alt={alt} className={loading ? "hidden" : className} />
       )}
