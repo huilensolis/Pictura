@@ -93,13 +93,11 @@ async function UserProfile({ username }: { username: string }) {
                 </Link>
               )}
             </section>
-            <section className="flex">
-              {data?.description && (
-                <p className="text-balance text-neutral-900 dark:text-neutral-200">
-                  {data.description}
-                </p>
-              )}
-            </section>
+            {data?.description && (
+              <p className="w-3/4 text-pretty text-neutral-900 dark:text-neutral-200">
+                {data.description}
+              </p>
+            )}
             <section className="flex gap-4">
               {data?.location && (
                 <div className="flex justify-center items-center gap-2 text-neutral-900 dark:text-neutral-400">
