@@ -22,24 +22,32 @@ export default function AccountPage({
 async function UserProfile({ username }: { username: string }) {
   const supabase = getSuapabaseServerComponent();
 
-  const { data, error } = await supabase
+  const { data: userProfile, error } = await supabase
     .from("profiles")
     .select("*")
     .eq("username", username)
     .single();
 
-  const doesUserProfileExist = Boolean(data && !error);
+  const doesUserProfileExist = Boolean(userProfile && !error);
 
-  const getUser = await supabase.auth.getUser();
+  const {
+    data: { user: user },
+  } = await supabase.auth.getUser();
 
-  const userId = getUser.data.user?.id || "";
+  const { data: userPosts } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("user_id", user?.id || "")
+    .order("created_at", { ascending: false });
 
   function Profile({
     data,
     userId,
+    userPosts,
   }: {
     data: Database["public"]["Tables"]["profiles"]["Row"];
     userId: Database["public"]["Tables"]["users"]["Row"]["id"];
+    userPosts: Database["public"]["Tables"]["posts"]["Row"][];
   }) {
     const dateWhenUserJoined = data.created_at
       ? new Date(data.created_at).getFullYear()
@@ -120,6 +128,20 @@ async function UserProfile({ username }: { username: string }) {
             </section>
           </article>
         </header>
+        {userPosts?.length > 0 && (
+          <ul className="grid grid-cols-3 grid-rows-[repeat(auto-fill,_384px)]">
+            {userPosts.map((post) => (
+              <li key={post.id}>
+                <LazyImage
+                  src={post.asset_url}
+                  alt={post.title}
+                  className="w-full h-full object-cover object-center"
+                  skeletonClassName="w-full h-full"
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     );
   }
@@ -129,8 +151,12 @@ async function UserProfile({ username }: { username: string }) {
 
   return (
     <div className="w-full h-full">
-      {doesUserProfileExist && data ? (
-        <Profile data={data} userId={userId} />
+      {doesUserProfileExist && userProfile ? (
+        <Profile
+          data={userProfile}
+          userId={user?.id || ""}
+          userPosts={userPosts || []}
+        />
       ) : (
         <UserProfileNotFound />
       )}
