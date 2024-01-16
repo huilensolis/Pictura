@@ -54,7 +54,7 @@ async function UserProfile({ username }: { username: string }) {
       : null;
 
     return (
-      <div className="flex flex-col gap-4 py-10">
+      <div className="flex flex-col gap-4 pt-4">
         <nav className="w-full flex gap-2 px-2">
           <BackwardsNav />
           <div className="w-full flex items-center justify-center px-2">
@@ -127,7 +127,7 @@ async function UserProfile({ username }: { username: string }) {
           </article>
         </header>
         {userPosts?.length > 0 && (
-          <ul className="grid grid-cols-3 grid-rows-[repeat(auto-fill,_384px)]">
+          <ul className="xl:grid flex flex-col gap-1 xl:grid-cols-2 xl:grid-rows-[repeat(auto-fill,_384px)]">
             {userPosts.map((post) => (
               <li key={post.id}>
                 <LazyImage
