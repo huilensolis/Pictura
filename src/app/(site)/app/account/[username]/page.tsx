@@ -100,13 +100,13 @@ async function UserProfile({ username }: { username: string }) {
             )}
             <section className="flex gap-4">
               {data?.location && (
-                <div className="flex justify-center items-center gap-2 text-neutral-900 dark:text-neutral-400">
+                <div className="flex justify-center items-center gap-2 text-neutral-600 dark:text-neutral-400">
                   <MapPinIcon className="w-4 h-4" />
                   <span>{data.location}</span>
                 </div>
               )}
               {data?.website && (
-                <div className="flex justify-center items-center gap-2 text-neutral-900 dark:text-neutral-400">
+                <div className="flex justify-center items-center gap-2 text-neutral-600 dark:text-neutral-400">
                   <LinkIcon className="w-4 h-4" />
                   <a
                     href={data.website}
@@ -118,7 +118,7 @@ async function UserProfile({ username }: { username: string }) {
                 </div>
               )}
               {dateWhenUserJoined && (
-                <div className="flex justify-center items-center gap-2 text-neutral-900 dark:text-neutral-400">
+                <div className="flex justify-center items-center gap-2 text-neutral-600 dark:text-neutral-400">
                   <CalendarIcon className="w-4 h-4" />
                   <span>joined in {dateWhenUserJoined}</span>
                 </div>
