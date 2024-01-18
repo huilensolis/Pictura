@@ -15,7 +15,7 @@ export function BaseButton({
       aria-disabled={isDisabled}
       className={`${className} flex items-center justify-center px-12 py-2 font-medium rounded gap-2 transition-all delay-75 w-full`}
     >
-      {isLoading && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner size={25} />}
       {!isLoading && children}
     </button>
   );
