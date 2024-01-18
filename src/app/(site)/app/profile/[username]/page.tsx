@@ -150,7 +150,6 @@ async function UserProfile({ username }: { username: string }) {
 
   return (
     <div className="w-full h-full">
-      <UserProfileSkeleton />
       {doesUserProfileExist && userProfile ? (
         <Profile
           data={userProfile}
