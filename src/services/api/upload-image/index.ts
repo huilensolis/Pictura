@@ -13,7 +13,7 @@ export async function postImage({
   image: string; // base 64
 }): Promise<IResponse> {
   try {
-    const res = await fetch("/api/cloudinary/upload", {
+    const res = await fetch("/api/images/upload", {
       method: "POST",
       body: JSON.stringify({ image }),
     });
