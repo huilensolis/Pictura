@@ -1,5 +1,6 @@
 import { LazyImage } from "@/components/feature/lazy-image";
 import { BackwardsNav } from "@/components/feature/nav/backwards";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Heading } from "@/components/ui/typography/heading";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { Database } from "@/supabase/types";
@@ -149,6 +150,7 @@ async function UserProfile({ username }: { username: string }) {
 
   return (
     <div className="w-full h-full">
+      <UserProfileSkeleton />
       {doesUserProfileExist && userProfile ? (
         <Profile
           data={userProfile}
@@ -163,5 +165,36 @@ async function UserProfile({ username }: { username: string }) {
 }
 
 function UserProfileSkeleton() {
-  return <>skeleton</>;
+  return (
+    <div className="flex flex-col gap-4 w-full">
+      <div className="px-2 pt-4">
+        <Skeleton className="w-full h-10 rounded-lg" />
+      </div>
+      <header className="relative w-full mb-10">
+        <Skeleton className="w-full h-56" />
+        <Skeleton className="w-32 h-32 rounded-full absolute left-8 -bottom-10" />
+      </header>
+      <header className="flex flex-col gap-2 px-4">
+        <div className="flex flex-col gap-1">
+          <Skeleton className="w-32 h-5 rounded-lg" />
+          <Skeleton className="w-28 h-4 rounded-lg" />
+        </div>
+        <Skeleton className="w-10/12 h-32 rounded-lg" />
+        <div className="flex gap-4">
+          <Skeleton className="w-48 h-5 rounded-lg" />
+          <Skeleton className="w-48 h-5 rounded-lg" />
+          <Skeleton className="w-48 h-5 rounded-lg" />
+        </div>
+      </header>
+      <ul className="flex flex-wrap gap-1">
+        {Array(12)
+          .fill("")
+          .map((_, i) => (
+            <li key={i} className="w-[calc(50%-(0.25rem/2))] h-96">
+              <Skeleton className="w-full h-full" />
+            </li>
+          ))}
+      </ul>
+    </div>
+  );
 }
