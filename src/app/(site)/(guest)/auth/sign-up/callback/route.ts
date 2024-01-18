@@ -13,5 +13,7 @@ export async function GET(request: NextRequest) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  return NextResponse.redirect(`${requestUrl.origin}/app/quickstart/pictures`);
+  return NextResponse.redirect(
+    `${requestUrl.origin}/app/settings/section/profile`,
+  );
 }
