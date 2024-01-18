@@ -26,7 +26,7 @@ export async function Post({
       <header className="flex items-center justify-between px-5 py-5">
         <section className="w-full flex flex-col items-start justify-center gap-4">
           {postOwnerProfile && (
-            <Link href={`/app/account/${postOwnerProfile.username}`}>
+            <Link href={`/app/profile/${postOwnerProfile.username}`}>
               <section className="flex flex-none gap-4 w-full items-center justify-start">
                 {postOwnerProfile.avatar_url ? (
                   <LazyImage

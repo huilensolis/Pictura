@@ -154,7 +154,7 @@ function UserProfile() {
     <>
       {isLoadingUserProfile && <Skeleton className="w-64 h-16 rounded-full" />}
       {!isLoadingUserProfile && userProfile && (
-        <Link href={`/app/account/${userProfile.username}`}>
+        <Link href={`/app/profile/${userProfile.username}`}>
           <ActualUserProfile userProfile={userProfile} />
         </Link>
       )}
