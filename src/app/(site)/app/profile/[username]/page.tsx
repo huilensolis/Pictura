@@ -8,7 +8,7 @@ import { CalendarIcon, LinkIcon, MapPinIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default function AccountPage({
+export default function ProfilePage({
   params: { username },
 }: {
   params: { username: string };
