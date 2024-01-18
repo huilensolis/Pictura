@@ -30,8 +30,7 @@ export async function POST(req: Request) {
       data: { image: { secure_url: imageFromCloudinary.secure_url } },
     });
   } catch (error) {
-    const response = Response;
-    response.error();
-    return Response.json({ error: error });
+    console.log({ error });
+    return Response.error();
   }
 }
