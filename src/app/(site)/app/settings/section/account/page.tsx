@@ -1,5 +1,6 @@
 import { Heading } from "@/components/ui/typography/heading";
 import { DeleteAccountBtn } from "./components/delete-account";
+import { CloseSession } from "./components/close-session";
 
 export default async function AccountPage() {
   return (
@@ -7,9 +8,7 @@ export default async function AccountPage() {
       <Heading level={6}>Account Options</Heading>
       <ul className="flex flex-col gap-2">
         <li>
-          <button className="w-full px-4 py-2 bg-neutral-700 text-center font-medium text-neutral-50 rounded-sm">
-            Log Out
-          </button>
+          <CloseSession />
         </li>
         <li>
           <DeleteAccountBtn />
