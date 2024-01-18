@@ -38,7 +38,7 @@ export default function ProfileConfigPage() {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-  } = useForm<ProfileFormAreas>({ mode: "onTouched" });
+  } = useForm<ProfileFormAreas>({ mode: "onChange" });
 
   const { parseImageToBase64 } = useBase64Image();
 
@@ -168,6 +168,7 @@ export default function ProfileConfigPage() {
             defaultValue={userProfile?.name ?? ""}
             validationScheme={{
               required: "Area required",
+              maxLength: { value: 24, message: "Maximum of 24 characters" },
             }}
             error={errors.name}
           />
@@ -215,7 +216,7 @@ Want to connect? check out my portfolio bellow.`}
                 try {
                   const url = new URL(inputValue);
                   if (url.protocol !== "https:")
-                    return "make sure to include the https on the url";
+                    return "make sure to include 'https' in the url";
                   return true;
                 } catch (error) {
                   return "invalid url format";
