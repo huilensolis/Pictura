@@ -3,11 +3,12 @@
 import { ChevronLeftIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export function BackwardsNav() {
+export function BackwardsNav({ catchHref }: { catchHref: string }) {
   const router = useRouter();
 
   function navigateBackwards() {
-    router.back();
+    if (catchHref) router.push(catchHref);
+    else router.back();
   }
 
   return (

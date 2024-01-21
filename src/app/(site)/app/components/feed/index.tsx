@@ -2,6 +2,7 @@ import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { Post } from "./post";
 import { Heading } from "@/components/ui/typography/heading";
 import { Rabbit } from "lucide-react";
+import Link from "next/link";
 
 export async function Feed() {
   const supabase = getSuapabaseServerComponent();
@@ -32,6 +33,7 @@ export async function Feed() {
               <Post
                 post={post}
                 doesUserOwnPost={getIfUserOwnsPost(post.user_id)}
+                postHref={`/app/post/${post.id}`}
               />
             </li>
           ))}

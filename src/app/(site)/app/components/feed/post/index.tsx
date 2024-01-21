@@ -7,9 +7,11 @@ import Link from "next/link";
 export async function Post({
   post,
   doesUserOwnPost,
+  postHref = "",
 }: {
   post: Database["public"]["Tables"]["posts"]["Row"];
   doesUserOwnPost: boolean;
+  postHref: string;
 }) {
   const { title, profile_id, asset_url } = post;
 
@@ -47,17 +49,36 @@ export async function Post({
         </section>
         <PostOptions post_id={post.id} doesUserOwnPost={doesUserOwnPost} />
       </header>
-      <section className="px-5 pb-5">
-        <h3 className="text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
-          {title}
-        </h3>
-      </section>
-      <LazyImage
-        src={asset_url}
-        alt={title}
-        className="w-full h-full object-cover object-center"
-        skeletonClassName="w-full h-[500px]"
-      />
+
+      {postHref ? (
+        <Link href={postHref}>
+          <section className="px-5 pb-5">
+            <h3 className="text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
+              {title}
+            </h3>
+          </section>
+          <LazyImage
+            src={asset_url}
+            alt={title}
+            className="w-full h-full object-cover object-center"
+            skeletonClassName="w-full h-[500px]"
+          />
+        </Link>
+      ) : (
+        <>
+          <section className="px-5 pb-5">
+            <h3 className="text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
+              {title}
+            </h3>
+          </section>
+          <LazyImage
+            src={asset_url}
+            alt={title}
+            className="w-full h-full object-cover object-center"
+            skeletonClassName="w-full h-[500px]"
+          />
+        </>
+      )}
     </article>
   );
 }

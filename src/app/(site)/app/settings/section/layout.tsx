@@ -13,7 +13,7 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
           <div className="flex flex-col gap-4 w-full max-w-2xl items-center justify-start py-10 px-5">
             <header className="w-full flex">
               <div className="inline-block lg:hidden">
-                <BackwardsNav />
+                <BackwardsNav catchHref="/app/settings" />
               </div>
             </header>
             {children}
