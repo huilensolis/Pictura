@@ -5,9 +5,9 @@ import { ILink } from "@/components/feature/aside-menu/shared.models";
 import {
   ChevronLeftIcon,
   CircleUserIcon,
-  CircleUserRound,
   LockIcon,
   SunMoonIcon,
+  UserRoundCog,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ const LINKS: ILink[] = [
     href: "accesibility",
   },
   {
-    icon: CircleUserRound,
+    icon: UserRoundCog,
     href: "account",
   },
 ];
