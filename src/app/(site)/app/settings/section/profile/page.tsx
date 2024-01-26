@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
@@ -30,6 +30,12 @@ export default function ProfileConfigPage() {
     updateUserProfile,
   } = useUserProfile();
 
+  const [isLoading, setIsLoading] = useState<boolean>(isLoadingUserProfile);
+
+  useEffect(() => {
+    if (!isLoadingUserProfile) setIsLoading(false);
+  }, [isLoadingUserProfile]);
+
   useProtectRouteFromUnauthUsers();
 
   const router = useRouter();
@@ -50,12 +56,12 @@ export default function ProfileConfigPage() {
       description: data.description,
     } as Database["public"]["Tables"]["profiles"]["Row"];
 
-    if (data.banner) {
+    if (data.banner.length !== 0) {
       try {
         const bannerImageFile = data.banner[0];
 
         if (!bannerImageFile) {
-          throw new Error("");
+          throw new Error("no image file found");
         }
 
         const base64Image = await parseImageToBase64({
@@ -79,12 +85,12 @@ export default function ProfileConfigPage() {
       }
     }
 
-    if (data.avatar) {
+    if (data.avatar.length !== 0) {
       try {
         const avatarImageFile = data.avatar[0];
 
         if (!avatarImageFile) {
-          throw new Error("");
+          throw new Error("no avatar file found");
         }
         const base64Image = await parseImageToBase64({
           image: avatarImageFile,
@@ -101,7 +107,6 @@ export default function ProfileConfigPage() {
 
         formatedData.avatar_url = assetSecureUrl;
       } catch (error) {
-        console.log(error);
         setErrorUpdatingData(
           "there is been an error updating your avatar picture",
         );
@@ -109,12 +114,14 @@ export default function ProfileConfigPage() {
     }
 
     try {
+      setIsLoading(true);
       setIsUpdatingData(true);
       await updateUserProfile(formatedData);
       setErrorUpdatingData(null);
       setIsUpdatingData(false);
       router.refresh();
     } catch (error) {
+      setIsLoading(false);
       setErrorUpdatingData("There has been an error updating your profile : (");
       setIsUpdatingData(false);
     }
@@ -122,8 +129,8 @@ export default function ProfileConfigPage() {
 
   return (
     <>
-      {isLoadingUserProfile && <FormSkeleton />}
-      {!isLoadingUserProfile && (
+      {isLoading && <FormSkeleton />}
+      {!isLoading && (
         <form
           className="w-full flex flex-col gap-2"
           onSubmit={handleSubmit(updateProfile)}
