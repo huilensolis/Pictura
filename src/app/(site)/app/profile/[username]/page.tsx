@@ -38,7 +38,7 @@ async function UserProfile({ username }: { username: string }) {
   const { data: userPosts } = await supabase
     .from("posts")
     .select("*")
-    .eq("user_id", user?.id || "")
+    .eq("user_id", userProfile?.user_id || "")
     .order("created_at", { ascending: false });
 
   function Profile({
