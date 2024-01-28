@@ -1,9 +1,9 @@
-import React, { HTMLInputTypeAttribute } from "react";
+import React, { HTMLInputTypeAttribute } from "react"
 import {
-  type UseFormRegister,
-  type RegisterOptions,
   type FieldError,
-} from "react-hook-form";
+  type RegisterOptions,
+  type UseFormRegister,
+} from "react-hook-form"
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

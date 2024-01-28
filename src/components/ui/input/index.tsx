@@ -1,6 +1,6 @@
 "use client";
 
-import { InputProps } from "./props.model";
+import { InputProps } from "./props.model"
 
 export function Input({
   error,

@@ -1,9 +1,9 @@
-import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
-import { Post } from "../../components/feed/post";
-import { BackwardsNav } from "@/components/feature/nav/backwards";
-import { Heading } from "@/components/ui/typography/heading";
-import { LazyImage } from "@/components/feature/lazy-image";
-import Link from "next/link";
+import { LazyImage } from "@/components/feature/lazy-image"
+import { BackwardsNav } from "@/components/feature/nav/backwards"
+import { Heading } from "@/components/ui/typography/heading"
+import { getSuapabaseServerComponent } from "@/supabase/models/index.models"
+import Link from "next/link"
+import { Post } from "../../components/feed/post"
 
 export default async function PostPage({
   params: { postid },
@@ -32,7 +32,7 @@ export default async function PostPage({
       {postData && !postError ? (
         <div className="flex flex-col gap-1">
           <nav className="w-full pt-4 pb-3 px-5 flex items-center gap-4">
-            <BackwardsNav catchHref="/app" />
+            <BackwardsNav catchHref='' />
             <Heading level={9}>Back to feed</Heading>
           </nav>
           <Post post={postData} doesUserOwnPost={doesUserOwnPost} postHref="" />
