@@ -32,7 +32,7 @@ export default async function PostPage({
       {postData && !postError ? (
         <div className="flex flex-col gap-1">
           <nav className="w-full pt-4 pb-3 px-5 flex items-center gap-4">
-            <BackwardsNav catchHref='' />
+            <BackwardsNav catchHref='/app' />
             <Heading level={9}>Back to feed</Heading>
           </nav>
           <Post post={postData} doesUserOwnPost={doesUserOwnPost} postHref="" />
