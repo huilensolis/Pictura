@@ -1,4 +1,3 @@
-import { MobileNavMenu } from "./components/mobile-nav";
 import { Feed } from "./components/feed";
 import { NewPostBox } from "./components/new-post-box";
 import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
@@ -11,10 +10,10 @@ export default function AppPage() {
   protectRouteFromUnauthUsers();
   return (
     <div className="w-full h-full flex min-h-screen">
-      <div className="sm:grid hidden w-full h-full min-h-screen">
+      <div className="md:grid hidden w-full h-full min-h-screen">
         <DesktopLayout />
       </div>
-      <div className="sm:hidden grid min-h-screen w-full h-full">
+      <div className="md:hidden grid min-h-screen w-full h-full">
         <MobileLayout />
       </div>
     </div>
@@ -48,11 +47,23 @@ function MobileLayout() {
   return (
     <div className="w-full h-full">
       <main className="w-full h-full">
-        <Feed />
+        <NewPostBox />
+        <Suspense
+          fallback={
+            <ul className="w-full flex flex-col">
+              {Array(5)
+                .fill("")
+                .map((_, i) => (
+                  <li key={i}>
+                    <Skeleton className="h-[700px] w-full border-t border-neutral-300 dark:border-cm-lighter-gray" />
+                  </li>
+                ))}
+            </ul>
+          }
+        >
+          <Feed />
+        </Suspense>
       </main>
-      <div className="w-full flex fixed left-0 bottom-0">
-        <MobileNavMenu />
-      </div>
     </div>
   );
 }
