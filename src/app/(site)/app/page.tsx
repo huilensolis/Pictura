@@ -50,7 +50,7 @@ function MobileLayout() {
       <main className="w-full h-full">
         <Feed />
       </main>
-      <div className="w-full flex absolute bottom-0">
+      <div className="w-full flex fixed left-0 bottom-0">
         <MobileNavMenu />
       </div>
     </div>
