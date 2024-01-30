@@ -1,15 +1,14 @@
 "use client";
 
-import { Aside } from "@/components/feature/aside-menu";
 import {
   ChevronLeftIcon,
   CircleUserIcon,
-  CreditCardIcon,
   LockIcon,
   SunMoonIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { ILink } from "../models/nav-links/nav-links.models";
+import { MobileAside } from "@/components/feature/aside-menu/mobile-aside";
 
 export default function SettingsPage() {
   return (
@@ -53,7 +52,7 @@ const LINKS: ITLink[] = [
 
 function SettingsMenu() {
   return (
-    <Aside
+    <MobileAside
       header={{
         title: "Account Settings",
         subtitle: "Configurate your account",
