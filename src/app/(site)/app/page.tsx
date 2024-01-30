@@ -47,7 +47,22 @@ function MobileLayout() {
   return (
     <div className="w-full h-full">
       <main className="w-full h-full">
-        <Feed />
+        <NewPostBox />
+        <Suspense
+          fallback={
+            <ul className="w-full flex flex-col">
+              {Array(5)
+                .fill("")
+                .map((_, i) => (
+                  <li key={i}>
+                    <Skeleton className="h-[700px] w-full border-t border-neutral-300 dark:border-cm-lighter-gray" />
+                  </li>
+                ))}
+            </ul>
+          }
+        >
+          <Feed />
+        </Suspense>
       </main>
     </div>
   );
