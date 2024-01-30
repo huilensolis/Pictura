@@ -2,7 +2,7 @@
 
 import { Heading } from "@/components/ui/typography/heading";
 import { IAsideMenuProps } from "./aside-menu.models";
-import { AsideNavLink } from "./components/nav-item";
+import { IconLink } from "../nav/icon-link";
 
 export function Aside({
   links,
@@ -30,11 +30,7 @@ export function Aside({
               "border-b border-neutral-300 dark:border-neutral-700"
             }`}
           >
-            <AsideNavLink
-              href={linkItem.href}
-              icon={linkItem.icon}
-              title={linkItem.title ?? ""}
-            />
+            <IconLink href={linkItem.href} icon={linkItem.icon} />
           </li>
         ))}
       </ul>

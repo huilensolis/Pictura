@@ -11,10 +11,10 @@ export default function AppPage() {
   protectRouteFromUnauthUsers();
   return (
     <div className="w-full h-full flex min-h-screen">
-      <div className="sm:grid hidden w-full h-full min-h-screen">
+      <div className="md:grid hidden w-full h-full min-h-screen">
         <DesktopLayout />
       </div>
-      <div className="sm:hidden grid min-h-screen w-full h-full">
+      <div className="md:hidden grid min-h-screen w-full h-full">
         <MobileLayout />
       </div>
     </div>

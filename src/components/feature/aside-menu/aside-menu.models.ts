@@ -1,16 +1,12 @@
-import { ILink } from "./shared.models";
+import { IRLink } from "./shared.models";
 
 type IAsideHeader = {
   title: string;
   subtitle: string;
 };
 
-interface ITLink extends ILink {
-  title?: string;
-}
-
 export type IAsideMenuProps = {
-  links: ITLink[];
+  links: IRLink[];
   header?: IAsideHeader;
   showBorderOnLinks?: boolean;
 };
