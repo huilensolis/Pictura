@@ -14,13 +14,13 @@ export const NAV_LINKS: ILink[] = [
     icon: SearchIcon,
   },
   {
-    title: "My Pins",
+    title: "Pins",
     href: "/app/pins",
     icon: StarIcon,
   },
   {
     title: "Configuration",
-    href: "/app/settings/section/profile",
+    href: "/app/settings",
     icon: SettingsIcon,
   },
 ];

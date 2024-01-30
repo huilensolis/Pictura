@@ -2,7 +2,7 @@
 
 import { Heading } from "@/components/ui/typography/heading";
 import { IAsideMenuProps } from "./aside-menu.models";
-import { IconLink } from "../nav/icon-link";
+import Link from "next/link";
 
 export function Aside({
   links,
@@ -22,17 +22,29 @@ export function Aside({
         </article>
       )}
       <ul className="flex flex-col gap-4 justify-center items-center">
-        {links.map((linkItem) => (
-          <li
-            key={linkItem.href}
-            className={`w-full ${
-              showBorderOnLinks &&
-              "border-b border-neutral-300 dark:border-neutral-700"
-            }`}
-          >
-            <IconLink href={linkItem.href} icon={linkItem.icon} />
-          </li>
-        ))}
+        {links.map((linkItem) => {
+          const Icon = linkItem.icon;
+
+          return (
+            <li
+              key={linkItem.href}
+              className={`w-full py-3 ${
+                showBorderOnLinks &&
+                "border-b border-neutral-300 dark:border-neutral-700"
+              }`}
+            >
+              <Link
+                href={linkItem.href}
+                className="w-full flex justify-start items-center gap-4"
+              >
+                <Icon className="text-neutral-700 dark:text-neutral-300" />
+                <span className="text-neutral-700 dark:text-neutral-300">
+                  {linkItem.title}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import { Aside } from "@/components/feature/aside-menu";
-import { ILink } from "@/components/feature/aside-menu/shared.models";
 import {
   ChevronLeftIcon,
   CircleUserIcon,
@@ -10,6 +9,7 @@ import {
   SunMoonIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { ILink } from "../models/nav-links/nav-links.models";
 
 export default function SettingsPage() {
   return (
@@ -43,11 +43,6 @@ const LINKS: ITLink[] = [
     title: "Reset Password",
     icon: LockIcon,
     href: "settings/section/reset-password",
-  },
-  {
-    title: "Manage Subscription",
-    icon: CreditCardIcon,
-    href: "",
   },
   {
     title: "Accesibility",

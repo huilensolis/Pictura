@@ -1,4 +1,4 @@
-import { IRLink } from "./shared.models";
+import { ILink } from "@/app/(site)/app/models/nav-links/nav-links.models";
 
 type IAsideHeader = {
   title: string;
@@ -6,7 +6,7 @@ type IAsideHeader = {
 };
 
 export type IAsideMenuProps = {
-  links: IRLink[];
+  links: ILink[];
   header?: IAsideHeader;
   showBorderOnLinks?: boolean;
 };
