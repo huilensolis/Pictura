@@ -1,4 +1,3 @@
-import { MobileNavMenu } from "./components/mobile-nav";
 import { Feed } from "./components/feed";
 import { NewPostBox } from "./components/new-post-box";
 import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
@@ -50,9 +49,6 @@ function MobileLayout() {
       <main className="w-full h-full">
         <Feed />
       </main>
-      <div className="w-full flex fixed left-0 bottom-0">
-        <MobileNavMenu />
-      </div>
     </div>
   );
 }
