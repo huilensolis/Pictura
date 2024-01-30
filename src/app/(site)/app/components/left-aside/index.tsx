@@ -1,43 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ILink } from "./left-aside.models";
-import {
-  HomeIcon,
-  LinkIcon,
-  SearchIcon,
-  SettingsIcon,
-  StarIcon,
-} from "lucide-react";
 import { usePathname } from "next/navigation";
+import { LinkIcon } from "lucide-react";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { Database } from "@/supabase/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LazyImage } from "@/components/feature/lazy-image";
-
-// each navLink must start with '/'
-const LINKS: ILink[] = [
-  {
-    title: "Home",
-    href: "/app",
-    icon: HomeIcon,
-  },
-  {
-    title: "Search",
-    href: "/app/search",
-    icon: SearchIcon,
-  },
-  {
-    title: "My Pins",
-    href: "/app/pins",
-    icon: StarIcon,
-  },
-  {
-    title: "Configuration",
-    href: "/app/settings/section/profile",
-    icon: SettingsIcon,
-  },
-];
+import { NAV_LINKS } from "../../models/nav-links/";
+import { type ILink } from "../../models/nav-links/nav-links.models";
 
 export function AppLeftAside() {
   return (
@@ -47,7 +18,7 @@ export function AppLeftAside() {
           <header className="pl-2 flex font-bold items-center gap-3"></header>
           <nav>
             <ul className="flex flex-col gap-4 w-max">
-              {LINKS.map((linkItem) => (
+              {NAV_LINKS.map((linkItem) => (
                 <li key={linkItem.href}>
                   <CustomNavLink
                     title={linkItem.title}
