@@ -74,7 +74,7 @@ export async function Post({
           <LazyImage
             src={asset_url}
             alt={title}
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center rounded-md"
             skeletonClassName="w-full h-[500px]"
           />
         </>
