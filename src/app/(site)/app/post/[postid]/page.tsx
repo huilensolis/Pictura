@@ -1,9 +1,10 @@
-import { LazyImage } from "@/components/feature/lazy-image"
-import { BackwardsNav } from "@/components/feature/nav/backwards"
-import { Heading } from "@/components/ui/typography/heading"
-import { getSuapabaseServerComponent } from "@/supabase/models/index.models"
-import Link from "next/link"
-import { Post } from "../../components/feed/post"
+import { LazyImage } from "@/components/feature/lazy-image";
+import { BackwardsNav } from "@/components/feature/nav/backwards";
+import { Heading } from "@/components/ui/typography/heading";
+import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
+import Link from "next/link";
+import { Post } from "../../components/feed/post";
+import { PostsGrid } from "@/components/feature/posts-grid";
 
 export default async function PostPage({
   params: { postid },
@@ -32,7 +33,7 @@ export default async function PostPage({
       {postData && !postError ? (
         <div className="flex flex-col gap-1">
           <nav className="w-full pt-4 pb-3 px-5 flex items-center gap-4">
-            <BackwardsNav catchHref='/app' />
+            <BackwardsNav catchHref="/app" />
             <Heading level={9}>Back to feed</Heading>
           </nav>
           <Post post={postData} doesUserOwnPost={doesUserOwnPost} postHref="" />
@@ -48,28 +49,15 @@ export default async function PostPage({
 async function RecentPosts() {
   const supabase = getSuapabaseServerComponent();
 
-  const { data, error } = await supabase
+  const { data: posts, error } = await supabase
     .from("posts")
     .select("*")
     .order("created_at", { ascending: false })
-    .limit(4);
+    .limit(6);
   return (
     <>
-      {data && !error && data.length > 1 && (
-        <ul className="xl:grid flex flex-col gap-1 xl:grid-cols-2 xl:grid-rows-[repeat(auto-fill,_384px)]">
-          {data.map((post) => (
-            <li key={post.id}>
-              <Link href={`/app/post/${post.id}`}>
-                <LazyImage
-                  src={post.asset_url}
-                  alt={post.title}
-                  className="w-full h-full object-cover object-center"
-                  skeletonClassName="w-full h-full"
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {posts && !error && posts.length !== undefined && posts.length > 0 && (
+        <PostsGrid posts={posts} />
       )}
     </>
   );
