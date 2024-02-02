@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronLeftIcon } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { ChevronLeftIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function BackwardsNav({ catchHref }: { catchHref: string }) {
   const router = useRouter();

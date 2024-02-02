@@ -15,7 +15,7 @@ export async function Post({
 }) {
   const { title, profile_id, asset_url } = post;
 
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
 
   const { data: postOwnerProfile } = await supabase
     .from("profiles")
@@ -74,7 +74,7 @@ export async function Post({
           <LazyImage
             src={asset_url}
             alt={title}
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center rounded-md"
             skeletonClassName="w-full h-[500px]"
           />
         </>
