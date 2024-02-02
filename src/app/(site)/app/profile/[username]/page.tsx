@@ -22,7 +22,7 @@ export default function ProfilePage({
 }
 
 async function UserProfile({ username }: { username: string }) {
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
 
   const { data: userProfile, error } = await supabase
     .from("profiles")

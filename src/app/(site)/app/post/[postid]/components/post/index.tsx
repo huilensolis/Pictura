@@ -15,7 +15,7 @@ export async function Post({
 }) {
   const { title, profile_id, asset_url } = post;
 
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
 
   const { data: postOwnerProfile } = await supabase
     .from("profiles")
