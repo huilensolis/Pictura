@@ -1,10 +1,9 @@
-import { LazyImage } from "@/components/feature/lazy-image";
 import { BackwardsNav } from "@/components/feature/nav/backwards";
 import { Heading } from "@/components/ui/typography/heading";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
-import Link from "next/link";
 import { Post } from "../../components/feed/post";
 import { PostsGrid } from "@/components/feature/posts-grid";
+import { Database } from "@/supabase/types";
 
 export default async function PostPage({
   params: { postid },
@@ -30,45 +29,62 @@ export default async function PostPage({
 
   return (
     <div>
-      {postData && !postError ? (
-        <div className="flex flex-col gap-1">
-          <nav className="w-full pt-4 pb-3 px-5 flex items-center gap-4">
-            <BackwardsNav catchHref="/app" />
-            <Heading level={9}>Back to feed</Heading>
-          </nav>
-          <Post post={postData} doesUserOwnPost={doesUserOwnPost} postHref="" />
-          <RecentPosts />
-        </div>
-      ) : (
-        <Error404Box />
-      )}
+      <div className="flex flex-col gap-1">
+        <nav className="w-full pt-4 pb-3 px-5 flex items-center gap-4">
+          <BackwardsNav catchHref="/app" />
+          <Heading level={9}>Back</Heading>
+        </nav>
+        {postData && !postError ? (
+          <>
+            <Post
+              post={postData}
+              doesUserOwnPost={doesUserOwnPost}
+              postHref=""
+            />
+            <RecentPosts excludePost={postData} />
+          </>
+        ) : (
+          <Error404Box />
+        )}
+      </div>
     </div>
   );
 }
 
-async function RecentPosts() {
+async function RecentPosts({
+  excludePost,
+}: {
+  excludePost: Database["public"]["Tables"]["posts"]["Row"];
+}) {
   const supabase = getSuapabaseServerComponent();
 
   const { data: posts, error } = await supabase
     .from("posts")
     .select("*")
     .order("created_at", { ascending: false })
-    .limit(6);
+    .limit(9);
+
+  if (!posts || posts.length === 0) return;
+
+  const filteredPosts = posts.filter((post) => post.id !== excludePost.id);
   return (
     <>
-      {posts && !error && posts.length !== undefined && posts.length > 0 && (
-        <PostsGrid posts={posts} />
-      )}
+      {!error &&
+        filteredPosts.length !== undefined &&
+        filteredPosts.length > 0 && <PostsGrid posts={filteredPosts} />}
     </>
   );
 }
 
 function Error404Box() {
   return (
-    <div className="w-full p-5 border-y border-neutral-300 dark:border-cm-lighter-gray">
+    <div className="w-full flex flex-col gap-2 items-center justify-center py-32 border-y border-neutral-300 dark:border-cm-lighter-gray">
       <span className="text-neutral-800 dark:text-neutral-300">
         404 not found
       </span>
+      <p className="text-neutral-800 dark:text-neutral-300 ">
+        we could not find this post, we are sorry : (
+      </p>
     </div>
   );
 }
