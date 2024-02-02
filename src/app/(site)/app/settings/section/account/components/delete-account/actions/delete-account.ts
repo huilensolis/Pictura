@@ -1,16 +1,30 @@
 "use server";
 
-import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
+import {
+  getSuapabaseServerComponent,
+  getSupabaseServerComponentWithAdminRole,
+} from "@/supabase/models/index.models";
 
-export async function deleteAccount(formData: FormData) {
-  const userId = formData.get("userId");
+export async function deleteAccount() {
+  const supabase = await getSuapabaseServerComponent();
 
-  if (!userId || typeof userId !== "string") throw new Error("Invalid userId");
-
-  const supabase = getSuapabaseServerComponent();
+  const supabaseWithAdmin = await getSupabaseServerComponentWithAdminRole();
 
   try {
-    await supabase.from("users").delete().eq("id", userId);
+    const {
+      data: { session },
+      error: errorFindingSession,
+    } = await supabase.auth.getSession();
+
+    if (!session || errorFindingSession || !session.user || !session.user.id) {
+      throw new Error("error finding user session");
+    }
+
+    const { error } = await supabaseWithAdmin.auth.admin.deleteUser(
+      session.user.id,
+    );
+
+    if (error) throw new Error("error deleting user");
   } catch (e) {
     throw new Error("Error deleting account");
   }

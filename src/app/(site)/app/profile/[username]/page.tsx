@@ -1,5 +1,6 @@
 import { LazyImage } from "@/components/feature/lazy-image";
 import { BackwardsNav } from "@/components/feature/nav/backwards";
+import { PostsGrid } from "@/components/feature/posts-grid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heading } from "@/components/ui/typography/heading";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
@@ -21,7 +22,7 @@ export default function ProfilePage({
 }
 
 async function UserProfile({ username }: { username: string }) {
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
 
   const { data: userProfile, error } = await supabase
     .from("profiles")
@@ -38,7 +39,7 @@ async function UserProfile({ username }: { username: string }) {
   const { data: userPosts } = await supabase
     .from("posts")
     .select("*")
-    .eq("user_id", user?.id || "")
+    .eq("user_id", userProfile?.user_id || "")
     .order("created_at", { ascending: false });
 
   function Profile({
@@ -128,20 +129,9 @@ async function UserProfile({ username }: { username: string }) {
           </article>
         </header>
         {userPosts?.length > 0 && (
-          <ul className="xl:grid flex flex-col gap-1 xl:grid-cols-2 xl:grid-rows-[repeat(auto-fill,_384px)]">
-            {userPosts.map((post) => (
-              <li key={post.id}>
-                <Link href={`/app/post/${post.id}`}>
-                  <LazyImage
-                    src={post.asset_url}
-                    alt={post.title}
-                    className="w-full h-full object-cover object-center"
-                    skeletonClassName="w-full h-full"
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="px-4">
+            <PostsGrid posts={userPosts} />
+          </div>
         )}
       </div>
     );

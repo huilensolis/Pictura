@@ -5,9 +5,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { deleteAccount as actionDeleteAccount } from "./actions/delete-account";
 import { useSupabase } from "@/hooks/use-supabase";
+import { useRouter } from "next/navigation";
 
 export function DeleteAccountBtn() {
   const [showInput, setShowInput] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { supabase } = useSupabase();
 
@@ -19,15 +21,30 @@ export function DeleteAccountBtn() {
     formState: { errors, isValid },
   } = useForm<{ "delete-account": string }>({ mode: "onChange" });
 
+  const router = useRouter();
+
   async function deleteAccount() {
-    const { data, error } = await supabase.auth.getUser();
+    try {
+      setLoading(true);
+      const { data, error: errorGettingUser } = await supabase.auth.getUser();
 
-    if (!data || error || !data.user.id) return;
+      if (!data || errorGettingUser || !data.user.id) return;
 
-    const formData = new FormData();
-    formData.append("userId", data.user.id);
+      const formData = new FormData();
+      formData.append("userId", data.user.id);
 
-    actionDeleteAccount(formData);
+      await actionDeleteAccount();
+
+      const { error } = await supabase.auth.signOut();
+
+      if (error) throw new Error("error signing out");
+
+      router.refresh();
+    } catch (error) {
+      router.refresh();
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -48,7 +65,6 @@ export function DeleteAccountBtn() {
               if (inputValue !== STRING) {
                 return `Text doesnt match with ${STRING}`;
               }
-
               return true;
             },
           }}
@@ -57,10 +73,10 @@ export function DeleteAccountBtn() {
       <button
         onClick={showInput ? () => {} : () => setShowInput(true)}
         type={showInput ? "submit" : "button"}
-        disabled={!isValid}
+        disabled={!isValid || loading}
         className="w-full px-4 py-2 bg-red-500 disabled:grayscale transition-all delay-75 text-center font-medium text-neutral-50 rounded-sm"
       >
-        Delete Account
+        {loading ? "Loading..." : "Delete Account"}
       </button>
     </form>
   );
