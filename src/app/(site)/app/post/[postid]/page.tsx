@@ -1,16 +1,16 @@
 import { BackwardsNav } from "@/components/feature/nav/backwards";
 import { Heading } from "@/components/ui/typography/heading";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
-import { Post } from "../../components/feed/post";
 import { PostsGrid } from "@/components/feature/posts-grid";
 import { Database } from "@/supabase/types";
+import { Post } from "./components/post";
 
 export default async function PostPage({
   params: { postid },
 }: {
   params: { postid: string };
 }) {
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
 
   const { data: postData, error: postError } = await supabase
     .from("posts")
@@ -56,7 +56,7 @@ async function RecentPosts({
 }: {
   excludePost: Database["public"]["Tables"]["posts"]["Row"];
 }) {
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
 
   const { data: posts, error } = await supabase
     .from("posts")

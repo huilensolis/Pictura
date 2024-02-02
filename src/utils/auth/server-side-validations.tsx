@@ -2,7 +2,7 @@ import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { redirect } from "next/navigation";
 
 export async function protectRouteFromUnauthUsers() {
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
 
   const {
     data: { session },
@@ -18,7 +18,7 @@ export async function protectRouteFromUnauthUsers() {
 }
 
 export async function protectRouteFromAuthUsers() {
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
 
   const {
     data: { session },

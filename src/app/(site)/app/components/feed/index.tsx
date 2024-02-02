@@ -1,29 +1,17 @@
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
-import { Post } from "./post";
 import { Heading } from "@/components/ui/typography/heading";
 import { Rabbit } from "lucide-react";
-import Link from "next/link";
 import { PostsGrid } from "@/components/feature/posts-grid";
 
 export async function Feed() {
-  const supabase = getSuapabaseServerComponent();
-
-  const {
-    data: { user },
-    error: errorGettingUser,
-  } = await supabase.auth.getUser();
+  const supabase = await getSuapabaseServerComponent();
 
   const { data: posts, error } = await supabase
     .from("posts")
     .select("*")
     .order("created_at", { ascending: false });
 
-  const doesPostsExist = !error && posts && posts.length >= 1;
-
-  function getIfUserOwnsPost(post_user_id: string): boolean {
-    if (errorGettingUser) return false;
-    return Boolean(post_user_id === user?.id);
-  }
+  const doesPostsExist = posts && posts.length > 0 && !error;
 
   return (
     <main className="w-full h-full">

@@ -1,6 +1,4 @@
-import { LazyImage } from "@/components/feature/lazy-image";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
-import Link from "next/link";
 import { SearchForm } from "./components/SearchForm/SearchForm";
 import { PostsGrid } from "@/components/feature/posts-grid";
 
@@ -13,7 +11,7 @@ interface Props {
 }
 
 const SearchPage: React.FC<Props> = async ({ searchParams }) => {
-  const supabase = getSuapabaseServerComponent();
+  const supabase = await getSuapabaseServerComponent();
   const searchValue = searchParams?.search_query ?? "";
 
   const { data: posts } = await supabase
@@ -37,4 +35,3 @@ const SearchPage: React.FC<Props> = async ({ searchParams }) => {
 };
 
 export default SearchPage;
-
