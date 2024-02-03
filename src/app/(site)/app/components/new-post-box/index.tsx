@@ -107,7 +107,10 @@ export function NewPostBox() {
 
   return (
     <div>
-      <form className="flex flex-col p-5" onSubmit={handleSubmit(publishPost)}>
+      <form
+        className="flex flex-col sm:p-5 p-1"
+        onSubmit={handleSubmit(publishPost)}
+      >
         <div className="flex gap-4">
           {isLoadingUserProfile ? (
             <Skeleton className="h-14 w-14 rounded-full flex-none" />
@@ -127,7 +130,7 @@ export function NewPostBox() {
               <input
                 type="text"
                 placeholder="What have you drew?"
-                className="bg-transparent h-max text-2xl max-w-full text-neutral-800 dark:text-neutral-300 font-bold placeholder:font-medium placeholder:text-neutral-600 dark:placeholder:text-neutral-500 focus:outline-none"
+                className="bg-transparent w-full h-max text-2xl max-w-full text-neutral-800 dark:text-neutral-300 font-bold placeholder:font-medium placeholder:text-neutral-600 dark:placeholder:text-neutral-500 focus:outline-none"
                 {...register("title", {
                   maxLength: {
                     value: 50,
