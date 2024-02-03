@@ -13,12 +13,12 @@ export function PostsGrid({
   onFetchMorePosts?: () => Database["public"]["Tables"]["posts"]["Row"][];
 }) {
   return (
-    <ul className="flex flex-wrap gap-2">
+    <ul className="grid grid-cols-2 grid-rows-[repeat(auto-fill,_minmax(1fr,_500px)] gap-2">
       {posts.length > 0 &&
         posts.map((post) => (
           <li
             key={post.id}
-            className="w-[calc(50%-5px)] h-[500px] flex rounded-md overflow-hidden"
+            className="w-full h-[500px] flex rounded-md overflow-hidden"
           >
             <Link href={`/app/post/${post.id}`} className="w-full h-full">
               <LazyImage
