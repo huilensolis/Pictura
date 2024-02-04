@@ -8,7 +8,6 @@ import { Database } from "@/supabase/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LazyImage } from "@/components/feature/lazy-image";
 import { NAV_LINKS } from "../../models/nav-links/";
-import { type ILink } from "../../models/nav-links/nav-links.models";
 import { CustomNavLink } from "@/components/feature/nav/link";
 
 export function AppLeftAside() {

@@ -11,7 +11,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         <div className="md:flex hidden sticky top-0 left-0 w-full max-w-[300px] h-full min-h-screen">
           <AppLeftAside />
         </div>
-        <div className="md:hidden w-full flex fixed left-0 bottom-0">
+        <div className="md:hidden w-full flex fixed left-0 bottom-0 z-50">
           <MobileNavMenu />
         </div>
         <div className="h-full w-full min-h-screen border-x border-neutral-300 dark:border-cm-lighter-gray">
