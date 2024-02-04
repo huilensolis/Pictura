@@ -29,13 +29,24 @@ const LINKS: IRLink[] = [
   },
 ];
 
+const LINKS_MAPPED: IRLink[] = LINKS.map((linkItem): IRLink => {
+  const newHref = `/app/settings/section/${linkItem.href}`;
+
+  return {
+    ...linkItem,
+    href: newHref,
+  };
+});
+
+console.log(LINKS_MAPPED);
+
 export function SettingsAside() {
   return (
     <div className="w-full h-full bg-neutral-200 dark:bg-cm-gray">
       <div className="pt-5 flex items-center justify-center">
         <BackwardsNav catchHref="/app" />
       </div>
-      <DesktopAside links={LINKS} />
+      <DesktopAside links={LINKS_MAPPED} />
     </div>
   );
 }
