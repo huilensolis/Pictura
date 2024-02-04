@@ -10,8 +10,6 @@ export function IconLink({ href, icon: Icon }: IRLink) {
 
   const pathName = usePathname();
 
-  console.log(href);
-
   useEffect(() => {
     const isHomeHref = href === "/app";
 
