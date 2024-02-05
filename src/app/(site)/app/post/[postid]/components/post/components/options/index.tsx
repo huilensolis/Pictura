@@ -8,13 +8,17 @@ import { Option } from './option.models';
 import { PrimaryButton } from '@/components/ui/buttons/primary';
 import { copyToClipboard, downloadImage } from '@/utils/utils';
 import { toast } from 'react-toastify';
+import ShareBtns from '@/components/feature/share-btns';
+import Modal from '@/components/ui/modal';
 
 export function PostOptions({
   post_id,
+  title,
   image_url,
   doesUserOwnPost,
 }: {
   post_id: number;
+  title: string;
   image_url: string;
   doesUserOwnPost: boolean;
 }) {
@@ -23,6 +27,7 @@ export function PostOptions({
   const router = useRouter();
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [indexOfOptionLoading, setIndexOfOptionLoading] = useState<
     number | null
   >(null);
@@ -52,7 +57,10 @@ export function PostOptions({
   ];
 
   const PUBLIC_OPTIONS: Option[] = [
-    { title: 'Share', action: () => {} },
+    {
+      title: 'Share',
+      action: () => toggleShareModal(),
+    },
     { title: 'Download', action: async () => await downloadImage(image_url) },
     {
       title: 'Copy URL',
@@ -69,7 +77,11 @@ export function PostOptions({
   const FINAL_OPTIONS = [...OWNER_OPTIONS, ...PUBLIC_OPTIONS];
 
   function toggleDropdown() {
-    setShowDropdown(!showDropdown);
+    setShowDropdown((prev) => !prev);
+  }
+  function toggleShareModal() {
+    setShowShareModal((prev) => !prev);
+    toggleDropdown();
   }
 
   return (
@@ -98,6 +110,15 @@ export function PostOptions({
             </li>
           ))}
         </ul>
+      )}
+      {showShareModal && (
+        <Modal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          heading={`Share ${title} on: `}
+        >
+          <ShareBtns shareUrl={image_url} title={title} />
+        </Modal>
       )}
     </div>
   );
