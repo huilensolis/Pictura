@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Option } from './option.models';
 import { PrimaryButton } from '@/components/ui/buttons/primary';
-import { downloadImage } from '@/utils/utils';
+import { copyToClipboard, downloadImage } from '@/utils/utils';
+import { toast } from 'react-toastify';
 
 export function PostOptions({
   post_id,
@@ -53,6 +54,16 @@ export function PostOptions({
   const PUBLIC_OPTIONS: Option[] = [
     { title: 'Share', action: () => {} },
     { title: 'Download', action: async () => await downloadImage(image_url) },
+    {
+      title: 'Copy URL',
+      action: async () => {
+        (await copyToClipboard(image_url))
+          ? toast.success(`Copied ${image_url} to clipboard`, {
+              position: 'top-center',
+            })
+          : toast.error('error copying', { position: 'top-center' });
+      },
+    },
   ];
 
   const FINAL_OPTIONS = [...OWNER_OPTIONS, ...PUBLIC_OPTIONS];
