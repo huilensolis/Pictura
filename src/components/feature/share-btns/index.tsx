@@ -16,7 +16,7 @@ const ShareBtns: React.FC<ShareBtnProps> = ({ shareUrl, title }) => {
         <TwitterShareButton url={shareUrl} title={title} className='p-2'>
           <XIcon size={32} round />
         </TwitterShareButton>
-        <LinkedinShareButton url={shareUrl} className='p-2'>
+        <LinkedinShareButton url={shareUrl} title={title} className='p-2'>
           <LinkedinIcon size={32} round />
         </LinkedinShareButton>
       </div>
