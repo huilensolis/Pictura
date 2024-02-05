@@ -1,16 +1,20 @@
-"use client";
+'use client';
 
-import { useSupabase } from "@/hooks/use-supabase";
-import { MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Option } from "./option.models";
-import { PrimaryButton } from "@/components/ui/buttons/primary";
+import { useSupabase } from '@/hooks/use-supabase';
+import { MoreHorizontal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Option } from './option.models';
+import { PrimaryButton } from '@/components/ui/buttons/primary';
+import { downloadImage } from '@/utils/utils';
 
 export function PostOptions({
   post_id,
+  image_url,
+  doesUserOwnPost,
 }: {
   post_id: number;
+  image_url: string;
   doesUserOwnPost: boolean;
 }) {
   const { supabase } = useSupabase();
@@ -23,21 +27,21 @@ export function PostOptions({
   >(null);
 
   const OWNER_OPTIONS: Option[] = [
-    { title: "Edit", action: () => {} },
+    { title: 'Edit', action: () => {} },
     {
-      title: "Delete",
+      title: 'Delete',
       action: async () => {
         const indexOfOption = 1;
         setIndexOfOptionLoading(indexOfOption);
         try {
           const { error } = await supabase
-            .from("posts")
+            .from('posts')
             .delete()
-            .eq("id", post_id)
+            .eq('id', post_id)
             .single();
           console.log({ error });
           setIndexOfOptionLoading(null);
-          if (error) throw new Error("Error trying to delete");
+          if (error) throw new Error('Error trying to delete');
           router.refresh();
         } catch (e) {
           //
@@ -46,7 +50,10 @@ export function PostOptions({
     },
   ];
 
-  const PUBLIC_OPTIONS: Option[] = [{ title: "Share", action: () => {} }];
+  const PUBLIC_OPTIONS: Option[] = [
+    { title: 'Share', action: () => {} },
+    { title: 'Download', action: async () => await downloadImage(image_url) },
+  ];
 
   const FINAL_OPTIONS = [...OWNER_OPTIONS, ...PUBLIC_OPTIONS];
 
@@ -55,18 +62,18 @@ export function PostOptions({
   }
 
   return (
-    <div className="relative">
+    <div className='relative'>
       <button
         onClick={toggleDropdown}
-        className="text-white bg-neutral-700 hover:brightness-125 rounded-md p-2 text-center flex items-center"
+        className='text-white bg-neutral-700 hover:brightness-125 rounded-md p-2 text-center flex items-center'
       >
         <MoreHorizontal />
       </button>
 
       {showDropdown && (
         <ul
-          id="dropdown"
-          className="flex flex-col z-10 absolute top-12 right-0 w-48 bg-neutral-700 rounded-md overflow-hidden"
+          id='dropdown'
+          className='flex flex-col z-10 absolute top-12 right-0 w-48 bg-neutral-700 rounded-md overflow-hidden'
         >
           {FINAL_OPTIONS.map((option, index) => (
             <li key={option.title}>
