@@ -1,5 +1,5 @@
-import cloudinary from '@/services/cloudinary';
-import { UploadApiOptions } from 'cloudinary';
+import cloudinary from "@/services/cloudinary";
+import { UploadApiOptions } from "cloudinary";
 
 export async function POST(req: Request) {
   try {
@@ -7,34 +7,31 @@ export async function POST(req: Request) {
     const { image } = reqBody;
 
     if (!image) {
-      throw new Error('invalid image');
+      throw new Error("invalid image");
     }
 
-    const imageMetadata = image.split(';')[0];
-    const imageType = imageMetadata.split('/')[1];
-    const defaultImageTransformation: UploadApiOptions['transformation'] = {
+    const imageMetadata = image.split(";")[0];
+    const imageType = imageMetadata.split("/")[0].split(":")[1];
+
+    if (imageType !== "image") {
+      throw new Error("invalid file type");
+    }
+
+    const defaultImageTransformation: UploadApiOptions["transformation"] = {
       width: 700,
-      crop: 'fill',
-      gravity: 'center',
-      fetch_format: 'webp',
+      crop: "fill",
+      gravity: "center",
+      fetch_format: "webp",
       quality: 80,
     };
-
-    let finalTransformation;
-
-    if (imageType === 'gif') {
-      finalTransformation = {};
-    } else {
-      finalTransformation = defaultImageTransformation;
-    }
 
     const imageFromCloudinary = await cloudinary.v2.uploader.upload(
       image,
       {
-        resource_type: 'image',
+        resource_type: "image",
         discard_original_filename: true,
         transformation: {
-          ...finalTransformation,
+          ...defaultImageTransformation,
         },
       },
       (error, result) => {
@@ -43,10 +40,10 @@ export async function POST(req: Request) {
         }
 
         return result;
-      }
+      },
     );
     if (!imageFromCloudinary) {
-      throw new Error('image could not be uploaded :(');
+      throw new Error("image could not be uploaded :(");
     }
 
     return Response.json({
