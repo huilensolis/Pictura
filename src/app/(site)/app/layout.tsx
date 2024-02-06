@@ -6,7 +6,7 @@ import { MobileNavMenu } from "./components/mobile-nav";
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex justify-center items-center w-full h-full min-h-screen bg-neutral-200 dark:bg-cm-darker-gray md:pb-0 pb-20">
-      <div className="min-h-screen w-full flex justify-center items-start max-w-[1800px] relative">
+      <div className="min-h-screen w-full flex justify-center items-start max-w-[1300px] relative">
         <div className="md:flex hidden sticky top-0 left-0 w-full max-w-[300px] h-full min-h-screen">
           <AppLeftAside />
         </div>

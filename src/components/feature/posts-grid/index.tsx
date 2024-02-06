@@ -13,7 +13,7 @@ export function PostsGrid({
   onFetchMorePosts?: () => Database["public"]["Tables"]["posts"]["Row"][];
 }) {
   return (
-    <ul className="grid xl:grid-cols-5 lg:grid-cols-3 grid-cols-2  grid-rows-[repeat(auto-fill,_minmax(1fr,_500px)] gap-2">
+    <ul className="grid xl:grid-cols-3 lg:grid-cols-3 grid-cols-2  grid-rows-[repeat(auto-fill,_minmax(1fr,_500px)] gap-2">
       {posts.length > 0 &&
         posts.map((post) => (
           <li
