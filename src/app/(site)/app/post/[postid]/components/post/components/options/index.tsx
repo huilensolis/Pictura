@@ -6,14 +6,23 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Option } from './option.models';
 import { PrimaryButton } from '@/components/ui/buttons/primary';
-import { deleteFromCloundinary, downloadImage } from '@/utils/utils';
+import { toast } from 'react-toastify';
+import ShareBtns from '@/components/feature/share-btns';
+import Modal from '@/components/ui/modal';
+import {
+  deleteFromCloundinary,
+  copyToClipboard,
+  downloadImage,
+} from '@/utils/utils';
 
 export function PostOptions({
   post_id,
+  title,
   image_url,
   doesUserOwnPost,
 }: {
   post_id: number;
+  title: string;
   image_url: string;
   doesUserOwnPost: boolean;
 }) {
@@ -22,6 +31,7 @@ export function PostOptions({
   const router = useRouter();
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [indexOfOptionLoading, setIndexOfOptionLoading] = useState<
     number | null
   >(null);
@@ -58,14 +68,31 @@ export function PostOptions({
   ];
 
   const PUBLIC_OPTIONS: Option[] = [
-    { title: 'Share', action: () => {} },
+    {
+      title: 'Share',
+      action: () => toggleShareModal(),
+    },
     { title: 'Download', action: async () => await downloadImage(image_url) },
+    {
+      title: 'Copy URL',
+      action: async () => {
+        (await copyToClipboard(image_url))
+          ? toast.success(`Copied ${image_url} to clipboard`, {
+              position: 'top-center',
+            })
+          : toast.error('error copying', { position: 'top-center' });
+      },
+    },
   ];
 
   const FINAL_OPTIONS = [...OWNER_OPTIONS, ...PUBLIC_OPTIONS];
 
   function toggleDropdown() {
-    setShowDropdown(!showDropdown);
+    setShowDropdown((prev) => !prev);
+  }
+  function toggleShareModal() {
+    setShowShareModal((prev) => !prev);
+    toggleDropdown();
   }
 
   return (
@@ -94,6 +121,15 @@ export function PostOptions({
             </li>
           ))}
         </ul>
+      )}
+      {showShareModal && (
+        <Modal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          heading={`Share ${title} on: `}
+        >
+          <ShareBtns shareUrl={image_url} title={title} />
+        </Modal>
       )}
     </div>
   );

@@ -48,6 +48,7 @@ export async function Post({
           )}
         </section>
         <PostOptions
+          title={post.title}
           post_id={post.id}
           doesUserOwnPost={doesUserOwnPost}
           image_url={post.asset_url}

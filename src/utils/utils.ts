@@ -22,6 +22,17 @@ export const downloadImage = async (url: string) => {
   }
 };
 
+
+export const copyToClipboard = async (text: string): Promise<boolean> => {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (error) {
+    console.error('Unable to copy text to clipboard:', error);
+    return false;
+  }
+}
+
 export const extractPublicId = async (imageURL: string) => {
   const parts = imageURL.split('/');
   const filename = parts.pop(); // Get the last part of the URL
