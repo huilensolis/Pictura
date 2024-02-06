@@ -45,13 +45,11 @@ export const deleteFromCloundinary = async (imageUrl: string) => {
       body: JSON.stringify({ public_id }),
     });
 
-    console.log('Res from deleteFromCloudinary', response);
     if (!response.ok) {
       throw new Error('Failed to delete image');
     }
 
     const data = await response.json();
-    console.log(data.message);
   } catch (error) {
     console.error('Error deleting image:', error);
   }
