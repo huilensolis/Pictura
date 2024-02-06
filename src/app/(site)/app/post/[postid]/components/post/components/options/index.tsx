@@ -10,6 +10,7 @@ import { copyToClipboard, downloadImage } from '@/utils/utils';
 import { toast } from 'react-toastify';
 import ShareBtns from '@/components/feature/share-btns';
 import Modal from '@/components/ui/modal';
+import { deleteFromCloundinary, downloadImage } from '@/utils/utils';
 
 export function PostOptions({
   post_id,
@@ -45,9 +46,16 @@ export function PostOptions({
             .delete()
             .eq('id', post_id)
             .single();
-          console.log({ error });
           setIndexOfOptionLoading(null);
           if (error) throw new Error('Error trying to delete');
+          deleteFromCloundinary(image_url);
+          if (typeof window !== 'undefined') {
+            if (window.history.length > 1) {
+              window.history.back(); // Go back to the previous page
+            } else {
+              router.push('/app'); // Navigate to '/app' if no history
+            }
+          }
           router.refresh();
         } catch (e) {
           //

@@ -57,7 +57,8 @@ export default function SingUpPage() {
           Sing Up
         </h1>
         <p className="text-neutral-600 dark:text-neutral-400">
-          Get acces to a pixel art feed, create your profile and interact!
+          build your colection of your favourite images, create your profile and
+          discover new images.
         </p>
       </article>
       <form
