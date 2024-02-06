@@ -42,7 +42,13 @@ export function PostOptions({
           setIndexOfOptionLoading(null);
           if (error) throw new Error('Error trying to delete');
           deleteFromCloundinary(image_url);
-          router.push('/app');
+          if (typeof window !== 'undefined') {
+            if (window.history.length > 1) {
+              window.history.back(); // Go back to the previous page
+            } else {
+              router.push('/app'); // Navigate to '/app' if no history
+            }
+          }
           router.refresh();
         } catch (e) {
           //
