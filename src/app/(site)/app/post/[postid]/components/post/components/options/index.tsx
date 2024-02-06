@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Option } from './option.models';
 import { PrimaryButton } from '@/components/ui/buttons/primary';
-import { downloadImage } from '@/utils/utils';
+import { deleteFromCloundinary, downloadImage } from '@/utils/utils';
 
 export function PostOptions({
   post_id,
@@ -39,9 +39,10 @@ export function PostOptions({
             .delete()
             .eq('id', post_id)
             .single();
-          console.log({ error });
           setIndexOfOptionLoading(null);
           if (error) throw new Error('Error trying to delete');
+          deleteFromCloundinary(image_url);
+          router.push('/app');
           router.refresh();
         } catch (e) {
           //

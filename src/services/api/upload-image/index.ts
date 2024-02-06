@@ -13,8 +13,8 @@ export async function postImage({
   image: string; // base 64
 }): Promise<IResponse> {
   try {
-    const res = await fetch("/api/images/upload", {
-      method: "POST",
+    const res = await fetch('/api/images/upload', {
+      method: 'POST',
       body: JSON.stringify({ image }),
     });
 
@@ -25,12 +25,12 @@ export async function postImage({
     if (!res.ok || !assetSecureUrl) {
       return {
         error:
-          "There is been an error on the response, or wether the asset secure url was not found on the response",
+          'There is been an error on the response, or wether the asset secure url was not found on the response',
         assetSecureUrl: null,
       };
     }
 
-    return { error: false, assetSecureUrl: assetSecureUrl };
+    return { error: false, assetSecureUrl };
   } catch (e) {
     return { error: e, assetSecureUrl: null };
   }
