@@ -6,11 +6,14 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Option } from './option.models';
 import { PrimaryButton } from '@/components/ui/buttons/primary';
-import { copyToClipboard, downloadImage } from '@/utils/utils';
 import { toast } from 'react-toastify';
 import ShareBtns from '@/components/feature/share-btns';
 import Modal from '@/components/ui/modal';
-import { deleteFromCloundinary, downloadImage } from '@/utils/utils';
+import {
+  deleteFromCloundinary,
+  copyToClipboard,
+  downloadImage,
+} from '@/utils/utils';
 
 export function PostOptions({
   post_id,
