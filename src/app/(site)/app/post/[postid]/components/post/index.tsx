@@ -22,7 +22,7 @@ export async function Post({
     .single();
 
   return (
-    <article className="w-full h-full flex lg:gap-4 gap-2 flex-col-reverse lg:flex-row-reverse items-start justify-end bg-neutral-200 dark:bg-neutral-900 border-t border-neutral-300 dark:border-cm-lighter-gray overflow-hidden p-5">
+    <article className="w-full h-full flex lg:gap-4 gap-2 flex-col-reverse lg:flex-row-reverse items-start justify-end bg-neutral-200 dark:bg-neutral-900 overflow-hidden">
       <header className="flex items-center justify-between">
         <section className="w-full flex flex-col items-start justify-center gap-4">
           <PostOptions

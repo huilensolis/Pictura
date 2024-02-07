@@ -28,21 +28,19 @@ export default async function PostPage({
   );
 
   return (
-    <div>
-      <div className="flex flex-col gap-1">
-        <nav className="w-full pt-4 pb-3 px-5 flex items-center gap-4">
-          <BackwardsNav catchHref="/app" />
-          <Heading level={9}>Back</Heading>
-        </nav>
-        {postData && !postError ? (
-          <>
-            <Post post={postData} doesUserOwnPost={doesUserOwnPost} />
-            <RecentPosts excludePost={postData} />
-          </>
-        ) : (
-          <Error404Box />
-        )}
-      </div>
+    <div className="flex flex-col gap-2 px-2 pb-10">
+      <nav className="w-full py-2 flex items-center gap-4 border-b border-neutral-300">
+        <BackwardsNav catchHref="/app" />
+        <Heading level={9}>Back</Heading>
+      </nav>
+      {postData && !postError ? (
+        <section className="p-y2 flex flex-col gap-2">
+          <Post post={postData} doesUserOwnPost={doesUserOwnPost} />
+          <RecentPosts excludePost={postData} />
+        </section>
+      ) : (
+        <Error404Box />
+      )}
     </div>
   );
 }
