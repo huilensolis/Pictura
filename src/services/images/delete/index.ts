@@ -20,12 +20,12 @@ export const deleteFromCloundinary = async (imageUrl: string) => {
       },
       body: JSON.stringify({ public_id }),
     });
-    //
-    // if (!response.ok) {
-    //   throw new Error("Failed to delete image");
-    // }
-    //
-    // return Promise.resolve();
+
+    if (!response.ok) {
+      throw new Error("Failed to delete image");
+    }
+
+    return Promise.resolve();
   } catch (error) {
     console.error("Error deleting image:", error);
     return Promise.reject(error);

@@ -21,6 +21,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
+    "react-share": "^5.0.3",
     "zod": "^3.22.4",
     "zustand": "^4.4.7"
   },
