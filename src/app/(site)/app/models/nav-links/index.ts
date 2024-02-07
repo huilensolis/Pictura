@@ -1,4 +1,10 @@
-import { HomeIcon, SearchIcon, SettingsIcon, StarIcon } from "lucide-react";
+import {
+  HomeIcon,
+  PlusSquare,
+  SearchIcon,
+  SettingsIcon,
+  StarIcon,
+} from "lucide-react";
 import { ILink } from "./nav-links.models";
 
 // each navLink must start with '/'
@@ -17,6 +23,11 @@ export const NAV_LINKS: ILink[] = [
     title: "Pins",
     href: "/app/pins",
     icon: StarIcon,
+  },
+  {
+    title: "New Post",
+    href: "/app/post/new",
+    icon: PlusSquare,
   },
   {
     title: "Configuration",

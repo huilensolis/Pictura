@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { LinkIcon } from "lucide-react";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { Database } from "@/supabase/types";

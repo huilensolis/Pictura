@@ -1,5 +1,4 @@
 import { Feed } from "./components/feed";
-import { NewPostBox } from "./components/new-post-box";
 import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,8 +21,7 @@ export default function AppPage() {
 
 function DesktopLayout() {
   return (
-    <div className="w-full h-full flex flex-col justify-start">
-      <NewPostBox />
+    <main className="w-full h-full flex flex-col justify-start py-2">
       <Suspense
         fallback={
           <ul className="w-full flex flex-col">
@@ -39,31 +37,28 @@ function DesktopLayout() {
       >
         <Feed />
       </Suspense>
-    </div>
+    </main>
   );
 }
 
 function MobileLayout() {
   return (
-    <div className="w-full h-full">
-      <main className="w-full h-full">
-        <NewPostBox />
-        <Suspense
-          fallback={
-            <ul className="w-full flex flex-col">
-              {Array(5)
-                .fill("")
-                .map((_, i) => (
-                  <li key={i}>
-                    <Skeleton className="h-[700px] w-full border-t border-neutral-300 dark:border-cm-lighter-gray" />
-                  </li>
-                ))}
-            </ul>
-          }
-        >
-          <Feed />
-        </Suspense>
-      </main>
-    </div>
+    <main className="w-full h-full py-2">
+      <Suspense
+        fallback={
+          <ul className="w-full flex flex-col">
+            {Array(5)
+              .fill("")
+              .map((_, i) => (
+                <li key={i}>
+                  <Skeleton className="h-[700px] w-full border-t border-neutral-300 dark:border-cm-lighter-gray" />
+                </li>
+              ))}
+          </ul>
+        }
+      >
+        <Feed />
+      </Suspense>
+    </main>
   );
 }

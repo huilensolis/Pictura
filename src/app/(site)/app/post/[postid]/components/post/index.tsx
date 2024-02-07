@@ -22,8 +22,8 @@ export async function Post({
     .single();
 
   return (
-    <article className="w-full h-full flex flex-row-reverse items-start justify-end bg-neutral-200 dark:bg-neutral-900 border-t border-neutral-300 dark:border-cm-lighter-gray overflow-hidden p-5">
-      <header className="flex items-center justify-between px-5">
+    <article className="w-full h-full flex lg:gap-4 gap-2 flex-col-reverse lg:flex-row-reverse items-start justify-end bg-neutral-200 dark:bg-neutral-900 border-t border-neutral-300 dark:border-cm-lighter-gray overflow-hidden p-5">
+      <header className="flex items-center justify-between">
         <section className="w-full flex flex-col items-start justify-center gap-4">
           <PostOptions
             post_id={post.id}
@@ -57,7 +57,7 @@ export async function Post({
       <LazyImage
         src={asset_url}
         alt={title}
-        className="w-full max-w-[800px] h-full object-cover object-center rounded-md"
+        className="w-full lg:max-w-[400px] xl:max-w-[600px] h-full max-h-[800px] object-cover object-center rounded-md"
         skeletonClassName="w-full h-[500px]"
       />
     </article>

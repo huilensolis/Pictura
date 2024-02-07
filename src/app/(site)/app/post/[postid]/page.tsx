@@ -36,11 +36,7 @@ export default async function PostPage({
         </nav>
         {postData && !postError ? (
           <>
-            <Post
-              post={postData}
-              doesUserOwnPost={doesUserOwnPost}
-              postHref=""
-            />
+            <Post post={postData} doesUserOwnPost={doesUserOwnPost} />
             <RecentPosts excludePost={postData} />
           </>
         ) : (

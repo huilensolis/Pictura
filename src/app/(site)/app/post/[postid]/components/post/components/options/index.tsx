@@ -2,11 +2,11 @@
 
 import { useSupabase } from "@/hooks/use-supabase";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Option } from "./option.models";
-import { deleteFromCloundinary, downloadImage } from "@/utils/utils";
+import { deleteFromCloundinary } from "@/services/images/delete";
 import { Download, Pencil, Share2, Trash2 } from "lucide-react";
 import { PlainButton } from "@/components/ui/buttons/plain";
+import { downloadImage } from "../../../../../../../../../services/images/download/index";
 
 export function PostOptions({
   post_id,
@@ -21,10 +21,6 @@ export function PostOptions({
 
   const router = useRouter();
 
-  const [indexOfOptionLoading, setIndexOfOptionLoading] = useState<
-    number | null
-  >(null);
-
   const OWNER_OPTIONS: Option[] = [
     { alt: "Edit", icon: Pencil, action: () => {} },
     {
@@ -32,27 +28,27 @@ export function PostOptions({
       icon: Trash2,
       isDangerous: true,
       action: async () => {
-        const indexOfOption = 1;
-        setIndexOfOptionLoading(indexOfOption);
         try {
           const { error } = await supabase
             .from("posts")
             .delete()
             .eq("id", post_id)
             .single();
-          setIndexOfOptionLoading(null);
+
           if (error) throw new Error("Error trying to delete");
-          deleteFromCloundinary(image_url);
+
+          await deleteFromCloundinary(image_url);
+
           if (typeof window !== "undefined") {
             if (window.history.length > 1) {
-              window.history.back(); // Go back to the previous page
+              return window.history.back(); // Go back to the previous page
             } else {
-              router.push("/app"); // Navigate to '/app' if no history
+              return router.push("/app"); // Navigate to '/app' if no history
             }
           }
           router.refresh();
         } catch (e) {
-          //
+          console.log(e);
         }
       },
     },
@@ -74,11 +70,11 @@ export function PostOptions({
 
   return (
     <ul id="dropdown" className="flex gap-2">
-      {FINAL_OPTIONS.map((option, index) => (
+      {FINAL_OPTIONS.map((option, _index) => (
         <li key={option.alt}>
           <PlainButton
-            isDisabled={indexOfOptionLoading === index}
-            isLoading={indexOfOptionLoading === index}
+            // isDisabled={indexOfOptionLoading === index}
+            // isLoading={indexOfOptionLoading === index}
             onClick={option.action}
             className={`px-2 py-2 hover:${
               option.isDangerous ? "bg-red-500" : "bg-neutral-300"
