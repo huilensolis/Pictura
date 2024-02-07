@@ -73,11 +73,13 @@ export function PostOptions({
         <li key={option.alt}>
           <PlainButton
             onClick={option.action}
-            className={`px-2 py-2 hover:${
-              option.isDangerous ? "bg-red-500" : "bg-neutral-300"
+            className={`px-2 py-2  dark:hover:brightness-125 hover:brightness-90 transition-all duration-75 ${
+              option.isDangerous
+                ? "bg-red-500"
+                : "bg-neutral-300 dark:bg-neutral-700"
             }`}
           >
-            {<option.icon />}
+            {<option.icon className="text-neutral-800 dark:text-neutral-300" />}
           </PlainButton>
         </li>
       ))}

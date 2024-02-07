@@ -29,7 +29,7 @@ export default async function PostPage({
 
   return (
     <div className="flex flex-col gap-2 px-2 pb-10">
-      <nav className="w-full py-2 flex items-center gap-4 border-b border-neutral-300">
+      <nav className="w-full py-2 flex items-center gap-4 border-b border-neutral-300 dark:border-cm-lighter-gray">
         <BackwardsNav catchHref="/app" />
         <Heading level={9}>Back</Heading>
       </nav>
