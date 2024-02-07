@@ -1,4 +1,8 @@
+import { LucideIcon } from "lucide-react";
+
 export type Option = {
   action: () => void;
-  title: string;
+  alt: string;
+  icon: LucideIcon;
+  isDangerous?: boolean;
 };

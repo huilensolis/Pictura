@@ -14,7 +14,7 @@ import { Database } from "@/supabase/types";
 import { Alert } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { ImagePicker } from "@/components/ui/image-picker";
-import { postImage } from "@/services/api/upload-image";
+import { postImage } from "@/services/images/upload";
 import { useBase64Image } from "@/hooks/use-base-64-image";
 import { Skeleton } from "@/components/ui/skeleton";
 

@@ -1,4 +1,4 @@
-import cloudinary from '@/services/cloudinary';
+import cloudinary from "@/services/cloudinary";
 
 export async function DELETE(req: Request) {
   try {
@@ -6,20 +6,20 @@ export async function DELETE(req: Request) {
     const { public_id } = reqBody;
 
     if (!public_id) {
-      throw new Error('Invalid public_id');
+      throw new Error("Invalid public_id");
     }
 
     const result = await cloudinary.v2.uploader.destroy(public_id);
 
-    if (result.result === 'ok') {
+    if (result.result === "ok") {
       return Response.json({
-        message: 'Image deleted successfully',
+        message: "Image deleted successfully",
       });
     } else {
-      throw new Error('Failed to delete image');
+      throw new Error("Failed to delete image");
     }
   } catch (error) {
-    console.log('Error in DELETE: ', { error });
+    console.log("Error in DELETE: ", { error });
     return Response.error();
   }
 }
