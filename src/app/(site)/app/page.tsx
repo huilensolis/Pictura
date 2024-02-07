@@ -24,12 +24,12 @@ function DesktopLayout() {
     <main className="w-full h-full flex flex-col justify-start py-2">
       <Suspense
         fallback={
-          <ul className="w-full flex flex-col">
+          <ul className="w-full flex flex-wrap gap-2">
             {Array(8)
               .fill("")
               .map((_, i) => (
                 <li key={i}>
-                  <Skeleton className="h-[700px] w-full border-t border-neutral-300 dark:border-cm-lighter-gray" />
+                  <Skeleton className="h-[500px] w-80 rounded-md" />
                 </li>
               ))}
           </ul>
@@ -46,12 +46,12 @@ function MobileLayout() {
     <main className="w-full h-full py-2">
       <Suspense
         fallback={
-          <ul className="w-full flex flex-col">
-            {Array(5)
+          <ul className="w-full grid grid-cols-2 gap-2">
+            {Array(6)
               .fill("")
               .map((_, i) => (
                 <li key={i}>
-                  <Skeleton className="h-[700px] w-full border-t border-neutral-300 dark:border-cm-lighter-gray" />
+                  <Skeleton className="h-[500px] w-full rounded-md" />
                 </li>
               ))}
           </ul>
