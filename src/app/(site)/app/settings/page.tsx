@@ -5,6 +5,7 @@ import {
   CircleUserIcon,
   LockIcon,
   SunMoonIcon,
+  UserRoundCog,
 } from "lucide-react";
 import Link from "next/link";
 import { ILink } from "../models/nav-links/nav-links.models";
@@ -47,6 +48,11 @@ const LINKS: ITLink[] = [
     title: "Accessibility",
     icon: SunMoonIcon,
     href: "settings/section/accessibility",
+  },
+  {
+    title: "Manage Account",
+    icon: UserRoundCog,
+    href: "settings/section/account",
   },
 ];
 
