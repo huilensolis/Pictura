@@ -7,6 +7,7 @@ import { ThemeSwitcher } from "@/components/feature/theme-switcher";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/hooks/use-session";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ClientRouting } from "@/models/routing/client";
 
 const NAVLINKS: INavLink[] = [
   {
@@ -33,7 +34,7 @@ export function Header() {
     <div className="p-2 w-full max-w-4xl">
       <header className="w-full flex items-center justify-between bg-neutral-800 p-[5px] text-neutral-50 rounded-2xl dark:bg-neutral-800">
         <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
-          <Link href="/">
+          <Link href={ClientRouting.home}>
             <Logo />
           </Link>
           {NAVLINKS.map((link, index) => (
@@ -67,7 +68,7 @@ function AuthenticatedButtons({ onLogout }: { onLogout: () => void }) {
     <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
       <li>
         <Link
-          href="/app"
+          href={ClientRouting.app}
           className="flex justify-center items-center bg-blue-600 rounded-xl h-10 px-3 text-neutral-50 font-semibold hover:brightness-105"
         >
           Launch App
@@ -90,7 +91,7 @@ function UnauthenticatedLinks() {
     <ul className="flex justify-center items-center h-full gap-2 text-sm font-normal">
       <li className="h-full">
         <Link
-          href="/auth/sign-up"
+          href={ClientRouting.auth.signUp}
           className="flex justify-center items-center bg-neutral-50 rounded-xl h-10 px-3 text-neutral-800 font-semibold hover:bg-neutral-400"
         >
           Sign Up
@@ -99,7 +100,7 @@ function UnauthenticatedLinks() {
 
       <li className="h-full">
         <Link
-          href="/auth/log-in"
+          href={ClientRouting.auth.signIn}
           className="flex justify-center items-center bg-blue-600 rounded-xl h-10 px-3 text-neutral-50 font-semibold hover:brightness-105"
         >
           Log In

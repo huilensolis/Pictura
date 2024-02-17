@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { ILink } from "../models/nav-links/nav-links.models";
 import { MobileAside } from "@/components/feature/aside-menu/mobile-aside";
+import { ClientRouting } from "@/models/routing/client";
 
 export default function SettingsPage() {
   return (
@@ -37,22 +38,22 @@ const LINKS: ITLink[] = [
   {
     title: "Edit Profile",
     icon: CircleUserIcon,
-    href: "settings/section/profile",
+    href: ClientRouting.configuration.editProfile,
   },
   {
     title: "Reset Password",
     icon: LockIcon,
-    href: "settings/section/reset-password",
+    href: ClientRouting.configuration.resetPassword,
   },
   {
     title: "Accessibility",
     icon: SunMoonIcon,
-    href: "settings/section/accessibility",
+    href: ClientRouting.configuration.accessibility,
   },
   {
     title: "Manage Account",
     icon: UserRoundCog,
-    href: "settings/section/account",
+    href: ClientRouting.configuration.account,
   },
 ];
 

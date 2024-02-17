@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { LazyImage } from "@/components/feature/lazy-image";
 import { NAV_LINKS } from "../../models/nav-links/";
 import { CustomNavLink } from "@/components/feature/nav/link";
+import { ClientRouting } from "@/models/routing/client";
 
 export function AppLeftAside() {
   return (
@@ -81,7 +82,11 @@ function UserProfile() {
     <>
       {isLoadingUserProfile && <Skeleton className="w-64 h-16 rounded-full" />}
       {!isLoadingUserProfile && userProfile && (
-        <Link href={`/app/profile/${userProfile.username}`}>
+        <Link
+          href={ClientRouting.profile(
+            userProfile.username ?? ClientRouting.configuration.editProfile,
+          )}
+        >
           <ActualUserProfile userProfile={userProfile} />
         </Link>
       )}
