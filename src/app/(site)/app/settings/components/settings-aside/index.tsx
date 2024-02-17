@@ -3,6 +3,7 @@
 import { DesktopAside } from "@/components/feature/aside-menu/desktop-aside";
 import { BackwardsNav } from "@/components/feature/nav/backwards";
 import { IRLink } from "@/components/feature/nav/models";
+import { ClientRouting } from "@/models/routing/client";
 import {
   CircleUserIcon,
   LockIcon,
@@ -13,32 +14,21 @@ import {
 const LINKS: IRLink[] = [
   {
     icon: CircleUserIcon,
-    href: "profile",
+    href: ClientRouting.configuration.editProfile,
   },
   {
     icon: LockIcon,
-    href: "reset-password",
+    href: ClientRouting.configuration.resetPassword,
   },
   {
     icon: SunMoonIcon,
-    href: "accessibility",
+    href: ClientRouting.configuration.accessibility,
   },
   {
     icon: UserRoundCog,
-    href: "account",
+    href: ClientRouting.configuration.account,
   },
 ];
-
-const LINKS_MAPPED: IRLink[] = LINKS.map((linkItem): IRLink => {
-  const newHref = `/app/settings/section/${linkItem.href}`;
-
-  return {
-    ...linkItem,
-    href: newHref,
-  };
-});
-
-console.log(LINKS_MAPPED);
 
 export function SettingsAside() {
   return (
@@ -46,7 +36,7 @@ export function SettingsAside() {
       <div className="pt-5 flex items-center justify-center">
         <BackwardsNav catchHref="/app" />
       </div>
-      <DesktopAside links={LINKS_MAPPED} />
+      <DesktopAside links={LINKS} />
     </div>
   );
 }

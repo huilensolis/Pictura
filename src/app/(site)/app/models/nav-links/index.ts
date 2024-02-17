@@ -6,32 +6,32 @@ import {
   StarIcon,
 } from "lucide-react";
 import { ILink } from "./nav-links.models";
+import { ClientRouting } from "@/models/routing/client";
 
-// each navLink must start with '/'
 export const NAV_LINKS: ILink[] = [
   {
     title: "Home",
-    href: "/app",
+    href: ClientRouting.app,
     icon: HomeIcon,
   },
   {
     title: "Search",
-    href: "/app/search",
+    href: ClientRouting.post().search.page,
     icon: SearchIcon,
   },
   {
     title: "Pins",
-    href: "/app/pins",
+    href: "",
     icon: StarIcon,
   },
   {
     title: "New Post",
-    href: "/app/post/new",
+    href: ClientRouting.post().newPost,
     icon: PlusSquare,
   },
   {
     title: "Configuration",
-    href: "/app/settings",
+    href: ClientRouting.configuration.home,
     icon: SettingsIcon,
   },
 ];

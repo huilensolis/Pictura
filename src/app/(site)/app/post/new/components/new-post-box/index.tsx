@@ -12,6 +12,7 @@ import { useSupabase } from "@/hooks/use-supabase";
 import { useBase64Image } from "@/hooks/use-base-64-image";
 import { Heading } from "@/components/ui/typography/heading";
 import { useRouting } from "@/hooks/useRouting";
+import { ClientRouting } from "@/models/routing/client";
 
 export function NewPostBox() {
   const [formImageSrc, setFormImageSrc] = useState<string | null>(null);
@@ -92,7 +93,7 @@ export function NewPostBox() {
       });
       UnSelectImage();
       resetField("title");
-      goTo(`/app/post/${data.id}`);
+      goTo(ClientRouting.post().page(JSON.stringify(data.id) || ""));
     } catch (e) {
       console.log(e);
       setFormSubmitingState({

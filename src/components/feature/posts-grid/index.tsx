@@ -1,6 +1,7 @@
 import { Database } from "@/supabase/types";
 import { LazyImage } from "../lazy-image";
 import Link from "next/link";
+import { ClientRouting } from "@/models/routing/client";
 
 export function PostsGrid({
   posts,
@@ -20,7 +21,10 @@ export function PostsGrid({
             key={post.id}
             className="w-full h-full flex rounded-md overflow-hidden"
           >
-            <Link href={`/app/post/${post.id}`} className="w-full h-full">
+            <Link
+              href={ClientRouting.post().page(JSON.stringify(post.id) || "")}
+              className="w-full h-full"
+            >
               <LazyImage
                 src={post.asset_url}
                 alt={post.title}
