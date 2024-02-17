@@ -27,7 +27,7 @@ export class ClientRouting {
   static post() {
     return {
       newPost: "/app/post/new",
-      page: (postId: string) => `app/post/${postId}`,
+      page: (postId: string) => `/app/post/${postId}`,
       search: {
         page: "/app/search",
         searchByTitle: (title: string) => `app/search?search_query=${title}`,
