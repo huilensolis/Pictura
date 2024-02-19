@@ -18,8 +18,10 @@ export function LazyImage({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const [isOnViewPort, setIsOnViewPort] = useState<boolean>(false);
+  const [imageHeight, setImageHeight] = useState<number | null>(null);
 
-  const handleImageLoad = () => {
+  const handleImageLoad = (img: HTMLImageElement) => {
+    setImageHeight(img.offsetHeight);
     setLoading(false);
     setError(false);
   };
@@ -36,7 +38,7 @@ export function LazyImage({
       img.src = src;
     }
 
-    img.onload = handleImageLoad;
+    img.onload = () => handleImageLoad(img);
     img.onerror = handleImageError;
 
     return () => {
@@ -47,6 +49,7 @@ export function LazyImage({
 
   const imageContainerRef = useRef(null);
 
+  const imageRef = useRef(null);
   useEffect(() => {
     const options: IntersectionObserverInit = {
       root: null, // we set the root to null, so it takes the screen viewport as the root element. for more info, read https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
@@ -80,10 +83,20 @@ export function LazyImage({
 
   return (
     <div ref={imageContainerRef} className={`flex flex-none ${className}`}>
-      {isOnViewPort && !error && (
-        <img src={src} alt={alt} className={loading ? "hidden" : className} />
+      {
+        <img
+          src={src}
+          alt={alt}
+          className={loading || error ? "hidden" : className}
+          ref={imageRef}
+        />
+      }
+      {loading && !error && (
+        <Skeleton
+          className={skeletonClassName}
+          style={{ height: imageHeight ?? "" }}
+        />
       )}
-      {loading && !error && <Skeleton className={skeletonClassName} />}
       {error && <ErrorComponent containerClassName={skeletonClassName} />}
     </div>
   );
