@@ -15,7 +15,7 @@ export async function Feed() {
   const doesPostsExist = posts && posts.length > 0 && !error;
 
   return (
-    <main className="w-full h-full">
+    <main className="w-full h-full px-2">
       {doesPostsExist && <PostsGrid posts={posts} />}
       {!doesPostsExist && (
         <article className="flex items-center justify-center w-full max-h-96 py-16 text-center border-y border-neutral-300">

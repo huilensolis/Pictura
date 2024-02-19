@@ -21,7 +21,6 @@ export function LazyImage({
   const [imageHeight, setImageHeight] = useState<number | null>(null);
 
   const handleImageLoad = (img: HTMLImageElement) => {
-    console.log("running handleImage load");
     setImageHeight(img.naturalHeight / 40);
     setLoading(false);
     setError(false);
