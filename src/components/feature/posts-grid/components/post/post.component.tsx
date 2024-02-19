@@ -13,7 +13,7 @@ export function PostsGridRow({
   return (
     <li
       key={post.id}
-      className={`flex w-full h-full py-2 rounded-md overflow-hidden row-start-auto`}
+      className={`flex w-full h-full py-2 rounded-lg overflow-hidden`}
     >
       <Link href={ClientRouting.post().page(JSON.stringify(post.id) || "")}>
         <LazyImage

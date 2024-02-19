@@ -12,7 +12,7 @@ export function PostsGrid({
   onFetchMorePosts?: () => Database["public"]["Tables"]["posts"]["Row"][];
 }) {
   return (
-    <ul className="pb-[100vh] break-inside-avoid [column-count:3]">
+    <ul className="break-inside-avoid gap-2 px-2 [column-count:2] lg:[column-count:3]">
       {posts.length > 0 &&
         posts.map((post) => <PostsGridRow key={post.id} post={post} />)}
     </ul>
