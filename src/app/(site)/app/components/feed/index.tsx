@@ -9,7 +9,8 @@ export async function Feed() {
   const { data: posts, error } = await supabase
     .from("posts")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(28);
 
   const doesPostsExist = posts && posts.length > 0 && !error;
 

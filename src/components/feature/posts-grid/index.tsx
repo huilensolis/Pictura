@@ -1,7 +1,5 @@
 import { Database } from "@/supabase/types";
-import { LazyImage } from "../lazy-image";
-import Link from "next/link";
-import { ClientRouting } from "@/models/routing/client";
+import { PostsGridRow } from "./components/post";
 
 export function PostsGrid({
   posts,
@@ -14,26 +12,9 @@ export function PostsGrid({
   onFetchMorePosts?: () => Database["public"]["Tables"]["posts"]["Row"][];
 }) {
   return (
-    <ul className="grid xl:grid-cols-3 lg:grid-cols-3 grid-cols-2  grid-rows-[repeat(auto-fill,_minmax(1fr,_500px)] gap-2">
+    <ul className="pb-[100vh] break-inside-avoid [column-count:3]">
       {posts.length > 0 &&
-        posts.map((post) => (
-          <li
-            key={post.id}
-            className="w-full h-full flex rounded-md overflow-hidden"
-          >
-            <Link
-              href={ClientRouting.post().page(JSON.stringify(post.id) || "")}
-              className="w-full h-full"
-            >
-              <LazyImage
-                src={post.asset_url}
-                alt={post.title}
-                className="w-full h-full object-cover object-center"
-                skeletonClassName="w-full h-full"
-              />
-            </Link>
-          </li>
-        ))}
+        posts.map((post) => <PostsGridRow key={post.id} post={post} />)}
     </ul>
   );
 }
