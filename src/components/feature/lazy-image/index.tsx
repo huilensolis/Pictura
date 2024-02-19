@@ -21,7 +21,7 @@ export function LazyImage({
   const [imageHeight, setImageHeight] = useState<number | null>(null);
 
   const handleImageLoad = (img: HTMLImageElement) => {
-    setImageHeight(img.offsetHeight);
+    setImageHeight(img.naturalHeight / 40);
     setLoading(false);
     setError(false);
   };
@@ -31,13 +31,14 @@ export function LazyImage({
     setError(true);
   };
 
+  const imageRef = useRef<null | HTMLImageElement>(null);
+
   useEffect(() => {
     const img = new Image();
 
     if (isOnViewPort) {
       img.src = src;
     }
-
     img.onload = () => handleImageLoad(img);
     img.onerror = handleImageError;
 
@@ -49,7 +50,6 @@ export function LazyImage({
 
   const imageContainerRef = useRef(null);
 
-  const imageRef = useRef(null);
   useEffect(() => {
     const options: IntersectionObserverInit = {
       root: null, // we set the root to null, so it takes the screen viewport as the root element. for more info, read https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
@@ -82,15 +82,15 @@ export function LazyImage({
   }, [src]);
 
   return (
-    <div ref={imageContainerRef} className={`flex flex-none ${className}`}>
-      {
+    <div ref={imageContainerRef} className={`${className}`}>
+      {(loading || error || src) && (
         <img
           src={src}
           alt={alt}
           className={loading || error ? "hidden" : className}
           ref={imageRef}
         />
-      }
+      )}
       {loading && !error && (
         <Skeleton
           className={skeletonClassName}

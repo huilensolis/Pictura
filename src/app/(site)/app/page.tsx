@@ -27,11 +27,17 @@ function DesktopLayout() {
           <ul className="w-full flex flex-wrap gap-2">
             {Array(8)
               .fill("")
-              .map((_, i) => (
-                <li key={i}>
-                  <Skeleton className="h-[500px] w-80 rounded-md" />
-                </li>
-              ))}
+              .map((_, i) => {
+                const height = Math.floor(Math.random() * 10) > 5 ? 240 : 500;
+                return (
+                  <li key={i}>
+                    <Skeleton
+                      className="w-full rounded-md"
+                      style={{ height }}
+                    />
+                  </li>
+                );
+              })}
           </ul>
         }
       >

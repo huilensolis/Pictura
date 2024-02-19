@@ -11,16 +11,16 @@ export function PostsGridRow({
   post: Database["public"]["Tables"]["posts"]["Row"];
 }) {
   return (
-    <li
-      key={post.id}
-      className={`flex w-full h-full py-2 rounded-lg overflow-hidden`}
-    >
-      <Link href={ClientRouting.post().page(JSON.stringify(post.id) || "")}>
+    <li key={post.id} className={`flex w-full h-full py-2`}>
+      <Link
+        href={ClientRouting.post().page(JSON.stringify(post.id) || "")}
+        className="w-full"
+      >
         <LazyImage
           src={post.asset_url}
           alt={post.title}
-          className="flex w-full h-auto"
-          skeletonClassName="w-full h-full"
+          className="flex w-full h-auto rounded-md"
+          skeletonClassName="w-full h-96"
         />
       </Link>
     </li>
