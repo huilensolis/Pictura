@@ -17,11 +17,8 @@ export function LazyImage({
 }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
-  const [isOnViewPort, setIsOnViewPort] = useState<boolean>(false);
-  const [imageHeight, setImageHeight] = useState<number | null>(null);
 
-  const handleImageLoad = (img: HTMLImageElement) => {
-    setImageHeight(img.naturalHeight / 40);
+  const handleImageLoad = () => {
     setLoading(false);
     setError(false);
   };
@@ -31,72 +28,36 @@ export function LazyImage({
     setError(true);
   };
 
-  const imageRef = useRef<null | HTMLImageElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    const img = new Image();
+    if (!imageRef.current) return;
 
-    if (isOnViewPort) {
-      img.src = src;
-    }
-    img.onload = () => handleImageLoad(img);
-    img.onerror = handleImageError;
+    if (imageRef.current.complete) handleImageLoad();
 
-    return () => {
-      img.onerror = null;
-      img.onload = null;
-    };
-  }, [src, isOnViewPort]);
-
-  const imageContainerRef = useRef(null);
-
-  useEffect(() => {
-    const options: IntersectionObserverInit = {
-      root: null, // we set the root to null, so it takes the screen viewport as the root element. for more info, read https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
-      rootMargin: "1000px 0px",
-      threshold: 0,
-    };
-
-    function callback(entries: IntersectionObserverEntry[], _observer: any) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setIsOnViewPort(true);
-        } else {
-          setIsOnViewPort(false);
-        }
-      });
-    }
-
-    const observer = new IntersectionObserver(callback, options);
-
-    if (imageContainerRef.current && !error) {
-      observer.observe(imageContainerRef.current);
-    }
-
-    return () => {
-      if (imageContainerRef.current && !error) {
-        observer.unobserve(imageContainerRef.current);
-        observer.disconnect();
-      }
-    };
-  }, [src]);
+    imageRef.current.onload = handleImageLoad;
+    imageRef.current.onerror = handleImageError;
+  }, []);
 
   return (
-    <div ref={imageContainerRef} className={`${className}`}>
-      {(loading || error || src) && (
+    <div className={`flex flex-col`}>
+      <div className="relative">
         <img
           src={src}
           alt={alt}
-          className={loading || error ? "hidden" : className}
+          loading="lazy"
+          className={loading ? "opacity-0" : className}
           ref={imageRef}
         />
-      )}
-      {loading && !error && (
-        <Skeleton
-          className={skeletonClassName}
-          style={{ height: imageHeight ?? "" }}
-        />
-      )}
+        {loading && !error && (
+          <Skeleton
+            className={[
+              "absolute top-0 left-0 w-full h-full",
+              skeletonClassName,
+            ].join(" ")}
+          />
+        )}
+      </div>
       {error && <ErrorComponent containerClassName={skeletonClassName} />}
     </div>
   );
