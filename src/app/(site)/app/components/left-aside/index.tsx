@@ -12,28 +12,21 @@ import { ClientRouting } from "@/models/routing/client";
 
 export function AppLeftAside() {
   return (
-    <aside className="h-screen w-full flex flex-col items-end gap-1 px-4 py-2 bg-neutral-200 dark:bg-cm-gray">
-      <div className="w-max h-full flex flex-col justify-between gap-4">
-        <div className="flex w-full h-full flex-col gap-4">
-          <header className="pl-2 flex font-bold items-center gap-3"></header>
-          <nav>
-            <ul className="flex flex-col gap-4 w-max">
-              {NAV_LINKS.map((linkItem) => (
-                <li key={linkItem.href}>
-                  <CustomNavLink
-                    title={linkItem.title}
-                    href={linkItem.href}
-                    icon={linkItem.icon}
-                  />
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-        <div>
-          <UserProfile />
-        </div>
-      </div>
+    <aside className="h-screen w-full flex flex-col items-center justify-between gap-4 px-4 py-2 pt-4 bg-neutral-200 dark:bg-cm-gray">
+      <nav className="w-full">
+        <ul className="flex flex-col gap-4 w-full">
+          {NAV_LINKS.map((linkItem) => (
+            <li key={linkItem.href}>
+              <CustomNavLink
+                title={linkItem.title}
+                href={linkItem.href}
+                icon={linkItem.icon}
+              />
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <UserProfile />
     </aside>
   );
 }
@@ -57,8 +50,9 @@ function UserProfile() {
 
       return shortname + dots.join("");
     };
+
     return (
-      <article className="flex items-center gap-4 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray transition-all delay-75 py-2 px-4 rounded-full">
+      <article className="w-full flex items-center gap-4 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray transition-all delay-75 py-2 px-4 rounded-full">
         <LazyImage
           alt={`${userProfile?.name ?? ""}'s Profile Picture`}
           className="w-12 h-12 rounded-full object-cover object-center aspect-square"
@@ -80,7 +74,9 @@ function UserProfile() {
 
   return (
     <>
-      {isLoadingUserProfile && <Skeleton className="w-64 h-16 rounded-full" />}
+      {isLoadingUserProfile && (
+        <Skeleton className="w-full h-16 rounded-full" />
+      )}
       {!isLoadingUserProfile && userProfile && (
         <Link
           href={ClientRouting.profile(
