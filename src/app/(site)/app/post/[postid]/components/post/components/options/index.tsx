@@ -32,8 +32,7 @@ export function PostOptions({
           const { error } = await supabase
             .from("posts")
             .delete()
-            .eq("id", post_id)
-            .single();
+            .eq("id", post_id);
 
           if (error) throw new Error("Error trying to delete");
 

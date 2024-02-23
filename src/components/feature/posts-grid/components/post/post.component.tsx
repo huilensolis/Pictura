@@ -20,7 +20,7 @@ export function PostsGridRow({
           src={post.asset_url}
           alt={post.title}
           className="flex w-full h-auto rounded-md"
-          skeletonClassName="w-full h-96"
+          skeletonClassName="w-full h-[400px]"
         />
       </Link>
     </li>
