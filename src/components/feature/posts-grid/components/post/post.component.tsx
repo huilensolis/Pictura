@@ -1,5 +1,3 @@
-"use client";
-
 import { LazyImage } from "@/components/feature/lazy-image";
 import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
