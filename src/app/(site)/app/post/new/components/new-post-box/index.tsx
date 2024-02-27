@@ -117,7 +117,9 @@ export function NewPostBox() {
       >
         <section className="flex flex-col gap-4">
           <div
-            className="flex cursor-pointer h-96 max-h-[700px] w-full max-w-96 relative flex-col justify-center items-center bg-neutral-300 hover:bg-neutral-300 dark:bg-cm-lighter-gray dark:hover:brightness-125 dark:hover:bg-cm-lighter-gray transition-all duration-75 rounded-md overflow-hidden"
+            className={`flex cursor-pointer ${
+              formImageSrc ? "h-max" : "h-full"
+            } w-96 relative flex-col justify-center items-center bg-neutral-300 hover:bg-neutral-300 dark:bg-cm-lighter-gray dark:hover:brightness-125 dark:hover:bg-cm-lighter-gray transition-all duration-75 rounded-md overflow-hidden`}
             onMouseOver={() => formImageSrc && setHoveringImageArea(true)}
             onMouseOut={() =>
               isHoveringImageArea && setHoveringImageArea(false)
