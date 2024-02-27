@@ -1,4 +1,7 @@
 # Pictura
+![43shots_so](https://github.com/Huilensolis/Pictura/assets/113150193/3009a793-746f-4efc-b954-77c21348e9c8)
+
+
 
 **App Features:**
 
