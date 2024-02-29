@@ -5,9 +5,15 @@ import Link from "next/link";
 
 export function PostsGridRow({
   post,
+  image,
+  columnWidth,
 }: {
   post: Database["public"]["Tables"]["posts"]["Row"];
+  image: { width: number; height: number };
+  columnWidth: number;
 }) {
+  const imageHeight = (image.height * columnWidth) / columnWidth;
+
   return (
     <li key={post.id} className={`flex w-full h-full py-2`}>
       <Link
@@ -18,7 +24,8 @@ export function PostsGridRow({
           src={post.asset_url}
           alt={post.title}
           className="flex w-full h-auto rounded-md"
-          skeletonClassName="w-full h-[400px]"
+          skeletonClassName="w-full"
+          skeletonStyle={{ height: imageHeight }}
         />
       </Link>
     </li>
