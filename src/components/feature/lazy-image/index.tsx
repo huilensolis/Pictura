@@ -2,18 +2,20 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { ImageOff } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 
 export function LazyImage({
   src,
   alt,
   className,
   skeletonClassName,
+  skeletonStyle = {},
 }: {
   src: string;
   alt: string;
   className?: string;
   skeletonClassName: string;
+  skeletonStyle?: CSSProperties;
 }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -55,6 +57,7 @@ export function LazyImage({
               "absolute top-0 left-0 w-full h-full",
               skeletonClassName,
             ].join(" ")}
+            style={skeletonStyle}
           />
         )}
       </div>

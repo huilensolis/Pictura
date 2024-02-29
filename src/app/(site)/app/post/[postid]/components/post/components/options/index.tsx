@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { deleteFromCloundinary } from "@/services/images/delete";
+import { deleteImageAsset } from "@/services/images/delete";
 import { Download, Pencil, Trash2 } from "lucide-react";
 import { PlainButton } from "@/components/ui/buttons/plain";
 import { useSupabase } from "@/hooks/use-supabase";
@@ -36,7 +36,7 @@ export function PostOptions({
 
           if (error) throw new Error("Error trying to delete");
 
-          await deleteFromCloundinary(image_url);
+          await deleteImageAsset(image_url);
 
           if (typeof window !== "undefined") {
             if (window.history.length > 1) {
