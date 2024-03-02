@@ -1,3 +1,5 @@
+"use client";
+
 import { LazyImage } from "@/components/feature/lazy-image";
 import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
@@ -5,17 +7,14 @@ import Link from "next/link";
 
 export function PostsGridRow({
   post,
-  image,
   columnWidth,
 }: {
   post: Database["public"]["Tables"]["posts"]["Row"];
-  image: { width: number; height: number };
   columnWidth: number;
 }) {
-  const imageHeight = (image.height * columnWidth) / columnWidth;
-
+  const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
-    <li key={post.id} className={`flex w-full h-full py-2`}>
+    <li key={post.id} className={`flex w-full h-full pt-2`}>
       <Link
         href={ClientRouting.post().page(JSON.stringify(post.id) || "")}
         className="w-full"
@@ -25,7 +24,8 @@ export function PostsGridRow({
           alt={post.title}
           className="flex w-full h-auto rounded-md"
           skeletonClassName="w-full"
-          skeletonStyle={{ height: imageHeight }}
+          height={imageHeight}
+          width={columnWidth}
         />
       </Link>
     </li>

@@ -40,22 +40,28 @@ export interface Database {
           profile_id: string;
           title: string;
           user_id: string;
+          asset_width: number;
+          asset_height: number;
         };
         Insert: {
-          asset_url: string;
-          created_at?: string;
-          id?: number;
-          profile_id: string;
-          user_id: string;
-          title: string;
-        };
-        Update: {
           asset_url?: string;
           created_at?: string;
           id?: number;
           profile_id?: string;
           user_id: string;
           title: string;
+          asset_width: number;
+          asset_height: number;
+        };
+        Update: {
+          asset_url?: string;
+          created_at?: string;
+          id?: number;
+          profile_id?: string;
+          user_id?: string;
+          title?: string;
+          asset_width?: number;
+          asset_height?: number;
         };
         Relationships: [
           {

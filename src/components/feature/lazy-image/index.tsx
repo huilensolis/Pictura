@@ -2,20 +2,22 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { ImageOff } from "lucide-react";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function LazyImage({
   src,
   alt,
   className,
-  skeletonClassName,
-  skeletonStyle = {},
+  width,
+  height,
+  skeletonClassName = "",
 }: {
   src: string;
   alt: string;
   className?: string;
-  skeletonClassName: string;
-  skeletonStyle?: CSSProperties;
+  height: number;
+  width: number;
+  skeletonClassName?: string;
 }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -42,22 +44,24 @@ export function LazyImage({
   }, []);
 
   return (
-    <div className={`flex flex-col`}>
+    <div className={`flex flex-col relative`}>
       <div className="relative">
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          className={loading ? "opacity-0" : className}
-          ref={imageRef}
-        />
+        {!error && (
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            className={loading ? "opacity-0" : className}
+            ref={imageRef}
+            style={{ height, width }}
+          />
+        )}
         {loading && !error && (
           <Skeleton
-            className={[
-              "absolute top-0 left-0 w-full h-full",
-              skeletonClassName,
-            ].join(" ")}
-            style={skeletonStyle}
+            className={["absolute top-0 left-0 w-full", skeletonClassName].join(
+              " ",
+            )}
+            style={{ height, width }}
           />
         )}
       </div>

@@ -1,1 +1,3 @@
-export { PostsGridContainer as PostsGrid } from "./posts-grid-container.component";
+import { PostsGrid } from "./posts-grid.component";
+
+export { PostsGrid };

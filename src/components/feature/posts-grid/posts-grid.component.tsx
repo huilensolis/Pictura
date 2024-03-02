@@ -30,10 +30,6 @@ export function PostsGrid({ posts }: { posts: TPostsGridItem[] }) {
             columnWidth={columnWidth && !isNaN(columnWidth) ? columnWidth : 400}
             key={post.id}
             post={post}
-            image={{
-              width: post.imageWidth,
-              height: post.imageHeight,
-            }}
           />
         ))}
     </ul>
