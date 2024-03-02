@@ -11,10 +11,12 @@ export function PostsGrid({ posts }: { posts: TPostsGridItem[] }) {
 
   useEffect(() => {
     if (containerRef.current) {
-      const containerWidth = containerRef.current.clientWidth;
-      setColumnWidth(containerWidth / 3);
+      const containerWidth = containerRef.current.offsetWidth;
+      if (containerWidth <= 0 || !containerWidth) return;
+
+      setColumnWidth((containerWidth - 8 * 2) / 3);
     }
-  }, [containerRef]);
+  }, []);
 
   return (
     <ul
@@ -25,7 +27,7 @@ export function PostsGrid({ posts }: { posts: TPostsGridItem[] }) {
         containerRef.current &&
         posts.map((post) => (
           <PostsGridRow
-            columnWidth={columnWidth && !isNaN(columnWidth) ? columnWidth : 900}
+            columnWidth={columnWidth && !isNaN(columnWidth) ? columnWidth : 400}
             key={post.id}
             post={post}
             image={{

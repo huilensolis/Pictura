@@ -12,17 +12,16 @@ export async function PostsGridContainer({
     number,
     { width: number; height: number }
   >();
-  console.log("start fetching");
+
   for await (const post of posts) {
     const { details } = await getImageDetails(post.asset_url);
-
     if (!details) continue;
 
     const { width, height } = details;
 
     postsWithImageDetails.set(post.id, { width, height });
   }
-  console.log("end fetching");
+
   const postsWithDetails: TPostsGridItem[] = posts.map((post) => {
     const width = postsWithImageDetails.get(post.id)?.width;
     const height = postsWithImageDetails.get(post.id)?.height;
