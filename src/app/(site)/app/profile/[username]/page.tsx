@@ -40,7 +40,8 @@ async function UserProfile({ username }: { username: string }) {
     .from("posts")
     .select("*")
     .eq("user_id", userProfile?.user_id || "")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(24);
 
   function Profile({
     data,
