@@ -58,8 +58,6 @@ export async function createNewPost(
     )
       throw new Error("limit reached");
 
-    return;
-
     const { data: userProfile, error: errorGettingProfile } = await supabase
       .from("profiles")
       .select("*")
