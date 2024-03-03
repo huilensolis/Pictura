@@ -10,17 +10,24 @@ export function PostsGrid({ posts }: { posts: TPostsGridItem[] }) {
   const containerRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    if (containerRef.current) {
+    function calculateColumnWidth() {
+      if (!containerRef.current) return;
+
       const containerWidth = containerRef.current.offsetWidth;
       if (containerWidth <= 0 || !containerWidth) return;
 
-      setColumnWidth((containerWidth - 8 * 2) / 3);
+      const columnCount = window.innerWidth > 1024 ? 3 : 2;
+      console.log(window.innerWidth);
+      setColumnWidth((containerWidth - 8 * 2) / columnCount);
     }
-  }, []);
 
+    window.addEventListener("resize", calculateColumnWidth);
+
+    return () => window.removeEventListener("resize", calculateColumnWidth);
+  }, []);
   return (
     <ul
-      className="break-inside-avoid gap-2 px-2 [column-count:3] md:[column-count:3]"
+      className="break-inside-avoid gap-2 px-2 lg:[column-count:3] [column-count:2]"
       ref={containerRef}
     >
       {posts.length > 0 &&

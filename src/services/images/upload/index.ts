@@ -1,6 +1,11 @@
-type IResponse = {
+type TResponse = {
   error: any;
-  assetSecureUrl: string | null;
+  data: {
+    width: number;
+    height: number;
+    colors: [string, number][];
+    secure_url: string;
+  } | null;
 };
 
 /**
@@ -9,29 +14,35 @@ type IResponse = {
  */
 export async function postImage({
   image,
+  apiUrl = "/api",
 }: {
   image: string; // base 64
-}): Promise<IResponse> {
+  apiUrl?: string;
+}): Promise<TResponse> {
   try {
-    const res = await fetch('/api/images/upload', {
-      method: 'POST',
+    const res = await fetch(`${apiUrl}/images/upload`, {
+      method: "POST",
       body: JSON.stringify({ image }),
     });
 
-    const resBody = await res.json();
+    const resBody: {
+      width: number;
+      height: number;
+      colors: [string, number][];
+      secure_url: string;
+    } = await res.json();
 
-    const assetSecureUrl = resBody.data.image.secure_url as string;
-
-    if (!res.ok || !assetSecureUrl) {
+    if (!res.ok) {
       return {
         error:
-          'There is been an error on the response, or wether the asset secure url was not found on the response',
-        assetSecureUrl: null,
+          "There is been an error on the response, or wether the asset secure url was not found on the response",
+        data: null,
       };
     }
 
-    return { error: false, assetSecureUrl };
+    return { error: false, data: resBody };
   } catch (e) {
-    return { error: e, assetSecureUrl: null };
+    console.log(e);
+    return { error: e, data: null };
   }
 }

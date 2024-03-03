@@ -42,6 +42,7 @@ export interface Database {
           user_id: string;
           asset_width: number;
           asset_height: number;
+          asset_color: string | null;
         };
         Insert: {
           asset_url?: string;
@@ -52,6 +53,7 @@ export interface Database {
           title: string;
           asset_width: number;
           asset_height: number;
+          asset_color: string | null;
         };
         Update: {
           asset_url?: string;
@@ -62,6 +64,7 @@ export interface Database {
           title?: string;
           asset_width?: number;
           asset_height?: number;
+          asset_color?: string | null;
         };
         Relationships: [
           {

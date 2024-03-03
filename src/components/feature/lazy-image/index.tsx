@@ -11,6 +11,7 @@ export function LazyImage({
   width,
   height,
   skeletonClassName = "",
+  skeletonBgColor = "",
 }: {
   src: string;
   alt: string;
@@ -18,6 +19,7 @@ export function LazyImage({
   height: number;
   width: number;
   skeletonClassName?: string;
+  skeletonBgColor?: string;
 }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -61,7 +63,7 @@ export function LazyImage({
             className={["absolute top-0 left-0 w-full", skeletonClassName].join(
               " ",
             )}
-            style={{ height, width }}
+            style={{ height, width, backgroundColor: skeletonBgColor }}
           />
         )}
       </div>

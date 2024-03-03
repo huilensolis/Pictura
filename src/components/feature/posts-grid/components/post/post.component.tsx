@@ -22,10 +22,11 @@ export function PostsGridRow({
         <LazyImage
           src={post.asset_url}
           alt={post.title}
-          className="flex w-full h-auto rounded-md"
+          className="flex w-full h-auto rounded-md object-cover object-center"
           skeletonClassName="w-full"
           height={imageHeight}
           width={columnWidth}
+          skeletonBgColor={post.asset_color || undefined}
         />
       </Link>
     </li>
