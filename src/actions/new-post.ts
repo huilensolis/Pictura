@@ -45,6 +45,21 @@ export async function createNewPost(
 
     const { user } = session;
 
+    const { data: userPosts, error: errorGettingPosts } = await supabase
+      .from("posts")
+      .select("*")
+      .eq("user_id", user.id);
+
+    if (errorGettingPosts) throw new Error("error getting posts");
+
+    if (
+      userPosts &&
+      userPosts.length >= (Number(process.env.MAX_POSTS_PER_USER) || 24)
+    )
+      throw new Error("limit reached");
+
+    return;
+
     const { data: userProfile, error: errorGettingProfile } = await supabase
       .from("profiles")
       .select("*")

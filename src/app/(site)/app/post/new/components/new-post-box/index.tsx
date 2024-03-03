@@ -11,7 +11,7 @@ import { useBase64Image } from "@/hooks/use-base-64-image";
 import { Heading } from "@/components/ui/typography/heading";
 import { useRouting } from "@/hooks/useRouting";
 import { ClientRouting } from "@/models/routing/client";
-import { createNewPost } from "@/app/actions/new-post";
+import { createNewPost } from "@/actions/new-post";
 
 export function NewPostBox() {
   const [formImageSrc, setFormImageSrc] = useState<string | null>(null);
