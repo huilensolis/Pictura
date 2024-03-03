@@ -64,7 +64,13 @@ export function LazyImage({
               "absolute top-0 left-0 w-full h-full",
               skeletonClassName,
             ].join(" ")}
-            style={{ height, width, backgroundColor: skeletonBgColor }}
+            style={{
+              height: "100%",
+              width: "100%",
+              maxWidth: width,
+              maxHeight: height,
+              backgroundColor: skeletonBgColor,
+            }}
           />
         )}
       </div>
