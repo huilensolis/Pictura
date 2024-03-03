@@ -7,12 +7,11 @@ import { useForm } from "react-hook-form";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { FormAreas } from "./new-post.models";
 import { PrimaryButton } from "@/components/ui/buttons/primary";
-import { postImage } from "@/services/images/upload";
-import { useSupabase } from "@/hooks/use-supabase";
 import { useBase64Image } from "@/hooks/use-base-64-image";
 import { Heading } from "@/components/ui/typography/heading";
 import { useRouting } from "@/hooks/useRouting";
 import { ClientRouting } from "@/models/routing/client";
+import { createNewPost } from "@/app/actions/new-post";
 
 export function NewPostBox() {
   const [formImageSrc, setFormImageSrc] = useState<string | null>(null);
@@ -42,8 +41,6 @@ export function NewPostBox() {
 
   const { parseImageToBase64 } = useBase64Image();
 
-  const { supabase } = useSupabase();
-
   async function publishPost(data: FormAreas) {
     if (!userProfile) return;
 
@@ -56,35 +53,12 @@ export function NewPostBox() {
       const base64Image = await parseImageToBase64({ image });
       if (!base64Image) throw new Error("No base64Image");
 
-      const { error: postImageError, assetSecureUrl } = await postImage({
+      const { newPostId } = await createNewPost({
         image: base64Image,
+        post: {
+          title,
+        },
       });
-      if (postImageError || !assetSecureUrl) {
-        throw new Error(
-          postImageError || "There is no assetSecureUrl from the response",
-        );
-      }
-
-      const { error, data } = await supabase
-        .from("posts")
-        .insert({
-          asset_url: assetSecureUrl,
-          title: title,
-          profile_id: userProfile?.id,
-          user_id: userProfile.user_id,
-        })
-        .eq("profile_id", userProfile?.id)
-        .select("*")
-        .single();
-
-      if (error || !data) {
-        setFormSubmitingState({
-          hasSubmittingFailed: true,
-          hasFormBeenSubmitted: true,
-          hasSubmittingBeenSuccesful: false,
-        });
-        return;
-      }
 
       setFormSubmitingState({
         hasFormBeenSubmitted: true,
@@ -93,7 +67,7 @@ export function NewPostBox() {
       });
       UnSelectImage();
       resetField("title");
-      goTo(ClientRouting.post().page(JSON.stringify(data.id) || ""));
+      goTo(ClientRouting.post().page(JSON.stringify(newPostId)));
     } catch (e) {
       setFormSubmitingState({
         hasSubmittingFailed: true,
@@ -157,6 +131,10 @@ export function NewPostBox() {
                   const fileType = file.type.split("/")[0];
                   if (fileType !== "image") {
                     return "only images in jpeg, png, jpg, webp formats are allowed";
+                  }
+
+                  if (file.size > 1 * 1000 * 1024) {
+                    return "image size is larger than 1MB";
                   }
 
                   const render = new FileReader();
@@ -224,12 +202,12 @@ export function NewPostBox() {
           >
             Post
           </PrimaryButton>
+          {formSubmitingState.hasSubmittingFailed && (
+            <p className="text-red-500 w-full text-center">
+              There has been an error trying to publish your post
+            </p>
+          )}
         </section>
-        {formSubmitingState.hasSubmittingFailed && (
-          <p className="text-red-500 w-full text-center">
-            There has been an error trying to publish your post
-          </p>
-        )}
       </form>
     </div>
   );

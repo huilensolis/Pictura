@@ -23,25 +23,30 @@ export async function Post({
 
   return (
     <article className="w-full h-full flex lg:gap-4 gap-2 flex-col-reverse lg:flex-row-reverse items-start justify-end bg-neutral-200 dark:bg-neutral-900 overflow-hidden">
-      <header className="flex items-center justify-between">
+      <header className="flex items-center justify-between w-96">
         <section className="w-full flex flex-col items-start justify-center gap-4">
           <PostOptions
             post_id={post.id}
             doesUserOwnPost={doesUserOwnPost}
             image_url={post.asset_url}
           />
-          <h3 className="text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
+          <h3 className="w-full text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
             {title}
           </h3>
           {postOwnerProfile && (
-            <Link href={`/app/profile/${postOwnerProfile.username}`}>
+            <Link
+              href={`/app/profile/${postOwnerProfile.username}`}
+              className="w-full"
+            >
               <section className="flex flex-none gap-4 w-full items-center justify-start">
                 {postOwnerProfile.avatar_url ? (
                   <LazyImage
                     src={postOwnerProfile.avatar_url}
                     alt={post.title}
-                    className="w-12 h-12 rounded-full object-cover object-center"
+                    className="w-12 h-12 rounded-full object-cover object-center flex-0"
                     skeletonClassName="w-12 h-12 rounded-full"
+                    width={48}
+                    height={48}
                   />
                 ) : (
                   <div className="h-12 w-12 rounded-full bg-neutral-300" />
@@ -57,8 +62,9 @@ export async function Post({
       <LazyImage
         src={asset_url}
         alt={title}
-        className="w-full lg:max-w-[400px] xl:max-w-[600px] h-full max-h-[800px] object-cover object-center rounded-md"
-        skeletonClassName="w-full h-[500px]"
+        className="w-full h-full max-h-[100vh] lg:max-h-[80vh] object-cover object-center rounded-md"
+        skeletonClassName="w-full"
+        skeletonBgColor={post.asset_color || undefined}
       />
     </article>
   );

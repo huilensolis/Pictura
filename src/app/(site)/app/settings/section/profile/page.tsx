@@ -56,6 +56,8 @@ export default function ProfileConfigPage() {
       description: data.description,
     } as Database["public"]["Tables"]["profiles"]["Row"];
 
+    if (!data) return;
+
     if (data.banner.length !== 0) {
       try {
         const bannerImageFile = data.banner[0];
@@ -69,15 +71,17 @@ export default function ProfileConfigPage() {
         });
         if (!base64Image) throw new Error("No base64Image");
 
-        const { error, assetSecureUrl } = await postImage({
+        const { error, data: postImageData } = await postImage({
           image: base64Image,
         });
 
-        if (error || !assetSecureUrl) {
+        if (error || !postImageData) {
           throw new Error("server response wen wrong");
         }
 
-        formatedData.banner_url = assetSecureUrl;
+        const { secure_url } = postImageData;
+
+        formatedData.banner_url = secure_url;
       } catch {
         setErrorUpdatingData(
           "there is been an error updating your banner picture",
@@ -97,15 +101,17 @@ export default function ProfileConfigPage() {
         });
         if (!base64Image) throw new Error("No base64Image");
 
-        const { error, assetSecureUrl } = await postImage({
+        const { error, data: postImageData } = await postImage({
           image: base64Image,
         });
 
-        if (error || !assetSecureUrl) {
+        if (error || !postImageData) {
           throw new Error("server response wen wrong");
         }
 
-        formatedData.avatar_url = assetSecureUrl;
+        const { secure_url } = postImageData;
+
+        formatedData.avatar_url = secure_url;
       } catch (error) {
         setErrorUpdatingData(
           "there is been an error updating your avatar picture",
