@@ -16,8 +16,8 @@ export function LazyImage({
   src: string;
   alt: string;
   className?: string;
-  height: number;
-  width: number;
+  height?: number;
+  width?: number;
   skeletonClassName?: string;
   skeletonBgColor?: string;
 }) {

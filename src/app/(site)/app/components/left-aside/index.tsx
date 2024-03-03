@@ -58,6 +58,8 @@ function UserProfile() {
           className="w-12 h-12 rounded-full object-cover object-center aspect-square"
           skeletonClassName="w-12 h-12 rounded-full"
           src={userProfile?.avatar_url ?? ""}
+          width={48}
+          height={48}
         />
         <div>
           <span className="text-neutral-800 dark:text-neutral-50 font-semibold text-lg">

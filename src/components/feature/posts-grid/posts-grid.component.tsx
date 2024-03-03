@@ -21,6 +21,8 @@ export function PostsGrid({ posts }: { posts: TPostsGridItem[] }) {
       setColumnWidth((containerWidth - 8 * 2) / columnCount);
     }
 
+    calculateColumnWidth();
+
     window.addEventListener("resize", calculateColumnWidth);
 
     return () => window.removeEventListener("resize", calculateColumnWidth);

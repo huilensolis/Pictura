@@ -23,7 +23,7 @@ export async function Post({
 
   return (
     <article className="w-full h-full flex lg:gap-4 gap-2 flex-col-reverse lg:flex-row-reverse items-start justify-end bg-neutral-200 dark:bg-neutral-900 overflow-hidden">
-      <header className="flex items-center justify-between">
+      <header className="flex items-center justify-between w-96">
         <section className="w-full flex flex-col items-start justify-center gap-4">
           <PostOptions
             post_id={post.id}
@@ -42,6 +42,8 @@ export async function Post({
                     alt={post.title}
                     className="w-12 h-12 rounded-full object-cover object-center"
                     skeletonClassName="w-12 h-12 rounded-full"
+                    width={48}
+                    height={48}
                   />
                 ) : (
                   <div className="h-12 w-12 rounded-full bg-neutral-300" />
@@ -57,8 +59,9 @@ export async function Post({
       <LazyImage
         src={asset_url}
         alt={title}
-        className="w-full lg:max-w-[400px] xl:max-w-[600px] h-full max-h-[800px] object-cover object-center rounded-md"
-        skeletonClassName="w-full h-[500px]"
+        className="w-full h-full max-h-[1200px] object-cover object-center rounded-md"
+        skeletonClassName="w-full"
+        height={post.asset_height}
       />
     </article>
   );
