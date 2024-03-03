@@ -56,7 +56,7 @@ function UserProfile() {
         <LazyImage
           alt={`${userProfile?.name ?? ""}'s Profile Picture`}
           className="w-12 h-12 rounded-full object-cover object-center aspect-square"
-          skeletonClassName="w-12 h-12 rounded-full"
+          skeletonClassName="w-12 h-12 rounded-full animate-pulse"
           src={userProfile?.avatar_url ?? ""}
           width={48}
           height={48}
@@ -77,7 +77,7 @@ function UserProfile() {
   return (
     <>
       {isLoadingUserProfile && (
-        <Skeleton className="w-full h-16 rounded-full" />
+        <Skeleton className="w-full h-16 rounded-full animate-pulse" />
       )}
       {!isLoadingUserProfile && userProfile && (
         <Link
