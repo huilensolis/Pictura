@@ -18,7 +18,6 @@ export async function POST(req: Request) {
     }
 
     const defaultImageTransformation: UploadApiOptions["transformation"] = {
-      width: 700,
       crop: "fill",
       gravity: "center",
       fetch_format: "webp",

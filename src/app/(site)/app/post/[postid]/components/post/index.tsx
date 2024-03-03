@@ -30,17 +30,20 @@ export async function Post({
             doesUserOwnPost={doesUserOwnPost}
             image_url={post.asset_url}
           />
-          <h3 className="text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
+          <h3 className="w-full text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
             {title}
           </h3>
           {postOwnerProfile && (
-            <Link href={`/app/profile/${postOwnerProfile.username}`}>
+            <Link
+              href={`/app/profile/${postOwnerProfile.username}`}
+              className="w-full"
+            >
               <section className="flex flex-none gap-4 w-full items-center justify-start">
                 {postOwnerProfile.avatar_url ? (
                   <LazyImage
                     src={postOwnerProfile.avatar_url}
                     alt={post.title}
-                    className="w-12 h-12 rounded-full object-cover object-center"
+                    className="w-12 h-12 rounded-full object-cover object-center flex-0"
                     skeletonClassName="w-12 h-12 rounded-full"
                     width={48}
                     height={48}
@@ -59,9 +62,9 @@ export async function Post({
       <LazyImage
         src={asset_url}
         alt={title}
-        className="w-full h-full max-h-[1200px] object-cover object-center rounded-md"
+        className="w-full h-full max-h-[100vh] lg:max-h-[80vh] object-cover object-center rounded-md"
         skeletonClassName="w-full"
-        height={post.asset_height}
+        skeletonBgColor={post.asset_color || undefined}
       />
     </article>
   );

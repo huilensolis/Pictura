@@ -60,9 +60,10 @@ export function LazyImage({
         )}
         {loading && !error && (
           <Skeleton
-            className={["absolute top-0 left-0 w-full", skeletonClassName].join(
-              " ",
-            )}
+            className={[
+              "absolute top-0 left-0 w-full h-full",
+              skeletonClassName,
+            ].join(" ")}
             style={{ height, width, backgroundColor: skeletonBgColor }}
           />
         )}
