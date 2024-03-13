@@ -2,7 +2,6 @@
 
 import { Heading } from "@/components/ui/typography/heading";
 import { useEffect, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useSupabase } from "@/hooks/use-supabase";
 import { Database } from "@/supabase/types";
 import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
