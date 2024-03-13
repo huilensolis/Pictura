@@ -3,9 +3,9 @@
 import { Heading } from "@/components/ui/typography/heading";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ImagesGrid } from "@/components/ui/images-grid";
 import { useSupabase } from "@/hooks/use-supabase";
 import { Database } from "@/supabase/types";
+import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
 
 export function Feed() {
   const { supabase } = useSupabase();
@@ -77,7 +77,7 @@ export function Feed() {
         <>
           {!error ? (
             <div>
-              <ImagesGrid posts={posts} onFetchNewImages={handleScroll} />
+              <PostsGrid posts={posts} onFetchNewPosts={handleScroll} />
             </div>
           ) : (
             <article className="flex items-center justify-center w-full max-h-96 py-32 text-center border-y border-neutral-300">

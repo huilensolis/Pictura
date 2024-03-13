@@ -5,7 +5,7 @@ import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
 import Link from "next/link";
 
-export function ImagesGridRow({
+export function PostsGridRow({
   post,
   columnWidth,
 }: {

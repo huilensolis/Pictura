@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { TPostsGridItem } from "./images-grid.models";
-import { ImagesGridRow } from "./components/image-grid-row";
+import { TPostsGridItem } from "./posts-grid.models";
+import { PostsGridRow } from "./components/posts-grid-row/posts-grid-row.component";
 
-export function ImagesGrid({
+export function PostsGrid({
   posts,
-  onFetchNewImages,
+  onFetchNewPosts,
 }: {
   posts: TPostsGridItem[];
-  onFetchNewImages: () => void;
+  onFetchNewPosts: () => void;
 }) {
   const [columnWidth, setColumnWidth] = useState<number | null>(null);
 
@@ -50,16 +50,15 @@ export function ImagesGrid({
       threshold: 1.0,
     };
 
-    const observer = new IntersectionObserver(
-      onFetchNewImages,
-      observerOptions,
-    );
+    const observer = new IntersectionObserver(onFetchNewPosts, observerOptions);
 
     observer.observe(lastElementRef);
 
     return () => {
       observer.unobserve(lastElementRef);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastElementRef]);
 
   return (
@@ -70,7 +69,7 @@ export function ImagesGrid({
       {posts.length > 0 && containerRef.current && (
         <>
           {posts.map((post, i) => (
-            <ImagesGridRow
+            <PostsGridRow
               columnWidth={
                 columnWidth && !isNaN(columnWidth) ? columnWidth : 400
               }
