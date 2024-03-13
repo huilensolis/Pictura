@@ -23,7 +23,7 @@ export function PostsGridRow({
           src={post.asset_url}
           alt={post.title}
           className="flex w-full h-auto rounded-md object-cover object-center"
-          skeletonClassName="w-full rounded-md"
+          skeletonClassName="w-full h-full rounded-md"
           height={imageHeight}
           width={columnWidth}
           skeletonBgColor={post.asset_color || undefined}
