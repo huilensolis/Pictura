@@ -1,6 +1,6 @@
 import { LazyImage } from "@/components/feature/lazy-image";
 import { BackwardsNav } from "@/components/feature/nav/backwards";
-import { PostsGrid } from "@/components/feature/posts-grid";
+import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heading } from "@/components/ui/typography/heading";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
@@ -131,7 +131,7 @@ async function UserProfile({ username }: { username: string }) {
         </header>
         {userPosts?.length > 0 && (
           <div className="px-4">
-            <PostsGrid posts={userPosts} />
+            <PostsGrid posts={userPosts} onFetchNewPosts={() => {}} />
           </div>
         )}
       </div>

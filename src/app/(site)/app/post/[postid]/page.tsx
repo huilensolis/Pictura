@@ -1,9 +1,8 @@
 import { BackwardsNav } from "@/components/feature/nav/backwards";
 import { Heading } from "@/components/ui/typography/heading";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
-import { PostsGrid } from "@/components/feature/posts-grid";
-import { Database } from "@/supabase/types";
 import { Post } from "./components/post";
+import { RecentPosts } from "./components/recent-posts";
 
 export default async function PostPage({
   params: { postid },
@@ -28,45 +27,20 @@ export default async function PostPage({
   );
 
   return (
-    <div className="flex flex-col gap-2 px-2 pb-10">
-      <nav className="w-full py-2 flex items-center gap-4 border-b border-neutral-300 dark:border-cm-lighter-gray">
+    <div className="flex flex-col py-2 gap-2 pb-10">
+      <nav className="w-full flex items-center gap-4 pb-2 border-b border-neutral-300 dark:border-cm-lighter-gray">
         <BackwardsNav catchHref="/app" />
         <Heading level={9}>Back</Heading>
       </nav>
       {postData && !postError ? (
-        <section className="p-y2 flex flex-col gap-2">
+        <section className="flex flex-col gap-2">
           <Post post={postData} doesUserOwnPost={doesUserOwnPost} />
-          <RecentPosts excludePost={postData} />
+          <RecentPosts excludedPostId={postData.id} />
         </section>
       ) : (
         <Error404Box />
       )}
     </div>
-  );
-}
-
-async function RecentPosts({
-  excludePost,
-}: {
-  excludePost: Database["public"]["Tables"]["posts"]["Row"];
-}) {
-  const supabase = await getSuapabaseServerComponent();
-
-  const { data: posts, error } = await supabase
-    .from("posts")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(9);
-
-  if (!posts || posts.length === 0) return;
-
-  const filteredPosts = posts.filter((post) => post.id !== excludePost.id);
-  return (
-    <>
-      {!error &&
-        filteredPosts.length !== undefined &&
-        filteredPosts.length > 0 && <PostsGrid posts={filteredPosts} />}
-    </>
   );
 }
 

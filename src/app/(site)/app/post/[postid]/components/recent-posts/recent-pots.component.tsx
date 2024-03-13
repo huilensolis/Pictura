@@ -1,26 +1,28 @@
 "use client";
 
+import { PostsGridSkeleton } from "@/components/feature/posts-grid/components/posts-grid-skeleton";
+import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
 import { Heading } from "@/components/ui/typography/heading";
-import { useEffect, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useSupabase } from "@/hooks/use-supabase";
 import { Database } from "@/supabase/types";
-import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
-import { PostsGridSkeleton } from "@/components/feature/posts-grid/components/posts-grid-skeleton";
+import { useEffect, useState } from "react";
 
-export function Feed() {
-  const { supabase } = useSupabase();
-
+export function RecentPosts({
+  excludedPostId,
+}: {
+  excludedPostId: Database["public"]["Tables"]["posts"]["Row"]["id"];
+}) {
   const [posts, setPosts] = useState<
     Database["public"]["Tables"]["posts"]["Row"][]
   >([]);
-
-  const [error, setError] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const [lastPostIndex, setLastPostIndex] = useState<number>(1);
+  const [error, setError] = useState<boolean>(false);
+
+  const { supabase } = useSupabase();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -32,7 +34,7 @@ export function Feed() {
       supabase
         .from("posts")
         .select("*")
-        .order("id", { ascending: false })
+        .order("created_at", { ascending: false })
         .limit(32)
         .range(lastPostIndex, lastPostIndex + 32)
         .abortSignal(controller.signal)
@@ -41,7 +43,10 @@ export function Feed() {
 
           if (!posts) return;
 
-          setPosts((prev) => [...prev, ...posts]);
+          setPosts((prev) => [
+            ...prev,
+            ...posts.filter((post) => post.id !== excludedPostId),
+          ]);
         });
     } catch (error: unknown) {
       if ((error as Error).name === "AbortError") return;
@@ -60,11 +65,13 @@ export function Feed() {
   }, [lastPostIndex]);
 
   function handleScroll() {
+    if (isLoading || isFetching) return;
+
     setLastPostIndex((prev) => prev + 32);
   }
 
   return (
-    <main className="w-full h-full flex flex-col gap-2">
+    <section>
       {isLoading && <PostsGridSkeleton cuantity={32} />}
       {!isLoading && !isFetching && (
         <>
@@ -81,6 +88,6 @@ export function Feed() {
           )}
         </>
       )}
-    </main>
+    </section>
   );
 }

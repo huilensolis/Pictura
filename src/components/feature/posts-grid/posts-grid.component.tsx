@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TPostsGridItem } from "./posts-grid.models";
 import { PostsGridRow } from "./components/posts-grid-row/posts-grid-row.component";
+import { PostsGridContainer } from "./components/posts-grid-container";
 
 export function PostsGrid({
   posts,
@@ -62,10 +63,7 @@ export function PostsGrid({
   }, [lastElementRef]);
 
   return (
-    <ul
-      className="break-inside-avoid gap-2 px-2 lg:[column-count:3] [column-count:2] w-full"
-      ref={containerRef}
-    >
+    <PostsGridContainer ref={containerRef}>
       {posts.length > 0 && containerRef.current && (
         <>
           {posts.map((post, i) => (
@@ -80,6 +78,6 @@ export function PostsGrid({
           <div ref={lastItemRef} className="h-96 w-full" />
         </>
       )}
-    </ul>
+    </PostsGridContainer>
   );
 }
