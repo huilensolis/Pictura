@@ -11,7 +11,6 @@ interface Props {
 
 const SearchPage: React.FC<Props> = async ({ searchParams }) => {
   const searchValue = searchParams.search_query ?? "painting";
-  console.log({ searchValue });
   return (
     <div className="w-full h-full flex min-h-screen">
       <div className="flex flex-col gap-2 w-full h-full min-h-screen p-2">

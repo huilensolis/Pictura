@@ -93,8 +93,6 @@ export function SearchedPostsGrid({ searchValue }: { searchValue: string }) {
     setLastPostIndex((prev) => prev + 32);
   }
 
-  console.log({ isLoading, isFetching });
-
   return (
     <main className="w-full h-full flex flex-col gap-2">
       {isLoading && <PostsGridSkeleton cuantity={32} />}
