@@ -1,8 +1,8 @@
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { SearchForm } from "./components/SearchForm/SearchForm";
-import { PostsGrid } from "@/components/feature/posts-grid";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ImagesGrid } from "@/components/ui/images-grid";
 
 interface SearchParams {
   search_query?: string;
@@ -40,7 +40,7 @@ const SearchPage: React.FC<Props> = async ({ searchParams }) => {
                 </ul>
               }
             >
-              <PostsGrid posts={posts} />
+              <ImagesGrid posts={posts} />
             </Suspense>
           )}
         </div>

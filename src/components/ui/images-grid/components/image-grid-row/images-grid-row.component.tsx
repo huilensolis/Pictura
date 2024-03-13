@@ -5,7 +5,7 @@ import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
 import Link from "next/link";
 
-export function PostsGridRow({
+export function ImagesGridRow({
   post,
   columnWidth,
 }: {
@@ -14,7 +14,7 @@ export function PostsGridRow({
 }) {
   const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
-    <li key={post.id} className={`flex w-full h-full pt-2`}>
+    <li className={`flex w-full h-full pt-2`}>
       <Link
         href={ClientRouting.post().page(JSON.stringify(post.id) || "")}
         className="w-full"
