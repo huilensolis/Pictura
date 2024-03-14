@@ -1,1 +1,1 @@
-export * from "./images-grid-row.component";
+export * from "./posts-grid-row.component";

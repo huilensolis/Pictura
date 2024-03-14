@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TPostsGridItem } from "./posts-grid.models";
-import { PostsGridRow } from "./components/posts-grid-row/posts-grid-row.component";
+import { PostsGridRow } from "./components/posts-grid-row";
 import { PostsGridContainer } from "./components/posts-grid-container";
 
 export function PostsGrid({

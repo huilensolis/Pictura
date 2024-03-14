@@ -33,6 +33,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
         onInput={handleOnChangeToSearch}
         name={formInputs.search}
         register={register}
+        validationScheme={{}}
         type="text"
         id="search-input"
         label="Search"
