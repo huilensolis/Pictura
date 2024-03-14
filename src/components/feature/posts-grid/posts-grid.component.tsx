@@ -1,35 +1,64 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { TPostsGridItem } from "./posts-grid.models";
 import { PostsGridRow } from "./components/posts-grid-row";
 import { PostsGridContainer } from "./components/posts-grid-container";
+import { type Database } from "@/supabase/types";
+import { PostsGridSkeleton } from "./components/posts-grid-skeleton";
+import { type PostgrestSingleResponse } from "@supabase/supabase-js";
+
+type TPost = Database["public"]["Tables"]["posts"]["Row"];
+
+type TOnFetchNewPostsProps = {
+  currentPage: number;
+  signal: AbortSignal;
+  postsCuantity: number;
+};
+
+type TOnFetchNewPosts = ({
+  postsCuantity,
+  signal,
+  currentPage,
+}: TOnFetchNewPostsProps) => Promise<PostgrestSingleResponse<TPost[]>>;
 
 export function PostsGrid({
-  posts,
   onFetchNewPosts,
 }: {
-  posts: TPostsGridItem[];
-  onFetchNewPosts: () => void;
+  onFetchNewPosts: TOnFetchNewPosts;
 }) {
   const [columnWidth, setColumnWidth] = useState<number | null>(null);
 
-  const containerRef = useRef<HTMLUListElement>(null);
+  const containerRef = useRef<HTMLUListElement | null>(null);
+
+  const setContainerRef = useCallback((node: HTMLUListElement) => {
+    if (!node) return;
+
+    calculateColumnWidth(node.offsetWidth);
+    containerRef.current = node;
+    return;
+  }, []);
+
+  function calculateColumnWidth(containerWidth: number) {
+    if (typeof window === "undefined") return;
+
+    if (containerWidth <= 0 || !containerWidth) return;
+
+    const columnCount = window.innerWidth > 1024 ? 3 : 2;
+    setColumnWidth((containerWidth - 8 * 2) / columnCount);
+  }
 
   useEffect(() => {
-    function calculateColumnWidth() {
-      if (!containerRef.current) return;
+    if (typeof window === "undefined") return;
 
-      const containerWidth = containerRef.current.offsetWidth;
-      if (containerWidth <= 0 || !containerWidth) return;
+    console.log("running use Effect");
 
-      const columnCount = window.innerWidth > 1024 ? 3 : 2;
-      setColumnWidth((containerWidth - 8 * 2) / columnCount);
+    function eventListenerForWidthResize() {
+      if (containerRef.current === null) return;
+      calculateColumnWidth(containerRef.current.offsetWidth);
     }
 
-    calculateColumnWidth();
+    window.addEventListener("resize", eventListenerForWidthResize);
 
-    window.addEventListener("resize", calculateColumnWidth);
-
-    return () => window.removeEventListener("resize", calculateColumnWidth);
+    return () =>
+      window.removeEventListener("resize", eventListenerForWidthResize);
   }, []);
 
   const [lastElementRef, setLastElementRef] = useState<HTMLDivElement | null>(
@@ -51,7 +80,7 @@ export function PostsGrid({
       threshold: 1.0,
     };
 
-    const observer = new IntersectionObserver(onFetchNewPosts, observerOptions);
+    const observer = new IntersectionObserver(handleScroll, observerOptions);
 
     observer.observe(lastElementRef);
 
@@ -62,22 +91,84 @@ export function PostsGrid({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastElementRef]);
 
+  const [posts, setPosts] = useState<TPost[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [isLastPage, setIsLastPage] = useState<boolean>(false);
+
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  function handleScroll() {
+    setPage((prev) => prev + 32);
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchNewPosts() {
+      try {
+        setIsFetching(true);
+        const { data: newPosts, error } = await onFetchNewPosts({
+          signal: controller.signal,
+          currentPage: page,
+          postsCuantity: 32,
+        });
+
+        if (error) {
+          if (error instanceof Error && error.message === "AbortError") {
+            console.log("error is sinstance of error");
+            return;
+          }
+          if (error.code === "20") {
+            return; // this means there is been throwed an error because the request has been aborted
+          }
+          console.log({ error });
+          throw new Error("eror fetching new posts");
+        }
+
+        if (newPosts.length === 0) {
+          setIsLastPage(true);
+          return;
+        }
+
+        setPosts((prev) => [...prev, ...newPosts]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsFetching(false);
+      }
+    }
+
+    if (isFetching) return;
+    if (isLastPage) return;
+
+    fetchNewPosts();
+
+    return () => {
+      controller.abort();
+    };
+  }, [page]);
+
+  console.log({ columnWidth });
+
   return (
-    <PostsGridContainer ref={containerRef}>
-      {posts.length > 0 && containerRef.current && (
-        <>
-          {posts.map((post, i) => (
-            <PostsGridRow
-              columnWidth={
-                columnWidth && !isNaN(columnWidth) ? columnWidth : 400
-              }
-              key={i}
-              post={post}
-            />
-          ))}
-          <div ref={lastItemRef} className="h-96 w-full" />
-        </>
-      )}
-    </PostsGridContainer>
+    <>
+      <PostsGridContainer ref={setContainerRef}>
+        {posts.length > 0 && columnWidth && (
+          <>
+            {posts.map((post, i) => (
+              <PostsGridRow
+                columnWidth={
+                  columnWidth && !isNaN(columnWidth) ? columnWidth : 400
+                }
+                key={i}
+                post={post}
+              />
+            ))}
+            <div ref={lastItemRef} className="h-96 w-full" />
+          </>
+        )}
+      </PostsGridContainer>
+      {isFetching && <PostsGridSkeleton cuantity={32} />}
+    </>
   );
 }

@@ -30,21 +30,7 @@ function DesktopLayout() {
 function MobileLayout() {
   return (
     <main className="w-full h-full py-2">
-      <Suspense
-        fallback={
-          <ul className="w-full grid grid-cols-2 gap-2">
-            {Array(6)
-              .fill("")
-              .map((_, i) => (
-                <li key={i}>
-                  <Skeleton className="h-[500px] w-full rounded-md" />
-                </li>
-              ))}
-          </ul>
-        }
-      >
-        <Feed />
-      </Suspense>
+      <Feed />
     </main>
   );
 }

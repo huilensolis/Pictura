@@ -59,7 +59,8 @@ export function LazyImage({
             loading="lazy"
             className={loading ? "opacity-0" : className}
             ref={imageRef}
-            style={{ height, width }}
+            width={width}
+            height={height}
           />
         )}
         {loading && !error && (
