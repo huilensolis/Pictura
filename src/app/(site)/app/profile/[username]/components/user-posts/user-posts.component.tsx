@@ -1,13 +1,13 @@
 "use client";
 
+import { PostsGridSkeleton } from "@/components/feature/posts-grid/components/posts-grid-skeleton";
+import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
 import { Heading } from "@/components/ui/typography/heading";
-import { useEffect, useState } from "react";
 import { useSupabase } from "@/hooks/use-supabase";
 import { Database } from "@/supabase/types";
-import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
-import { PostsGridSkeleton } from "@/components/feature/posts-grid/components/posts-grid-skeleton";
+import { useEffect, useState } from "react";
 
-export function Feed() {
+export function UserPosts({ profileId }: { profileId: string }) {
   const { supabase } = useSupabase();
 
   const [posts, setPosts] = useState<
@@ -21,7 +21,11 @@ export function Feed() {
 
   const [lastPostIndex, setLastPostIndex] = useState<number>(1);
 
+  const [userHasNoMorePosts, setUserHasNoMorePosts] = useState<boolean>(false);
+
   useEffect(() => {
+    if (userHasNoMorePosts) return;
+
     const controller = new AbortController();
 
     try {
@@ -31,6 +35,7 @@ export function Feed() {
       supabase
         .from("posts")
         .select("*")
+        .eq("profile_id", profileId)
         .order("id", { ascending: false })
         .limit(32)
         .range(lastPostIndex, lastPostIndex + 32)
@@ -39,6 +44,8 @@ export function Feed() {
           if (error) return;
 
           if (!posts) return;
+
+          if (posts.length === 0) setUserHasNoMorePosts(true);
 
           setPosts((prev) => [...prev, ...posts]);
         });

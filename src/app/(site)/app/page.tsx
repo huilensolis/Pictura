@@ -21,22 +21,8 @@ export default function AppPage() {
 
 function DesktopLayout() {
   return (
-    <main className="w-full h-full flex flex-col justify-start py-2">
-      <Suspense
-        fallback={
-          <ul className="w-full flex flex-wrap gap-2">
-            {Array(8)
-              .fill("")
-              .map((_, i) => (
-                <li key={i}>
-                  <Skeleton className="w-full bg-red-500 rounded-md h-[500px]" />
-                </li>
-              ))}
-          </ul>
-        }
-      >
-        <Feed />
-      </Suspense>
+    <main className="w-full h-full flex flex-col justify-start">
+      <Feed />
     </main>
   );
 }

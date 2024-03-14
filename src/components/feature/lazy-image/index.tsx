@@ -2,7 +2,18 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { ImageOff } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { type HTMLAttributes, useEffect, useRef, useState } from "react";
+
+type TProps = {
+  src: string;
+  alt: string;
+  className?: string;
+  height?: number;
+  width?: number;
+  containerClassname?: HTMLAttributes<HTMLDivElement>["className"];
+  skeletonClassName?: string;
+  skeletonBgColor?: string;
+};
 
 export function LazyImage({
   src,
@@ -12,15 +23,8 @@ export function LazyImage({
   height,
   skeletonClassName = "",
   skeletonBgColor = "",
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-  height?: number;
-  width?: number;
-  skeletonClassName?: string;
-  skeletonBgColor?: string;
-}) {
+  containerClassname = "",
+}: TProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
 
@@ -46,7 +50,7 @@ export function LazyImage({
   }, []);
 
   return (
-    <div className={`flex flex-col relative`}>
+    <div className={`relative ${containerClassname}`}>
       <div className="relative">
         {!error && (
           <img
@@ -60,13 +64,8 @@ export function LazyImage({
         )}
         {loading && !error && (
           <Skeleton
-            className={[
-              "absolute top-0 left-0 w-full h-full",
-              skeletonClassName,
-            ].join(" ")}
+            className={["absolute top-0 left-0", skeletonClassName].join(" ")}
             style={{
-              height: "100%",
-              width: "100%",
               maxWidth: width,
               maxHeight: height,
               backgroundColor: skeletonBgColor,

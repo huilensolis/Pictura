@@ -1,13 +1,13 @@
 "use client";
 
+import { PostsGridSkeleton } from "@/components/feature/posts-grid/components/posts-grid-skeleton";
+import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
 import { Heading } from "@/components/ui/typography/heading";
-import { useEffect, useState } from "react";
 import { useSupabase } from "@/hooks/use-supabase";
 import { Database } from "@/supabase/types";
-import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
-import { PostsGridSkeleton } from "@/components/feature/posts-grid/components/posts-grid-skeleton";
+import { useEffect, useState } from "react";
 
-export function Feed() {
+export function SearchedPostsGrid({ searchValue }: { searchValue: string }) {
   const { supabase } = useSupabase();
 
   const [posts, setPosts] = useState<
@@ -21,24 +21,33 @@ export function Feed() {
 
   const [lastPostIndex, setLastPostIndex] = useState<number>(1);
 
-  useEffect(() => {
-    const controller = new AbortController();
+  const [notFound, setNotFound] = useState<boolean>(false);
 
+  function getAndSetPosts({ signal }: { signal: AbortSignal }) {
     try {
       setIsLoading(true);
       setIsFetching(true);
 
+      setNotFound(false);
+
       supabase
         .from("posts")
         .select("*")
-        .order("id", { ascending: false })
-        .limit(32)
+        .like("title", `%${searchValue}%`)
+        .order("created_at", { ascending: false })
         .range(lastPostIndex, lastPostIndex + 32)
-        .abortSignal(controller.signal)
+        .abortSignal(signal)
+        .limit(32)
         .then(({ data: posts, error }) => {
           if (error) return;
 
           if (!posts) return;
+
+          if (posts.length === 0) {
+            setNotFound(true);
+            return;
+          }
+          setNotFound(false);
 
           setPosts((prev) => [...prev, ...posts]);
         });
@@ -50,6 +59,12 @@ export function Feed() {
       setIsLoading(false);
       setIsFetching(false);
     }
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    getAndSetPosts({ signal: controller.signal });
 
     return () => {
       controller.abort();
@@ -57,6 +72,22 @@ export function Feed() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastPostIndex]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    if (isLoading || isFetching) return;
+
+    setLastPostIndex(1);
+
+    setPosts([]);
+
+    getAndSetPosts({ signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
+  }, [searchValue]);
 
   function handleScroll() {
     setLastPostIndex((prev) => prev + 32);
@@ -72,13 +103,18 @@ export function Feed() {
               <PostsGrid posts={posts} onFetchNewPosts={handleScroll} />
             </div>
           ) : (
-            <article className="flex items-center justify-center w-full max-h-96 py-32 text-center border-y border-neutral-300">
+            <article className="flex items-center justify-center w-full max-h-96 py-32 text-center">
               <Heading level={10}>
                 Something wen wrong, please reload the page
               </Heading>
             </article>
           )}
         </>
+      )}
+      {notFound && posts.length === 0 && (
+        <article className="flex items-center justify-center w-full max-h-96 py-32 text-center">
+          <Heading level={10}>404 not found</Heading>
+        </article>
       )}
     </main>
   );

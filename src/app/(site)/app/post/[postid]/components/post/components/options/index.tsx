@@ -45,7 +45,6 @@ export function PostOptions({
               return router.push("/app"); // Navigate to '/app' if no history
             }
           }
-          router.refresh();
         } catch (e) {
           console.log(e);
         }
