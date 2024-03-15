@@ -1,13 +1,14 @@
 "use client";
 
-import { PrimaryButton } from "@/components/ui/buttons/primary"
-import { useSupabase } from "@/hooks/use-supabase"
-import { useRouting } from "@/hooks/useRouting"
-import { useState } from "react"
+import { PrimaryButton } from "@/components/ui/buttons/primary";
+import { useSupabase } from "@/hooks/use-supabase";
+import { ClientRouting } from "@/models/routing/client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function CloseSession() {
   const [loading, setLoading] = useState<boolean>(false);
-  const { goTo } = useRouting()
+  const router = useRouter();
 
   const { supabase } = useSupabase();
 
@@ -15,7 +16,7 @@ export function CloseSession() {
     setLoading(true);
     await supabase.auth.signOut({ scope: "local" });
     setLoading(false);
-    goTo('/auth/log-in')
+    router.push(ClientRouting.auth.signIn);
   }
 
   return (

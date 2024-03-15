@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
+import { useProtectRouteFromUnauthUsers } from "@/utils/auth-validations/client-side-validations";
 import { ProfileConfigUsername } from "./components/username";
 import { TextArea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";

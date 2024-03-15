@@ -47,6 +47,13 @@ export function LazyImage({
 
     imageRef.current.onload = handleImageLoad;
     imageRef.current.onerror = handleImageError;
+
+    return () => {
+      if (!imageRef.current) return;
+
+      imageRef.current.onload = null;
+      imageRef.current.onerror = null;
+    };
   }, []);
 
   return (

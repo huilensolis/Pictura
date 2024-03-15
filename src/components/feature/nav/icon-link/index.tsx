@@ -29,7 +29,7 @@ export function IconLink({ href, icon: Icon }: IRLink) {
     if (isPathActive) console.log(href);
 
     setActive(isPathActive);
-  }, [pathName]);
+  }, [pathName, href]);
 
   return (
     <Link

@@ -1,19 +1,19 @@
 "use client";
 import { useDebounce } from "@/hooks/use-debounce";
-import { useRouting } from "@/hooks/useRouting";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const useSearchForm = (defaultSearchValue: string) => {
   const [searchValue, setSearchValue] = useState<string>(defaultSearchValue);
   const { debouncedValue } = useDebounce(searchValue, 500);
-  const { goTo } = useRouting();
+  const router = useRouter();
 
   useEffect(() => {
     const currentURL = new URL(location.origin + location.pathname);
 
     currentURL.searchParams.set("search_query", debouncedValue);
 
-    goTo(currentURL.toString());
+    router.push(currentURL.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 

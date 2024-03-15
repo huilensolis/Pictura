@@ -1,12 +1,12 @@
 import { Feed } from "./components/feed";
-import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
+import { protectRouteFromUnauthUsers } from "@/utils/auth-validations/server-side-validations";
 
 export const dynamic = "force-dynamic";
 
 export default function AppPage() {
   protectRouteFromUnauthUsers();
   return (
-    <div className="w-full h-full flex min-h-screen">
+    <div className="w-full h-full px-2 flex min-h-screen">
       <div className="md:grid hidden w-full h-full min-h-screen">
         <DesktopLayout />
       </div>
