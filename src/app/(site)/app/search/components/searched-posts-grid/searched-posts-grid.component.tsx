@@ -11,18 +11,18 @@ export function SearchedPostsGrid({ searchValue }: { searchValue: string }) {
   async function fetchNewPosts({
     signal,
     currentPage,
-    postsCuantity,
+    pageSize,
   }: {
     currentPage: number;
     signal: AbortSignal;
-    postsCuantity: number;
+    pageSize: number;
   }) {
     return await supabase
       .from("posts")
       .select("*")
       .ilike("title", `%${searchValue}%`)
       .order("created_at", { ascending: false })
-      .range(currentPage, currentPage + postsCuantity)
+      .range(currentPage, currentPage + pageSize)
       .abortSignal(signal);
   }
 

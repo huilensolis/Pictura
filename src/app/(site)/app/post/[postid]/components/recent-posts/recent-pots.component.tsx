@@ -14,18 +14,18 @@ export function RecentPosts({
   async function fetchNewPosts({
     currentPage,
     signal,
-    postsCuantity,
+    pageSize,
   }: {
     currentPage: number;
     signal: AbortSignal;
-    postsCuantity: number;
+    pageSize: number;
   }) {
     return supabase
       .from("posts")
       .select("*")
-      .neq("id", excludedPostId)
+      .neq("id", excludedPostId) // exclude the posts that has the id equal to excludedPostId
       .order("title", { ascending: false })
-      .range(currentPage, currentPage + postsCuantity)
+      .range(currentPage, currentPage + pageSize)
       .abortSignal(signal);
   }
 

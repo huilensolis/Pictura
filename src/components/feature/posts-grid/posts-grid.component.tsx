@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PostsGridRow } from "./components/posts-grid-row";
 import { PostsGridContainer } from "./components/posts-grid-container";
 import { type Database } from "@/supabase/types";
-import { PostsGridSkeleton } from "./components/posts-grid-skeleton";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";
 
 type TPost = Database["public"]["Tables"]["posts"]["Row"];
@@ -10,11 +9,13 @@ type TPost = Database["public"]["Tables"]["posts"]["Row"];
 type TOnFetchNewPostsProps = {
   currentPage: number;
   signal: AbortSignal;
-  postsCuantity: number;
+  pageSize: number;
 };
 
+const PAGE_SIZE = 30;
+
 type TOnFetchNewPosts = ({
-  postsCuantity,
+  pageSize,
   signal,
   currentPage,
 }: TOnFetchNewPostsProps) => Promise<PostgrestSingleResponse<TPost[]>>;
@@ -110,18 +111,17 @@ export function PostsGrid({
         const { data: newPosts, error } = await onFetchNewPosts({
           signal: controller.signal,
           currentPage: page,
-          postsCuantity: 32,
+          pageSize: PAGE_SIZE,
         });
 
         if (error) {
           if (error instanceof Error && error.message === "AbortError") {
-            console.log("error is sinstance of error");
+            // error is caused by an abortcontroller abort signal
             return;
           }
           if (error.code === "20") {
             return; // this means there is been throwed an error because the request has been aborted
           }
-          console.log({ error });
           throw new Error("eror fetching new posts");
         }
 

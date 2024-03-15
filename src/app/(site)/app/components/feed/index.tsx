@@ -8,16 +8,16 @@ export function Feed() {
   async function fetchNewPosts({
     currentPage,
     signal,
-    postsCuantity,
+    pageSize,
   }: {
     currentPage: number;
     signal: AbortSignal;
-    postsCuantity: number;
+    pageSize: number;
   }) {
     return await supabase
       .from("posts")
       .select("*")
-      .range(currentPage, currentPage + postsCuantity)
+      .range(currentPage, currentPage + pageSize)
       .abortSignal(signal);
   }
 

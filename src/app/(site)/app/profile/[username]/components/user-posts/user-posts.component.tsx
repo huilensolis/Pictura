@@ -9,19 +9,18 @@ export function UserPosts({ profileId }: { profileId: string }) {
   async function fetchNewPosts({
     currentPage,
     signal,
-    postsCuantity,
+    pageSize,
   }: {
     currentPage: number;
     signal: AbortSignal;
-    postsCuantity: number;
+    pageSize: number;
   }) {
     return await supabase
       .from("posts")
       .select("*")
       .eq("profile_id", profileId)
       .order("created_at", { ascending: false })
-      .limit(32)
-      .range(currentPage, currentPage + postsCuantity)
+      .range(currentPage, currentPage + pageSize)
       .abortSignal(signal);
   }
 
