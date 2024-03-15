@@ -60,7 +60,7 @@ export async function Post({
       <LazyImage
         src={asset_url}
         alt={title}
-        className="w-full h-full max-h-[80vh] object-cover object-center rounded-md"
+        className="w-full h-full max-h-[1300px] object-cover object-center rounded-md"
         skeletonClassName="w-full h-96 rounded-md"
         containerClassname="w-full"
         skeletonBgColor={post.asset_color || undefined}

@@ -14,9 +14,12 @@ export function PostsGridRow({
 }) {
   const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
-    <li className={`flex w-full h-full pt-2`}>
+    <li
+      className={`flex w-full mb-2`}
+      style={{ width: columnWidth, height: imageHeight }}
+    >
       <Link
-        href={ClientRouting.post().page(JSON.stringify(post.id) || "")}
+        href={ClientRouting.post().page(JSON.stringify(post.id))}
         className="w-full"
       >
         <LazyImage
@@ -24,8 +27,8 @@ export function PostsGridRow({
           alt={post.title}
           className="flex w-full h-auto rounded-md object-cover object-center"
           skeletonClassName="w-full h-full rounded-md"
-          height={imageHeight}
-          width={columnWidth}
+          height={Math.round(imageHeight)}
+          width={Math.round(columnWidth)}
           skeletonBgColor={post.asset_color || undefined}
         />
       </Link>

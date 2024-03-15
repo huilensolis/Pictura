@@ -10,7 +10,7 @@ type TRef = HTMLUListElement;
 const PostsGridContainer = forwardRef<TRef, TProps>(({ children }, ref) => {
   return (
     <ul
-      className="break-inside-avoid gap-2 lg:[column-count:3] [column-count:2] w-full"
+      className="break-inside-avoid gap-2 pt-2 lg:[column-count:3] [column-count:2] w-full"
       ref={ref}
     >
       {children}
