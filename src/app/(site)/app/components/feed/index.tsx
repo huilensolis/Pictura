@@ -17,7 +17,6 @@ export function Feed() {
     return await supabase
       .from("posts")
       .select("*")
-      .limit(30)
       .range(currentPage, currentPage + postsCuantity)
       .abortSignal(signal);
   }

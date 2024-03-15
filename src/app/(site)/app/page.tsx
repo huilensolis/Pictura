@@ -1,7 +1,5 @@
 import { Feed } from "./components/feed";
 import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export const dynamic = "force-dynamic";
 

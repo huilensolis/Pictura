@@ -148,8 +148,6 @@ export function PostsGrid({
     };
   }, [page]);
 
-  console.log({ columnWidth });
-
   return (
     <>
       <PostsGridContainer ref={setContainerRef}>
@@ -168,7 +166,6 @@ export function PostsGrid({
           </>
         )}
       </PostsGridContainer>
-      {isFetching && <PostsGridSkeleton cuantity={32} />}
     </>
   );
 }

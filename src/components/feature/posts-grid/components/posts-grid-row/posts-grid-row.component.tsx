@@ -14,7 +14,10 @@ export function PostsGridRow({
 }) {
   const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
-    <li className={`flex w-full pt-2`}>
+    <li
+      className={`flex w-full mb-2`}
+      style={{ width: columnWidth, height: imageHeight }}
+    >
       <Link
         href={ClientRouting.post().page(JSON.stringify(post.id))}
         className="w-full"
