@@ -6,7 +6,7 @@ export function PostsGridSkeleton({ cuantity = 16 }: { cuantity?: number }) {
       {Array(cuantity)
         .fill(" ")
         .map((_, i) => (
-          <Skeleton key={i} className={`w-full h-96 mb-2 rounded-sm`} />
+          <Skeleton key={i} className={`w-full h-96 mb-2 rounded-md`} />
         ))}
     </>
   );

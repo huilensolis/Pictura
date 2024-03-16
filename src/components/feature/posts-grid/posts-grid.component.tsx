@@ -3,6 +3,7 @@ import { PostsGridRow } from "./components/posts-grid-row";
 import { PostsGridContainer } from "./components/posts-grid-container";
 import { type Database } from "@/supabase/types";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";
+import { PostsGridSkeleton } from "./components/posts-grid-skeleton";
 
 type TPost = Database["public"]["Tables"]["posts"]["Row"];
 
@@ -97,6 +98,7 @@ export function PostsGrid({
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isLoadingFirstTime, setIsLoadingFirstTime] = useState<boolean>(true);
 
   function handleScroll() {
     setPage((prev) => prev + 32);
@@ -131,6 +133,7 @@ export function PostsGrid({
         }
 
         setPosts((prev) => [...prev, ...newPosts]);
+        setIsLoadingFirstTime(false);
       } catch (error) {
         console.log(error);
       } finally {
@@ -151,7 +154,7 @@ export function PostsGrid({
   return (
     <>
       <PostsGridContainer ref={setContainerRef}>
-        {posts.length > 0 && columnWidth && (
+        {!isLoadingFirstTime && posts.length > 0 && columnWidth && (
           <>
             {posts.map((post, i) => (
               <PostsGridRow
@@ -164,6 +167,9 @@ export function PostsGrid({
             ))}
             <div ref={lastItemRef} className="h-96 w-full" />
           </>
+        )}
+        {(isFetching || isLoadingFirstTime) && (
+          <PostsGridSkeleton cuantity={32} />
         )}
       </PostsGridContainer>
     </>
