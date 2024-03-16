@@ -4,6 +4,7 @@ import { Database } from "@/supabase/types";
 import { useSupabase } from "../use-supabase";
 import { useUser } from "../use-user";
 import { useEffect, useState } from "react";
+import { updateProfile as updateUserProfileServerAction } from "@/actions/update-profile";
 
 export function useUserProfile() {
   const { isLoading: isLoadingUser, user } = useUser();
@@ -47,6 +48,7 @@ export function useUserProfile() {
   async function createUserProfile() {
     if (isLoading) throw new Error("Loading user profile");
     if (!user) throw new Error("User not found");
+
     try {
       await supabase.from("profiles").insert({ user_id: user?.id });
       return Promise.resolve();
@@ -56,23 +58,14 @@ export function useUserProfile() {
   }
 
   async function updateUserProfile(
-    values: Database["public"]["Tables"]["profiles"]["Row"],
+    values: Database["public"]["Tables"]["profiles"]["Update"],
   ) {
-    if (isLoading) throw new Error("Loading user profile");
-    if (!user) throw new Error("User not found");
     try {
-      setLoading(true);
-      const { error } = await supabase
-        .from("profiles")
-        .update(values)
-        .eq("user_id", user.id)
-        .single();
-      if (error) return Promise.reject(error);
+      await updateUserProfileServerAction(values);
+
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
-    } finally {
-      setLoading(false);
     }
   }
 

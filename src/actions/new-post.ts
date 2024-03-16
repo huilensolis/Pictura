@@ -3,6 +3,7 @@
 import { deleteImageAsset } from "@/services/images/delete";
 import { postImage } from "@/services/images/upload";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
+import { getMostUsedColorInImageColors } from "@/utils/get-most-used-colors-image";
 import { Static, Type } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import { headers } from "next/headers";
@@ -67,10 +68,9 @@ export async function createNewPost(
     if (!userProfile || errorGettingProfile)
       throw new Error("error getting profile");
 
-    const headerList = headers();
-    const fullUrl = headerList.get("origin");
+    const origin = headers().get("origin");
 
-    if (!fullUrl) throw new Error("error getting origin");
+    if (!origin) throw new Error("error getting origin");
 
     const {
       image,
@@ -79,7 +79,7 @@ export async function createNewPost(
 
     const { error: errorUploadingImage, data } = await postImage({
       image,
-      apiUrl: `${fullUrl}/api`,
+      origin,
     });
 
     if (errorUploadingImage || !data) throw new Error("error uploading image");
@@ -88,15 +88,7 @@ export async function createNewPost(
 
     imageUrl = imageData.secure_url;
 
-    const mostUsedColorNumber = imageData.colors
-      .map((colorItem) => colorItem[1])
-      .sort((a, b) => (a > b ? -1 : 1))[0];
-
-    const mostUsedColor = imageData.colors.find(
-      (color) => color[1] === mostUsedColorNumber,
-    );
-
-    const mostUsedColorHex = mostUsedColor ? mostUsedColor[0] : null;
+    const mostUsedColorHex = getMostUsedColorInImageColors(imageData.colors);
 
     const { error, data: newPost } = await supabase
       .from("posts")

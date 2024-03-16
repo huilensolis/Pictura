@@ -14,13 +14,13 @@ type TResponse = {
  */
 export async function postImage({
   image,
-  apiUrl = "/api",
+  origin = "",
 }: {
   image: string; // base 64
-  apiUrl?: string;
+  origin?: string;
 }): Promise<TResponse> {
   try {
-    const res = await fetch(`${apiUrl}/images/upload`, {
+    const res = await fetch(`${origin}/api/images/upload`, {
       method: "POST",
       body: JSON.stringify({ image }),
     });

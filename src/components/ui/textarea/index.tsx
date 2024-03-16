@@ -1,3 +1,5 @@
+"use client";
+
 import { ChangeEvent, useState } from "react";
 import { TextAreaProps } from "./props.mdoel";
 import { Paragraph } from "../typography/paragraph";
@@ -8,8 +10,8 @@ export function TextArea({
   register,
   disabled,
   error,
-  onChange,
-  readOnly,
+  onChange = (e) => {},
+  readOnly = false,
   placeholder,
   defaultValue,
   validationScheme,
@@ -25,12 +27,10 @@ export function TextArea({
     readOnly: readOnly,
   };
 
-  if (onChange) {
-    textAreaProps.onChange = onChange;
-  }
   if (defaultValue) {
     textAreaProps.defaultValue = defaultValue;
   }
+
   return (
     <div className="flex flex-col">
       <label
@@ -49,9 +49,10 @@ export function TextArea({
             : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600"
         } resize-none h-40 rounded-lg focus:text-neutral-900 text-neutral-600 py-2 px-3 dark:focus:text-neutral-50 dark:text-neutral-400 dark:placeholder:text-neutral-500`}
         {...register(id, validationScheme)}
-        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-          setValue(e.target.value)
-        }
+        onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+          setValue(e.target.value);
+          onChange(e);
+        }}
       />
       {error?.message && (
         <span className="text-red-600 dark:text-red-500">{error.message}</span>
