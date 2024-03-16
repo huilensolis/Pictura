@@ -168,9 +168,7 @@ export function PostsGrid({
             <div ref={lastItemRef} className="h-96 w-full" />
           </>
         )}
-        {(isFetching || isLoadingFirstTime) && (
-          <PostsGridSkeleton cuantity={32} />
-        )}
+        {isLoadingFirstTime && <PostsGridSkeleton cuantity={32} />}
       </PostsGridContainer>
     </>
   );
