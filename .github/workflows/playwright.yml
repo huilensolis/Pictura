@@ -21,9 +21,6 @@ jobs:
         touch .env
         echo NEXT_PUBLIC_SUPABASE_URL=${{ vars.NEXT_PUBLIC_SUPABASE_URL }} >> .env.local
         echo NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }} >> .env.local
-        cat .env.local
-        echo ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-        echo ${{ vars }}
     - name: Run Playwright tests
       run: pnpm exec playwright test
     - uses: actions/upload-artifact@v3
