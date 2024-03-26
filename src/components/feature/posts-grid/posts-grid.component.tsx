@@ -30,6 +30,16 @@ export function PostsGrid({
 
   const containerRef = useRef<HTMLUListElement | null>(null);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const setContainerRef = useCallback((node: HTMLUListElement) => {
     if (!node) return;
 
@@ -37,6 +47,22 @@ export function PostsGrid({
     containerRef.current = node;
     return;
   }, []);
+
+  function handleResize() {
+    if (!containerRef.current) return;
+
+    if (window.innerWidth < 1340 && window.innerWidth > 750) {
+      calculateColumnWidth(window.innerWidth - 350);
+      return;
+    }
+
+    if (window.innerWidth < 750) {
+      calculateColumnWidth(window.innerWidth);
+      return;
+    }
+
+    calculateColumnWidth(containerRef.current.offsetWidth);
+  }
 
   function calculateColumnWidth(containerWidth: number) {
     if (typeof window === "undefined") return;
