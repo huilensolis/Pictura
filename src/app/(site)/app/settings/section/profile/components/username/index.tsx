@@ -17,8 +17,7 @@ export function ProfileConfigUsername({
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
-  const [isUsernameAvailable, setIsUsernameAvailable] =
-    useState<boolean>(false);
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean>(true);
 
   const { updateUserProfile, validateIfUsernameIsAvailabe } = useUserProfile();
 
@@ -28,6 +27,12 @@ export function ProfileConfigUsername({
     searchValue,
     500,
   );
+
+  const {
+    register,
+    formState: { errors },
+    setError,
+  } = useForm<IFormUsernameArea>({ mode: "onChange" });
 
   useEffect(() => {
     async function validateUsername() {
@@ -55,16 +60,16 @@ export function ProfileConfigUsername({
         }
       }
     }
-    if (debouncedSearchValue) {
+    if (debouncedSearchValue && !errors.username) {
       validateUsername();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchValue]);
 
-  const {
-    register,
-    formState: { errors },
-  } = useForm<IFormUsernameArea>({ reValidateMode: "onChange" });
+  useEffect(() => {
+    if (!isUsernameAvailable)
+      setError("username", { message: "username is not available" });
+  }, [isUsernameAvailable]);
 
   return (
     <div className="w-full">
@@ -78,24 +83,20 @@ export function ProfileConfigUsername({
         defaultValue={defaultUsername}
         validationScheme={{
           required: "Area required",
-          validate: () => {
-            if (!isUsernameAvailable) return false;
-            return true;
-          },
+          maxLength: { value: 9, message: "Max length is 9" },
           onChange(event: React.ChangeEvent<HTMLInputElement>) {
             setSearchValue(event.target.value);
+          },
+          validate: (value: string) => {
+            console.log(value);
+            if (value.toLowerCase() !== value) {
+              return "Username must be in lowercase";
+            }
+            return true;
           },
         }}
         error={errors.username}
       />
-      {!isLoading &&
-        debouncedSearchValue &&
-        debouncedSearchValue.length > 0 &&
-        !isUsernameAvailable && (
-          <span className="text-red-500 dark:text-red-400">
-            username is not available
-          </span>
-        )}
       {isLoading && (
         <div className="flex gap-2 mt-1">
           <LoadingSpinner size={20} />
