@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "@/hooks/use-session";
+import { ClientRouting } from "@/models/routing/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -42,7 +43,7 @@ export function useProtectRouteFromUnauthUsers() {
   }, [session]);
 
   if (!isUserLoggedIn && !isCheckingUser) {
-    router.push("/auth/sign-up");
+    router.push(ClientRouting.auth.signIn);
   }
 }
 
@@ -80,6 +81,6 @@ export function useProtectRouteFromAuthUsers() {
   }, [isUserLoggedIn, session]);
 
   if (isUserLoggedIn) {
-    router.push("/app");
+    router.push(ClientRouting.app);
   }
 }
