@@ -6,9 +6,8 @@ import { IFormUsernameArea } from "./form.models";
 import { useUser } from "@/hooks/use-user";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useEffect, useState } from "react";
-import { useUserProfile } from "@/hooks/use-user-profile";
 import { LoadingSpinner } from "@/components/ui/spinner";
-import { Database } from "@/supabase/types";
+import { useSupabase } from "@/hooks/use-supabase";
 
 export function ProfileConfigUsername({
   defaultUsername = "",
@@ -19,10 +18,9 @@ export function ProfileConfigUsername({
   const [searchValue, setSearchValue] = useState<string>("");
   const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean>(true);
 
-  const { updateUserProfile, validateIfUsernameIsAvailabe } = useUserProfile();
-
   const { user } = useUser();
 
+  const { supabase } = useSupabase();
   const { debouncedValue: debouncedSearchValue } = useDebounce(
     searchValue,
     500,
@@ -38,23 +36,35 @@ export function ProfileConfigUsername({
     async function validateUsername() {
       setIsLoading(true);
       try {
-        const isThisUsernameAvailable =
-          await validateIfUsernameIsAvailabe(debouncedSearchValue);
-        setIsUsernameAvailable(isThisUsernameAvailable);
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("username", debouncedSearchValue)
+          .single();
+
+        if (!data || error) {
+          setIsUsernameAvailable(true);
+          return;
+        }
+        setIsUsernameAvailable(false);
       } catch (error) {
         setIsUsernameAvailable(false);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-
       if (
         debouncedSearchValue === searchValue &&
         user?.id &&
         !errors.username
       ) {
         try {
-          await updateUserProfile({
-            username: debouncedSearchValue,
-          } as Database["public"]["Tables"]["profiles"]["Row"]);
+          const { error } = await supabase
+            .from("profiles")
+            .update({ username: debouncedSearchValue })
+            .eq("user_id", user.id)
+            .single();
+
+          if (error) throw error;
         } catch (error) {
           //
         }
