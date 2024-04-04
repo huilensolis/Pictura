@@ -1,21 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
 import { ProfileConfigUsername } from "./components/username";
 import { TextArea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { ProfileFormAreas } from "./form.models";
-import { useUserProfile } from "@/hooks/use-user-profile";
+import { type ProfileFormAreas } from "./form.models";
 import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Database } from "@/supabase/types";
 import { Alert } from "@/components/ui/alert";
-import { useRouter } from "next/navigation";
 import { ImagePicker } from "@/components/ui/image-picker";
 import { useBase64Image } from "@/hooks/use-base-64-image";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useSupabase } from "@/hooks/use-supabase";
+import { useUserProfile } from "@/hooks/use-user-profile";
+import { FormSkeleton } from "./components/form-skeleton/form-skeleton.component";
+import { updateProfile } from "@/actions/update-profile";
 
 export default function ProfileConfigPage() {
   const [isUpdatingData, setIsUpdatingData] = useState<boolean>(false);
@@ -23,21 +25,13 @@ export default function ProfileConfigPage() {
     null,
   );
 
-  const {
-    userProfile,
-    isLoading: isLoadingUserProfile,
-    updateUserProfile,
-  } = useUserProfile();
-
-  const [isLoading, setIsLoading] = useState<boolean>(isLoadingUserProfile);
-
-  useEffect(() => {
-    if (!isLoadingUserProfile) setIsLoading(false);
-  }, [isLoadingUserProfile]);
-
   useProtectRouteFromUnauthUsers();
 
   const router = useRouter();
+
+  const { supabase } = useSupabase();
+
+  const { userProfile, isLoading } = useUserProfile();
 
   const {
     register,
@@ -47,8 +41,8 @@ export default function ProfileConfigPage() {
 
   const { parseImageToBase64 } = useBase64Image();
 
-  async function updateProfile(data: ProfileFormAreas) {
-    if (!data) return;
+  async function updateUserProfile(data: ProfileFormAreas) {
+    if (!userProfile || !data) return;
 
     const formatedData: Database["public"]["Tables"]["profiles"]["Update"] = {
       name: data.name,
@@ -100,10 +94,11 @@ export default function ProfileConfigPage() {
     try {
       setIsUpdatingData(true);
 
-      await updateUserProfile(formatedData);
+      await updateProfile(formatedData);
 
       setErrorUpdatingData(null);
       setIsUpdatingData(false);
+
       router.refresh();
     } catch (error) {
       setErrorUpdatingData("There has been an error updating your profile : (");
@@ -117,7 +112,7 @@ export default function ProfileConfigPage() {
       {!isLoading && (
         <form
           className="w-full flex flex-col gap-2"
-          onSubmit={handleSubmit(updateProfile)}
+          onSubmit={handleSubmit(updateUserProfile)}
         >
           <div className="relative flex h-full w-full mb-16">
             <div className="w-full h-56">
@@ -199,7 +194,6 @@ export default function ProfileConfigPage() {
             register={register}
             defaultValue={userProfile?.name ?? ""}
             validationScheme={{
-              required: "Area required",
               maxLength: { value: 24, message: "Maximum of 24 characters" },
             }}
             error={errors.name}
@@ -208,7 +202,6 @@ export default function ProfileConfigPage() {
             id="description"
             label="Description"
             validationScheme={{
-              required: false,
               maxLength: { value: 160, message: "Maximum of 160 characters" },
             }}
             disabled={false}
@@ -225,7 +218,6 @@ Want to connect? check out my portfolio bellow.`}
             label="Location"
             defaultValue={userProfile?.location ?? ""}
             validationScheme={{
-              required: false,
               minLength: { value: 3, message: "Minimum of 3 characters" },
               maxLength: { value: 80, message: "Maximum of 80 characters" },
             }}
@@ -241,7 +233,6 @@ Want to connect? check out my portfolio bellow.`}
             register={register}
             error={errors.website}
             validationScheme={{
-              required: false,
               minLength: { value: 4, message: "Minimum of 4 characters" },
               validate: (inputValue: string) => {
                 if (inputValue.length === 0) return true;
@@ -276,38 +267,5 @@ Want to connect? check out my portfolio bellow.`}
         </form>
       )}
     </>
-  );
-}
-function FormSkeleton() {
-  return (
-    <div className="flex flex-col gap-2 w-full">
-      <header className="relative w-full mb-16">
-        <Skeleton className="w-full h-56 rounded-lg" />
-        <div className="h-64 w-full absolute -bottom-44">
-          <Skeleton className="w-32 h-32 rounded-full" />
-        </div>
-      </header>
-      <div className="flex flex-col gap-1">
-        <Skeleton className="w-28 h-3 rounded-lg" />
-        <Skeleton className="w-full h-10 rounded-lg" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <Skeleton className="w-28 h-3 rounded-lg" />
-        <Skeleton className="w-full h-10 rounded-lg" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <Skeleton className="w-28 h-3 rounded-lg" />
-        <Skeleton className="w-full h-44 rounded-lg" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <Skeleton className="w-28 h-3 rounded-lg" />
-        <Skeleton className="w-full h-10 rounded-lg" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <Skeleton className="w-28 h-3 rounded-lg" />
-        <Skeleton className="w-full h-10 rounded-lg" />
-      </div>
-      <Skeleton className="w-full h-12 rounded-lg" />
-    </div>
   );
 }

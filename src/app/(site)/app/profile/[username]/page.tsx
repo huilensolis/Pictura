@@ -1,4 +1,4 @@
-import { CalendarIcon, LinkIcon, MapPinIcon } from "lucide-react";
+import { CalendarIcon, ImageOff, LinkIcon, MapPinIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -74,20 +74,32 @@ function Profile({
       <header>
         <div className="w-full relative mb-16">
           <div className="h-56 w-full">
-            <LazyImage
-              src={profile?.banner_url ?? ""}
-              className="w-full h-56 object-cover object-center"
-              skeletonClassName="w-full h-56"
-              alt={profile.name || profile.username || ""}
-            />
+            {profile.banner_url ? (
+              <LazyImage
+                src={profile.banner_url}
+                className="w-full h-56 object-cover object-center rounded-md"
+                skeletonClassName="w-full h-56"
+                alt={profile.name || profile.username || ""}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-neutral-300 rounded-md">
+                <ImageOff className="text-neutral-400 2-5 h-5" />
+              </div>
+            )}
           </div>
           <div className="w-32 h-32 rounded-full overflow-hidden absolute -bottom-[25%] left-8 border-[2px] border-neutral-50 dark:border-cm-darker-gray">
-            <LazyImage
-              src={profile?.avatar_url ?? ""}
-              className="w-full h-full object-cover object-center"
-              skeletonClassName="w-full h-full"
-              alt={profile.name || profile.username || ""}
-            />
+            {profile.avatar_url ? (
+              <LazyImage
+                src={profile.avatar_url}
+                className="w-full h-full object-cover object-center"
+                skeletonClassName="w-full h-full"
+                alt={profile.name || profile.username || ""}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-neutral-300 rounded-full">
+                <ImageOff className="text-neutral-400 2-5 h-5" />
+              </div>
+            )}
           </div>
         </div>
         <article className="flex flex-col gap-2 px-4">

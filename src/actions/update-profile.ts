@@ -4,17 +4,20 @@ import { deleteImageAsset } from "@/services/images/delete";
 import { postImage } from "@/services/images/upload";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { Database } from "@/supabase/types";
-import { Static, Type } from "@sinclair/typebox";
+import { Static, TSchema, Type } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import { headers } from "next/headers";
 
+const Nullable = <T extends TSchema>(schema: T) =>
+  Type.Union([schema, Type.Null()]);
+
 const ProfileSchema = Type.Object({
-  name: Type.Optional(Type.String(), true),
-  website: Type.Optional(Type.String(), true),
-  location: Type.Optional(Type.String(), true),
-  description: Type.Optional(Type.String(), true),
-  banner_image_base64: Type.Optional(Type.String(), true),
-  avatar_image_base64: Type.Optional(Type.String(), true),
+  name: Type.Optional(Nullable(Type.String())),
+  website: Type.Optional(Nullable(Type.String())),
+  location: Type.Optional(Nullable(Type.String())),
+  description: Type.Optional(Nullable(Type.String())),
+  banner_image_base64: Type.Optional(Nullable(Type.String())),
+  avatar_image_base64: Type.Optional(Nullable(Type.String())),
 });
 
 type TFormData = Static<typeof ProfileSchema>;

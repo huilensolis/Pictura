@@ -23,8 +23,8 @@ export async function Post({
 
   return (
     <article className="w-full h-full flex flex-col-reverse gap-2 items-start justify-end bg-neutral-200 dark:bg-neutral-900">
-      <header className="flex flex-col items-start justify-center gap-2 w-max xl:min-w-64 min-w-full">
-        <h3 className="w-full text-neutral-800 dark:text-neutral-300 font-bold text-2xl">
+      <header className="flex flex-col items-start justify-center gap-2 w-full xl:min-w-64 min-w-full">
+        <h3 className="w-full text-neutral-800 dark:text-neutral-300 font-bold text-2xl text-balance">
           {title}
         </h3>
         {postOwnerProfile && (

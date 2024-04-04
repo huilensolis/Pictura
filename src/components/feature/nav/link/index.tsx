@@ -1,3 +1,5 @@
+"use client";
+
 import { ILink } from "@/app/(site)/app/models/nav-links/nav-links.models";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
