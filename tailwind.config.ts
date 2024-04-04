@@ -14,6 +14,19 @@ const config: Config = {
         "cm-gray": "#1C1C1C",
         "cm-lighter-gray": "#2C2C2C",
       },
+      keyframes: {
+        "shrink-from-left": {
+          "0%": {
+            width: "0px",
+          },
+          "100%": {
+            width: "100%",
+          },
+        },
+      },
+      animation: {
+        "shrink-from-left": "shrink-from-left 1.5s ease-out forwards",
+      },
     },
   },
   plugins: [],
