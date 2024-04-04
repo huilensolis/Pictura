@@ -1,6 +1,4 @@
-"use client";
-
-import { InputProps } from "./props.model"
+import { InputProps } from "./props.model";
 
 export function Input({
   error,
@@ -20,7 +18,7 @@ export function Input({
     type: type,
     id: id,
     disabled: disabled,
-    "aria-disabled": { disabled },
+    "aria-disabled": disabled,
     placeholder: placeholder,
     readOnly: readOnly,
   };

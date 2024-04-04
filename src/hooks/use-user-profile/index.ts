@@ -32,11 +32,17 @@ export function useUserProfile() {
 
         if (!data) throw new Error("No profile found");
 
-        console.log("updating user profile");
         setUserProfile(data);
-      } catch (error) {
+      } catch (error: unknown) {
+        if (
+          typeof error === "object" &&
+          error &&
+          "message" in error &&
+          typeof error.message === "string" &&
+          error.message.includes("AbortError")
+        )
+          return;
         console.log(error);
-        //
       } finally {
         setIsLoading(false);
       }

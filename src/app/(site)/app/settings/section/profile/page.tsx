@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { type FieldError, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
 import { useProtectRouteFromUnauthUsers } from "@/utils/auth/client-side-validations";
@@ -13,11 +13,11 @@ import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Database } from "@/supabase/types";
 import { Alert } from "@/components/ui/alert";
 import { ImagePicker } from "@/components/ui/image-picker";
-import { postImage } from "@/services/images/upload";
 import { useBase64Image } from "@/hooks/use-base-64-image";
 import { useSupabase } from "@/hooks/use-supabase";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { FormSkeleton } from "./components/form-skeleton/form-skeleton.component";
+import { updateProfile } from "@/actions/update-profile";
 
 export default function ProfileConfigPage() {
   const [isUpdatingData, setIsUpdatingData] = useState<boolean>(false);
@@ -37,24 +37,23 @@ export default function ProfileConfigPage() {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-  } = useForm<ProfileFormAreas>({ mode: "onChange" });
+  } = useForm<ProfileFormAreas>({ mode: "all" });
 
   const { parseImageToBase64 } = useBase64Image();
 
-  async function updateProfile(data: ProfileFormAreas) {
+  async function updateUserProfile(data: ProfileFormAreas) {
     if (!userProfile || !data) return;
 
-    const formatedData: Database["public"]["Tables"]["profiles"]["Row"] = {
+    const formatedData: Database["public"]["Tables"]["profiles"]["Update"] = {
       name: data.name,
       website: data.website,
       location: data.location,
       description: data.description,
-    } as Database["public"]["Tables"]["profiles"]["Row"];
+    };
 
     if (data.banner.length !== 0) {
       try {
         const bannerImageFile = data.banner[0];
-
         if (!bannerImageFile) {
           throw new Error("no image file found");
         }
@@ -62,19 +61,9 @@ export default function ProfileConfigPage() {
         const base64Image = await parseImageToBase64({
           image: bannerImageFile,
         });
-        if (!base64Image) throw new Error("No base64Image");
+        if (!base64Image) throw new Error("error parsin image");
 
-        const { error, data: postImageData } = await postImage({
-          image: base64Image,
-        });
-
-        if (error || !postImageData) {
-          throw new Error("server response wen wrong");
-        }
-
-        const { secure_url } = postImageData;
-
-        formatedData.banner_url = secure_url;
+        formatedData.banner_url = base64Image;
       } catch {
         setErrorUpdatingData(
           "there is been an error updating your banner picture",
@@ -85,26 +74,16 @@ export default function ProfileConfigPage() {
     if (data.avatar.length !== 0) {
       try {
         const avatarImageFile = data.avatar[0];
-
         if (!avatarImageFile) {
           throw new Error("no avatar file found");
         }
+
         const base64Image = await parseImageToBase64({
           image: avatarImageFile,
         });
-        if (!base64Image) throw new Error("No base64Image");
+        if (!base64Image) throw new Error("error parsin image");
 
-        const { error, data: postImageData } = await postImage({
-          image: base64Image,
-        });
-
-        if (error || !postImageData) {
-          throw new Error("server response wen wrong");
-        }
-
-        const { secure_url } = postImageData;
-
-        formatedData.avatar_url = secure_url;
+        formatedData.avatar_url = base64Image;
       } catch (error) {
         setErrorUpdatingData(
           "there is been an error updating your avatar picture",
@@ -115,12 +94,7 @@ export default function ProfileConfigPage() {
     try {
       setIsUpdatingData(true);
 
-      const { error } = await supabase
-        .from("profiles")
-        .update(formatedData)
-        .eq("id", userProfile.id);
-
-      if (error) throw error;
+      await updateProfile(formatedData);
 
       setErrorUpdatingData(null);
       setIsUpdatingData(false);
@@ -138,10 +112,9 @@ export default function ProfileConfigPage() {
       {!isLoading && (
         <form
           className="w-full flex flex-col gap-2"
-          onSubmit={handleSubmit(updateProfile)}
-          encType="multipart/form-data"
+          onSubmit={handleSubmit(updateUserProfile)}
         >
-          <div className="relative flex h-full w-full mb-10">
+          <div className="relative flex h-full w-full mb-16">
             <div className="w-full h-56">
               <ImagePicker
                 label="Banner"
@@ -149,19 +122,61 @@ export default function ProfileConfigPage() {
                 register={register}
                 validationScheme={{
                   required: false,
+                  validate: {
+                    size: (files: File[]) => {
+                      const file = files[0];
+
+                      if (!file) return undefined;
+
+                      const maxSizeInKB = 400; // in KB
+
+                      const maxSizeInBytes = maxSizeInKB * 1024;
+
+                      if (file.size > maxSizeInBytes) {
+                        return "image max weight is 400kb";
+                      }
+
+                      return undefined;
+                    },
+                  },
                 }}
-                error={errors.banner as any}
+                error={(errors.banner as FieldError) ?? undefined}
                 imagePlaceHolderClasses="w-full h-full rounded-lg"
                 placeholderImageUrl={userProfile?.banner_url ?? null}
+                showErrorMessages={false}
               />
+              {errors.banner?.message && (
+                <span className="text-red-600 dark:text-red-500 pl-32">
+                  {errors.banner.message}
+                </span>
+              )}
             </div>
-            <div className="h-32 w-32 absolute -bottom-10 left-5">
+            <div className="h-64 w-full absolute -bottom-44">
               <ImagePicker
                 label="Avatar"
                 id="avatar"
                 register={register}
-                validationScheme={{ required: false }}
-                error={errors.avatar as any}
+                validationScheme={{
+                  required: false,
+                  validate: {
+                    size: (files: File[]) => {
+                      const file = files[0];
+
+                      if (!file) return undefined;
+
+                      const maxSizeInKB = 400; // in KB
+
+                      const maxSizeInBytes = maxSizeInKB * 1024;
+
+                      if (file.size > maxSizeInBytes) {
+                        return "image max weight is 400kb";
+                      }
+
+                      return undefined;
+                    },
+                  },
+                }}
+                error={(errors.avatar as FieldError) ?? undefined}
                 placeholderImageUrl={userProfile?.avatar_url ?? null}
                 imagePlaceHolderClasses="w-32 h-32 rounded-full border-neutral-200 dark:border-cm-darker-gray border-2"
               />
@@ -191,7 +206,7 @@ export default function ProfileConfigPage() {
             }}
             disabled={false}
             register={register}
-            error={errors.description ?? null}
+            error={errors.description}
             defaultValue={userProfile?.description ?? ""}
             placeholder={`Hello there! I am Huilen Solis, a Frontend Engineer seeking his first development job. I am a pixel art enthusiasm. I like pixel art wallpapers and lofi gif backgrounds!
 

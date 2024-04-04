@@ -14,7 +14,7 @@ export interface TextAreaProps
   disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   readOnly?: boolean;
-  error: FieldError | null;
+  error: FieldError | undefined;
   validationScheme: RegisterOptions;
   register: UseFormRegister<any>;
 }
