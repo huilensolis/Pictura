@@ -15,12 +15,12 @@ export function PostsGridRow({
   const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
     <li
-      className="flex w-full mb-2"
+      className="flex w-full mb-2 rounded-md"
       style={{ width: columnWidth, height: imageHeight }}
     >
       <Link
         href={ClientRouting.post().page(JSON.stringify(post.id))}
-        className="w-full"
+        className="w-full rounded-md"
       >
         <LazyImage
           src={post.asset_url}
