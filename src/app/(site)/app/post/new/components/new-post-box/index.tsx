@@ -9,9 +9,9 @@ import { FormAreas } from "./new-post.models";
 import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { useBase64Image } from "@/hooks/use-base-64-image";
 import { Heading } from "@/components/ui/typography/heading";
-import { useRouting } from "@/hooks/useRouting";
 import { ClientRouting } from "@/models/routing/client";
 import { createNewPost } from "@/actions/new-post";
+import { useRouter } from "next/navigation";
 
 export function NewPostBox() {
   const [formImageSrc, setFormImageSrc] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export function NewPostBox() {
 
   const { userProfile } = useUserProfile();
 
-  const { goTo } = useRouting();
+  const router = useRouter();
 
   const {
     register,
@@ -67,7 +67,7 @@ export function NewPostBox() {
       });
       UnSelectImage();
       resetField("title");
-      goTo(ClientRouting.post().page(JSON.stringify(newPostId)));
+      router.push(ClientRouting.post().page(JSON.stringify(newPostId)));
     } catch (e) {
       setFormSubmitingState({
         hasSubmittingFailed: true,

@@ -21,7 +21,7 @@ export const NAV_LINKS: ILink[] = [
   },
   {
     title: "Pins",
-    href: "",
+    href: " ",
     icon: StarIcon,
   },
   {

@@ -6,12 +6,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
-import { validateEmail } from "@/utils/validations/gmail";
 import { useState } from "react";
 import { Alert } from "@/components/ui/alert";
 import Link from "next/link";
 import { IForm } from "./recuperate-password.models";
-import { useProtectRouteFromAuthUsers } from "../../../../../utils/auth/client-side-validations";
+import { useProtectRouteFromAuthUsers } from "@/utils/auth-validations/client-side-validations";
 
 export default function LogInPage() {
   const [errorSendingEmail, setErrorSendingEmail] = useState<boolean>(false);
@@ -27,7 +26,7 @@ export default function LogInPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<IForm>({ mode: "onTouched" });
+  } = useForm<IForm>({ mode: "all" });
 
   const handleRecuperatePassword: SubmitHandler<IForm> = async (data) => {
     try {
@@ -81,11 +80,9 @@ export default function LogInPage() {
           error={errors.email}
           validationScheme={{
             required: { value: true, message: "email is required" },
-            validate: (value: string) => {
-              const isEmailCorrectFormat = validateEmail(value);
-
-              if (!isEmailCorrectFormat) return "Invalid email format";
-              else return true;
+            pattern: {
+              value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+              message: "incorrect email format",
             },
           }}
         />

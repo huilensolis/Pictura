@@ -25,7 +25,7 @@ export function CustomNavLink({ title, href, icon: Icon }: ILink) {
   return (
     <Link
       href={href}
-      className={`py-3 px-3 pr-8 w-max flex gap-4 justify-start items-center rounded-full group transition-all hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray delay-75`}
+      className={`py-3 px-3 pr-8 w-full flex gap-4 justify-start items-center rounded-full group transition-all hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray delay-75`}
     >
       <Icon
         className={`w-6 h-6 ${

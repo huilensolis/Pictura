@@ -1,5 +1,5 @@
 import { Feed } from "./components/feed";
-import { protectRouteFromUnauthUsers } from "@/utils/auth/server-side-validations";
+import { protectRouteFromUnauthUsers } from "@/utils/auth-validations/server-side-validations";
 
 export const dynamic = "force-dynamic";
 

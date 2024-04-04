@@ -18,10 +18,10 @@ export default async function newPostPage() {
     .eq("user_id", session?.user.id);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
+    <div className="w-full h-full px-2 flex flex-col items-center justify-center">
       <NewPostBox />
       {posts && (
-        <span>
+        <span className="text-neutral-900 dark:text-neutral-50">
           Created {posts.length} posts of{" "}
           {Number(process.env.MAX_POSTS_PER_USER) || 24} limit
         </span>

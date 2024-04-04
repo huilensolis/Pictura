@@ -7,11 +7,10 @@ import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { AuthFormAreas } from "../auth-form.models";
-import { validateEmail } from "@/utils/validations/gmail";
 import { useState } from "react";
 import { Alert } from "@/components/ui/alert";
 import Link from "next/link";
-import { useProtectRouteFromAuthUsers } from "../../../../../utils/auth/client-side-validations";
+import { useProtectRouteFromAuthUsers } from "@/utils/auth-validations/client-side-validations";
 
 export default function SingUpPage() {
   const [wasEmailSent, setWasEmailSent] = useState<boolean>(false);
@@ -26,7 +25,7 @@ export default function SingUpPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<AuthFormAreas>({ mode: "onTouched" });
+  } = useForm<AuthFormAreas>({ mode: "all" });
 
   const handleSignUp: SubmitHandler<AuthFormAreas> = async (data) => {
     try {
@@ -74,11 +73,9 @@ export default function SingUpPage() {
           error={errors.email}
           validationScheme={{
             required: { value: true, message: "email is required" },
-            validate: (value: string) => {
-              const isEmailCorrectFormat = validateEmail(value);
-
-              if (!isEmailCorrectFormat) return "Invalid email format";
-              else return true;
+            pattern: {
+              value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+              message: "incorrect email format",
             },
           }}
         />

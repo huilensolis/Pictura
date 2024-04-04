@@ -2,13 +2,7 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { ImageOff } from "lucide-react";
-import {
-  type HTMLAttributes,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from "react";
+import { type HTMLAttributes, useState, useCallback } from "react";
 
 type TProps = {
   src: string;
@@ -44,13 +38,17 @@ export function LazyImage({
     setError(true);
   };
 
-  const imageRef = useCallback((node: HTMLImageElement) => {
-    if (!node) return;
-    if (node.complete) handleImageLoad();
+  const imageRef = useCallback(
+    (node: HTMLImageElement) => {
+      if (!node) return;
 
-    node.onload = handleImageLoad;
-    node.onerror = handleImageError;
-  }, []);
+      if (node.complete) handleImageLoad();
+
+      node.onload = handleImageLoad;
+      node.onerror = handleImageError;
+    },
+    [src],
+  );
 
   return (
     <div className={containerClassname}>
