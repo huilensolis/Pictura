@@ -1,4 +1,4 @@
-import React, { HTMLInputTypeAttribute } from "react";
+import React from "react";
 import {
   type UseFormRegister,
   type RegisterOptions,
@@ -18,4 +18,5 @@ export interface ImagePickerProps
   error: FieldError | undefined;
   validationScheme: RegisterOptions;
   register: UseFormRegister<any>;
+  showErrorMessages?: boolean;
 }

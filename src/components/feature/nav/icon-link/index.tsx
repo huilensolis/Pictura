@@ -26,8 +26,6 @@ export function IconLink({ href, icon: Icon }: IRLink) {
       pathName === href || pathName.startsWith(href),
     );
 
-    if (isPathActive) console.log(href);
-
     setActive(isPathActive);
   }, [pathName, href]);
 

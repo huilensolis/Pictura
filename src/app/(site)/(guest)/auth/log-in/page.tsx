@@ -31,12 +31,14 @@ export default function LogInPage() {
   const handleLogIn: SubmitHandler<AuthFormAreas> = async (data) => {
     try {
       setIsLoading(true);
+
       const { error } = await supabase.auth.signInWithPassword({
         password: data.password,
         email: data.email,
       });
       if (error) {
         setErrorLogginIn(true);
+        setIsLoading(false);
         return;
       }
       setErrorLogginIn(false);

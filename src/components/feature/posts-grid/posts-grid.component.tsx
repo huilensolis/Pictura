@@ -3,6 +3,7 @@ import { PostsGridRow } from "./components/posts-grid-row";
 import { PostsGridContainer } from "./components/posts-grid-container";
 import { type Database } from "@/supabase/types";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";
+import { PostsGridSkeleton } from "./components/posts-grid-skeleton";
 
 type TPost = Database["public"]["Tables"]["posts"]["Row"];
 
@@ -29,6 +30,16 @@ export function PostsGrid({
 
   const containerRef = useRef<HTMLUListElement | null>(null);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const setContainerRef = useCallback((node: HTMLUListElement) => {
     if (!node) return;
 
@@ -36,6 +47,22 @@ export function PostsGrid({
     containerRef.current = node;
     return;
   }, []);
+
+  function handleResize() {
+    if (!containerRef.current) return;
+
+    if (window.innerWidth < 1340 && window.innerWidth > 750) {
+      calculateColumnWidth(window.innerWidth - 350);
+      return;
+    }
+
+    if (window.innerWidth < 750) {
+      calculateColumnWidth(window.innerWidth);
+      return;
+    }
+
+    calculateColumnWidth(containerRef.current.offsetWidth);
+  }
 
   function calculateColumnWidth(containerWidth: number) {
     if (typeof window === "undefined") return;
@@ -97,6 +124,7 @@ export function PostsGrid({
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isLoadingFirstTime, setIsLoadingFirstTime] = useState<boolean>(true);
 
   function handleScroll() {
     setPage((prev) => prev + 32);
@@ -131,6 +159,7 @@ export function PostsGrid({
         }
 
         setPosts((prev) => [...prev, ...newPosts]);
+        setIsLoadingFirstTime(false);
       } catch (error) {
         console.log(error);
       } finally {
@@ -151,7 +180,7 @@ export function PostsGrid({
   return (
     <>
       <PostsGridContainer ref={setContainerRef}>
-        {posts.length > 0 && columnWidth && (
+        {!isLoadingFirstTime && posts.length > 0 && columnWidth && (
           <>
             {posts.map((post, i) => (
               <PostsGridRow
@@ -165,6 +194,7 @@ export function PostsGrid({
             <div ref={lastItemRef} className="h-96 w-full" />
           </>
         )}
+        {isLoadingFirstTime && <PostsGridSkeleton cuantity={32} />}
       </PostsGridContainer>
     </>
   );

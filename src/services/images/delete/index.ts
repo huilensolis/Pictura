@@ -1,9 +1,12 @@
 import { extractPublicId } from "../extract-public-id";
 
-export const deleteImageAsset = async (imageUrl: string) => {
+export const deleteImageAsset = async (
+  imageUrl: string,
+  origin: string = "",
+) => {
   try {
     const public_id = await extractPublicId(imageUrl);
-    const response = await fetch("/api/images/delete", {
+    const response = await fetch(`${origin}/api/images/delete`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

@@ -133,18 +133,9 @@ export default function SingUpPage() {
           <Alert
             type="error"
             title="Error"
-            description="There was an error sending the confirmation email, try again"
+            description="There was an error sending the confirmation email, please try again later"
             onClose={() => setWasAnErrorSendingEmail(false)}
-          >
-            <div>
-              <span className="text-neutral-600 dark:text-neutral-400">
-                If the error persist, please contact us on
-                <a href="https://www.x.com/picturaasdfasd" target="_blank">
-                  X/Twitter
-                </a>
-              </span>
-            </div>
-          </Alert>
+          />
         )}
       </form>
     </section>

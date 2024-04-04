@@ -15,7 +15,7 @@ export function PostsGridRow({
   const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
     <li
-      className={`flex w-full mb-2`}
+      className="flex w-full mb-2"
       style={{ width: columnWidth, height: imageHeight }}
     >
       <Link

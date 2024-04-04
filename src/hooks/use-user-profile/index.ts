@@ -1,108 +1,63 @@
-"use client";
-
+import { useEffect, useState } from "react";
+import { useUser } from "../use-user";
 import { Database } from "@/supabase/types";
 import { useSupabase } from "../use-supabase";
-import { useUser } from "../use-user";
-import { useEffect, useState } from "react";
 
 export function useUserProfile() {
-  const { isLoading: isLoadingUser, user } = useUser();
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const { user, isLoading: isLoadingUser } = useUser();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [userProfile, setUserProfile] = useState<
     Database["public"]["Tables"]["profiles"]["Row"] | null
-  >();
-
-  useEffect(() => {
-    if (!isLoadingUser && user && !userProfile) setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoadingUser]);
+  >(null);
 
   const { supabase } = useSupabase();
 
   useEffect(() => {
-    async function fetchUserProfile(userId: string) {
-      setLoading(true);
-      const { error, data } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("user_id", userId)
-        .single();
+    async function fetchUserProfile(
+      userId: Database["public"]["Tables"]["users"]["Row"]["id"],
+      abortSignal: AbortSignal,
+    ) {
+      try {
+        setIsLoading(true);
 
-      if (error || !data) {
-        setLoading(false);
-        return setUserProfile(null);
+        const { error, data } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("user_id", userId)
+          .abortSignal(abortSignal)
+          .single();
+
+        if (error) throw error;
+
+        if (!data) throw new Error("No profile found");
+
+        setUserProfile(data);
+      } catch (error: unknown) {
+        if (
+          typeof error === "object" &&
+          error &&
+          "message" in error &&
+          typeof error.message === "string" &&
+          error.message.includes("AbortError")
+        )
+          return;
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
-
-      setUserProfile(data);
-      setLoading(false);
     }
+
+    const abortController = new AbortController();
 
     if (!isLoadingUser && user?.id) {
-      fetchUserProfile(user?.id);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoadingUser]);
-
-  async function createUserProfile() {
-    if (isLoading) throw new Error("Loading user profile");
-    if (!user) throw new Error("User not found");
-    try {
-      await supabase.from("profiles").insert({ user_id: user?.id });
-      return Promise.resolve();
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  async function updateUserProfile(
-    values: Database["public"]["Tables"]["profiles"]["Row"],
-  ) {
-    if (isLoading) throw new Error("Loading user profile");
-    if (!user) throw new Error("User not found");
-    try {
-      setLoading(true);
-      const { error } = await supabase
-        .from("profiles")
-        .update(values)
-        .eq("user_id", user.id)
-        .single();
-      if (error) return Promise.reject(error);
-      return Promise.resolve();
-    } catch (error) {
-      return Promise.reject(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function validateIfUsernameIsAvailabe(
-    username: string,
-  ): Promise<boolean> {
-    if (isLoading) throw new Error("Loading user profile");
-    if (!user) throw new Error("User not found");
-
-    if (!userProfile) {
-      await createUserProfile();
+      fetchUserProfile(user.id, abortController.signal);
     }
 
-    if (username === userProfile?.username) return true;
+    return () => {
+      abortController.abort();
+    };
+  }, [user]);
 
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("username", username)
-      .single();
-
-    if (!data || error) return true;
-    return false;
-  }
-
-  return {
-    isLoading,
-    userProfile,
-    updateUserProfile,
-    createUserProfile,
-    validateIfUsernameIsAvailabe,
-  };
+  return { isLoading, userProfile };
 }
