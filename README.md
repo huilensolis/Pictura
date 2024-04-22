@@ -6,19 +6,22 @@
 **App Features:**
 
 1. **User Authentication:**
-   - User registration and login functionality using Supabase authentication.
+    - [x]  User registration and login functionality using Supabase authentication.
 2. **Image Upload:**
-   - Allow users to upload pixel art images.
-   - Integrate Cloudinary for image storage and retrieval.
+    - [x]  Allow users to upload images.
+    - [x]  Integrate Cloudinary for image storage and retrieval.
 3. **Image Display:**
-   - Display uploaded pixel art images in a gallery format.
-   - Include infinite scroll
-5. **Search Functionality:**
-   - Enable users to search for pixel art images/gifs by keywords or tags.
-6. **User Profiles:**
-   - User profiles to showcase uploaded pixel art and user information.
-8. **Favourite/Bookmark Feature:**
-   - Allow users to create pixel art image collections.
+    - [x]  Display uploaded images in a gallery format.
+    - [x]  Include infinite scroll
+4. **Image managment:**
+    - [x] allow to delete pictures
+    - [ ] allow to edit picture title
+4. **Search Functionality:**
+    - [x]  Enable users to search for images by keywords.
+5. **User Profiles:**
+    - [x]  User profiles to showcase uploaded images and user information.
+6. **Favourite/Bookmark Feature:**
+    - [ ] Allow users to create image collections, something similar to “pins”.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
