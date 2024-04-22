@@ -14,12 +14,13 @@
     - [x]  Display uploaded images in a gallery format.
     - [x]  Include infinite scroll
 4. **Image managment:**
-    - [x] allow to delete pictures
-    - [ ] allow to edit picture title
+    - [x] Allow to delete pictures
+    - [ ] Allow to edit picture title
 4. **Search Functionality:**
     - [x]  Enable users to search for images by keywords.
 5. **User Profiles:**
     - [x]  User profiles to showcase uploaded images and user information.
+    - [x]  Allow to edit user profiles information
 6. **Favourite/Bookmark Feature:**
     - [ ] Allow users to create image collections, something similar to “pins”.
 
