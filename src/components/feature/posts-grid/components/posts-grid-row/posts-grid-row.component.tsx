@@ -19,7 +19,7 @@ export function PostsGridRow({
       style={{ width: columnWidth, height: imageHeight }}
     >
       <Link
-        href={ClientRouting.post().page(JSON.stringify(post.id))}
+        href={ClientRouting.post().page(post.id)}
         className="w-full rounded-md"
       >
         <LazyImage

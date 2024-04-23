@@ -67,7 +67,7 @@ export function NewPostBox() {
       });
       UnSelectImage();
       resetField("title");
-      router.push(ClientRouting.post().page(JSON.stringify(newPostId)));
+      router.push(ClientRouting.post().page(newPostId));
     } catch (e) {
       setFormSubmitingState({
         hasSubmittingFailed: true,
