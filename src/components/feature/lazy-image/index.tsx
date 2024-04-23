@@ -58,7 +58,7 @@ export function LazyImage({
             src={src}
             alt={alt}
             loading="lazy"
-            className={loading ? "opacity-0" : className}
+            className={loading ? "opacity-0" + skeletonClassName : className}
             ref={imageRef}
             width={width}
             height={height}

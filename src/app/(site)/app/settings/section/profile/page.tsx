@@ -14,7 +14,6 @@ import { Database } from "@/supabase/types";
 import { Alert } from "@/components/ui/alert";
 import { ImagePicker } from "@/components/ui/image-picker";
 import { useBase64Image } from "@/hooks/use-base-64-image";
-import { useSupabase } from "@/hooks/use-supabase";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { FormSkeleton } from "./components/form-skeleton/form-skeleton.component";
 import { updateProfile } from "@/actions/update-profile";
@@ -29,15 +28,13 @@ export default function ProfileConfigPage() {
 
   const router = useRouter();
 
-  const { supabase } = useSupabase();
-
   const { userProfile, isLoading } = useUserProfile();
 
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-  } = useForm<ProfileFormAreas>({ mode: "all" });
+  } = useForm<ProfileFormAreas>({ mode: "onChange" });
 
   const { parseImageToBase64 } = useBase64Image();
 
@@ -126,13 +123,16 @@ export default function ProfileConfigPage() {
                     size: (files: File[]) => {
                       const file = files[0];
 
+                      console.log("running");
+                      console.log({ imageSize: file.size });
+
                       if (!file) return undefined;
 
-                      const maxSizeInKB = 400; // in KB
+                      const maxSizeInBytes = 400; // in KB
 
-                      const maxSizeInBytes = maxSizeInKB * 1024;
+                      const maxSizeInKB = maxSizeInBytes * 1000;
 
-                      if (file.size > maxSizeInBytes) {
+                      if (file.size > maxSizeInKB) {
                         return "image max weight is 400kb";
                       }
 
@@ -146,12 +146,12 @@ export default function ProfileConfigPage() {
                 showErrorMessages={false}
               />
               {errors.banner?.message && (
-                <span className="text-red-600 dark:text-red-500 pl-32">
+                <span className="text-red-600 dark:text-red-500 pl-44">
                   {errors.banner.message}
                 </span>
               )}
             </div>
-            <div className="h-64 w-full absolute -bottom-44">
+            <div className="h-32 w-full absolute top-40 left-5">
               <ImagePicker
                 label="Avatar"
                 id="avatar"
@@ -228,7 +228,7 @@ Want to connect? check out my portfolio bellow.`}
           <Input
             type="url"
             id="website"
-            label="Any website you would like to share on your profile?"
+            label="Website URL"
             defaultValue={userProfile?.website ?? ""}
             register={register}
             error={errors.website}

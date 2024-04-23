@@ -11,7 +11,7 @@ export async function Post({
   post: Database["public"]["Tables"]["posts"]["Row"];
   doesUserOwnPost: boolean;
 }) {
-  const { title, profile_id, asset_url } = post;
+  const { title, profile_id, asset_url, asset_width, asset_height } = post;
 
   const supabase = await getSuapabaseServerComponent();
 
@@ -60,9 +60,9 @@ export async function Post({
       <LazyImage
         src={asset_url}
         alt={title}
-        className="w-full h-full max-h-[1300px] object-cover object-center rounded-md"
+        className="w-full h-full min-h-96 max-h-[1300px] object-cover object-center rounded-md"
         skeletonClassName="w-full h-96 rounded-md"
-        containerClassname="w-full"
+        containerClassname="w-full h-full"
         skeletonBgColor={post.asset_color || undefined}
       />
     </article>
