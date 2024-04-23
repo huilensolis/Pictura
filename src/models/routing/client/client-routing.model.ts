@@ -32,6 +32,7 @@ export class ClientRouting {
         page: "/app/search",
         searchByTitle: (title: string) => `app/search?search_query=${title}`,
       },
+      edit: (postId: number) => `/app/post/${postId}/edit`,
     };
   }
 
