@@ -15,7 +15,7 @@
     - [x]  Include infinite scroll
 4. **Image managment:**
     - [x] Allow to delete pictures
-    - [ ] Allow to edit picture title
+    - [x] Allow to edit picture title
 4. **Search Functionality:**
     - [x]  Enable users to search for images by keywords.
 5. **User Profiles:**
