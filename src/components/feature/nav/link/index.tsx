@@ -17,7 +17,7 @@ export function CustomNavLink({ title, href, icon: Icon }: ILink) {
   }
 
   if (!isCurrentSectionHome) {
-    const currentSection = fullPath.split("/").slice(1, 3).join("/");
+    const currentSection = fullPath.split("/").slice(1, 4).join("/");
 
     isActive = Boolean(href.startsWith(`/${currentSection}`));
   }
