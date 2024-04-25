@@ -24,6 +24,12 @@ export class ClientRouting {
     };
   }
 
+  static collection() {
+    return {
+      home: "/app/collection",
+    };
+  }
+
   static post() {
     return {
       newPost: "/app/post/new",
