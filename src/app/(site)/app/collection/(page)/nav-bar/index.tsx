@@ -46,7 +46,7 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
             </li>
             <li className="w-full">
               <Link
-                href={ClientRouting.collection().home({ filter: "own" })}
+                href={ClientRouting.collection().list({ filter: "own" })}
                 className={`flex gap-1 py-1 px-2 w-full duration-150 rounded-sm font-medium ${
                   filter === "own"
                     ? "bg-neutral-300 text-neutral-950"
@@ -58,7 +58,7 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
             </li>
             <li>
               <Link
-                href={ClientRouting.collection().home({
+                href={ClientRouting.collection().list({
                   filter: "bookmarked",
                 })}
                 className={`flex gap-1 py-1 px-2 w-full duration-150 rounded-sm font-medium ${
@@ -73,7 +73,7 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
             {filter !== "default" && (
               <li>
                 <Link
-                  href={ClientRouting.collection().home({
+                  href={ClientRouting.collection().list({
                     filter: "default",
                   })}
                   className={`flex gap-1 py-1 px-2 w-full rounded-sm font-medium hover:bg-neutral-300 duration-150 text-neutral-950`}

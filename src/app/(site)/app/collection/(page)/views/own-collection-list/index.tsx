@@ -1,19 +1,13 @@
 import { CollectionFolder } from "@/components/feature/collection/folder";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 
-export async function OwnCollectionList() {
+export async function OwnCollectionList({ userId }: { userId: string }) {
   const supabase = getSuapabaseServerComponent();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return <p>could not get session, please reload the page</p>;
 
   const { data: ownCollections } = await supabase
     .from("collection")
     .select("*")
-    .eq("user_id", user.id);
+    .eq("user_id", userId);
 
   return (
     <ul className="flex flex-wrap gap-4">
@@ -21,7 +15,10 @@ export async function OwnCollectionList() {
         ownCollections.length > 0 &&
         ownCollections.map((collection) => (
           <li key={collection.id}>
-            <CollectionFolder collection={collection} />
+            <CollectionFolder
+              collection={collection}
+              doesUserOwnCollection={collection.user_id === userId}
+            />
           </li>
         ))}
     </ul>

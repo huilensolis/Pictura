@@ -21,7 +21,7 @@ export const NAV_LINKS: ILink[] = [
   },
   {
     title: "Collection",
-    href: ClientRouting.collection().home({ filter: "default" }),
+    href: ClientRouting.collection().list({ filter: "default" }),
     icon: FolderHeart,
   },
   {

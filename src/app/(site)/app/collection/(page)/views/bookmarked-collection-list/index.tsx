@@ -1,19 +1,13 @@
 import { CollectionFolder } from "@/components/feature/collection/folder";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 
-export async function BookmarkedCollectionList() {
+export async function BookmarkedCollectionList({ userId }: { userId: string }) {
   const supabase = getSuapabaseServerComponent();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return <p>could not get session, please reload the page</p>;
 
   const { data: bookmarkedCollections } = await supabase
     .from("collection_bookmark")
     .select("*")
-    .eq("user_id", user?.id);
+    .eq("user_id", userId);
 
   if (!bookmarkedCollections) return <></>;
 
@@ -35,7 +29,10 @@ export async function BookmarkedCollectionList() {
           <>
             {data && (
               <li key={data.id}>
-                <CollectionFolder collection={data} />
+                <CollectionFolder
+                  collection={data}
+                  doesUserOwnCollection={data.user_id === userId}
+                />
               </li>
             )}
           </>
