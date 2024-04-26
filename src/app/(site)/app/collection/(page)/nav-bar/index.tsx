@@ -19,9 +19,6 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
     setFiltersOpen((prev) => !prev);
   }
 
-  function closeFilters() {
-    setFiltersOpen(false);
-  }
   return (
     <nav className="w-full flex justify-between items-center">
       <Input
@@ -87,6 +84,12 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
             )}
           </ul>
         )}
+        <Link
+          href={ClientRouting.collection().new()}
+          className="px-3 py-1.5 text-sm bg-neutral-950 text-center rounded-md text-neutral-50 font-medium"
+        >
+          Create Collection
+        </Link>
       </div>
     </nav>
   );

@@ -1,4 +1,4 @@
-import { TFilter } from "@/app/(site)/app/collection/models";
+import { TFilter } from "@/app/(site)/app/collection/(page)/models";
 
 export class ClientRouting {
   static get auth() {
@@ -30,6 +30,7 @@ export class ClientRouting {
     return {
       home: ({ filter = "default" }: { filter?: TFilter }) =>
         `/app/collection?filter=${filter}`,
+      new: () => "/app/collection/new",
     };
   }
 

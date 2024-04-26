@@ -1,6 +1,8 @@
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { Database } from "@/supabase/types";
 import { LazyImage } from "../../lazy-image";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Heading } from "@/components/ui/typography/heading";
 
 export async function CollectionFolder({
   collection,
@@ -29,23 +31,23 @@ export async function CollectionFolder({
   );
 
   return (
-    <article>
-      <h1>
-        {firstPostsOfCollection.length && firstPostsOfCollection.length > 0 && (
-          <ul>
-            {firstPostsOfCollection.map(({ data }) => (
-              <>
-                {data && (
-                  <li key={data.id}>
-                    <LazyImage src={data.asset_url} alt={data.title} />
-                  </li>
-                )}
-              </>
-            ))}
-          </ul>
+    <article className="w-72 flex flex-col gap-2">
+      <header className="flex flex-wrap h-full w-full max-h-60">
+        {firstPostsOfCollection && firstPostsOfCollection.length > 0 ? (
+          firstPostsOfCollection.map(({ data }) => (
+            <>
+              {data && (
+                <li key={data.id}>
+                  <LazyImage src={data.asset_url} alt={data.title} />
+                </li>
+              )}
+            </>
+          ))
+        ) : (
+          <Skeleton className="w-full h-60 rounded-sm" />
         )}
-        {collection.title}
-      </h1>
+      </header>
+      <Heading level={10}>{collection.title}</Heading>
     </article>
   );
 }
