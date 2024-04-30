@@ -1,3 +1,5 @@
+"use client";
+
 import { Database } from "@/supabase/types";
 import { Trash } from "lucide-react";
 import { MouseEvent } from "react";
