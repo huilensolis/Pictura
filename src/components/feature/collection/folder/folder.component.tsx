@@ -5,7 +5,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Heading } from "@/components/ui/typography/heading";
 import { CollectionFolderOptions } from "./options";
 import { getShortName } from "@/utils/get-short-name";
-import Link from "next/link";
 import { CollectionFolderContinerRedirectOnClick } from "./container.component";
 
 export async function CollectionFolder({
@@ -37,7 +36,7 @@ export async function CollectionFolder({
   );
 
   return (
-    <CollectionFolderContinerRedirectOnClick>
+    <CollectionFolderContinerRedirectOnClick collectionId={collection.id}>
       <header className="flex flex-wrap h-full w-full max-h-60">
         {firstPostsOfCollection && firstPostsOfCollection.length > 0 ? (
           firstPostsOfCollection.map(({ data }) => (

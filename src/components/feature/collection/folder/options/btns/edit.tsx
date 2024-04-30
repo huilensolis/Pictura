@@ -1,3 +1,5 @@
+"use client";
+
 import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
 import { Pencil } from "lucide-react";
@@ -10,6 +12,7 @@ export function EditCollectionFolderBtn({
 }) {
   return (
     <Link
+      onClick={(e) => e.stopPropagation()}
       href={ClientRouting.collection().edit(collectionId)}
       className="p-2 duration-150 hover:bg-neutral-300 rounded-md"
     >

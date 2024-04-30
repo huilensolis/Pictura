@@ -3,7 +3,7 @@
 import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
 import { useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 
 export function CollectionFolderContinerRedirectOnClick({
   collectionId,
@@ -13,7 +13,8 @@ export function CollectionFolderContinerRedirectOnClick({
   collectionId: Database["public"]["Tables"]["collection"]["Row"]["id"];
 }) {
   const router = useRouter();
-  function redirectToCollection() {
+  function redirectToCollection(e: MouseEvent<HTMLElement>) {
+    e.stopPropagation();
     router.push(ClientRouting.collection().home(collectionId));
   }
 
