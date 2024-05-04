@@ -1,3 +1,6 @@
+import { TFilter } from "@/app/(site)/app/collection/(page)/models";
+import { Database } from "@/supabase/types";
+
 export class ClientRouting {
   static get auth() {
     return {
@@ -21,6 +24,20 @@ export class ClientRouting {
       resetPassword: "/app/settings/section/reset-password",
       accessibility: "/app/settings/section/accessibility",
       account: "/app/settings/section/account",
+    };
+  }
+
+  static collection() {
+    return {
+      list: ({ filter = "default" }: { filter?: TFilter }) =>
+        `/app/collection?filter=${filter}`,
+      home: (
+        collectionId: Database["public"]["Tables"]["collection"]["Row"]["id"],
+      ) => `/app/collection/${collectionId}`,
+      new: () => "/app/collection/new",
+      edit: (
+        collectionId: Database["public"]["Tables"]["collection"]["Row"]["id"],
+      ) => `/app/collection/${collectionId}/edit`,
     };
   }
 

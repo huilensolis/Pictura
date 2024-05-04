@@ -1,9 +1,9 @@
 import {
+  FolderHeart,
   HomeIcon,
   PlusSquare,
   SearchIcon,
   SettingsIcon,
-  StarIcon,
 } from "lucide-react";
 import { ILink } from "./nav-links.models";
 import { ClientRouting } from "@/models/routing/client";
@@ -20,9 +20,9 @@ export const NAV_LINKS: ILink[] = [
     icon: SearchIcon,
   },
   {
-    title: "Pins",
-    href: " ",
-    icon: StarIcon,
+    title: "Collection",
+    href: ClientRouting.collection().list({ filter: "default" }),
+    icon: FolderHeart,
   },
   {
     title: "New Post",
