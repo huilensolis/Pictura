@@ -14,43 +14,10 @@ export async function CollectionFolder({
   collection: Database["public"]["Tables"]["collection"]["Row"];
   doesUserOwnCollection: boolean;
 }) {
-  const supabase = getSuapabaseServerComponent();
-
-  const { data: collectionItems, error } = await supabase
-    .from("collection_item")
-    .select("*")
-    .eq("collection_id", collection.id)
-    .limit(4);
-
-  if (error || !collectionItems) return <p>there has been an error</p>;
-
-  const firstPostsOfCollection = await Promise.all(
-    collectionItems.map(
-      async (item) =>
-        await supabase
-          .from("posts")
-          .select("*")
-          .eq("id", item.post_id)
-          .single(),
-    ),
-  );
-
   return (
     <CollectionFolderContinerRedirectOnClick collectionId={collection.id}>
-      <header className="flex flex-wrap h-full w-full max-h-60">
-        {firstPostsOfCollection && firstPostsOfCollection.length > 0 ? (
-          firstPostsOfCollection.map(({ data }) => (
-            <>
-              {data && (
-                <li key={data.id}>
-                  <LazyImage src={data.asset_url} alt={data.title} />
-                </li>
-              )}
-            </>
-          ))
-        ) : (
-          <Skeleton className="w-full h-60 rounded-sm" />
-        )}
+      <header className="flex flex-wrap w-full h-60">
+        <Skeleton className="w-full h-60 rounded-sm" />
       </header>
       <footer className="p-3 flex flex-col gap-2">
         <section className="flex flex-col gap-1">
