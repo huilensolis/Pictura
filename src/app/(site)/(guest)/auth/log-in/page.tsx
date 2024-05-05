@@ -41,8 +41,8 @@ export default function LogInPage() {
         setIsLoading(false);
         return;
       }
+
       setErrorLogginIn(false);
-      setIsLoading(false);
       router.push(`${location.origin}/app`);
     } catch (error) {
       setErrorLogginIn(true);
