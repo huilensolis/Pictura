@@ -2,7 +2,7 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { ImageOff } from "lucide-react";
-import { type HTMLAttributes, useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 type TProps = {
   src: string;
@@ -10,7 +10,6 @@ type TProps = {
   className?: string;
   height?: number;
   width?: number;
-  containerClassname?: HTMLAttributes<HTMLDivElement>["className"];
   skeletonClassName?: string;
   skeletonBgColor?: string;
 };
@@ -22,8 +21,7 @@ export function LazyImage({
   width,
   height,
   skeletonClassName = "",
-  skeletonBgColor = "",
-  containerClassname = "",
+  skeletonBgColor,
 }: TProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -38,47 +36,49 @@ export function LazyImage({
     setError(true);
   };
 
-  const imageRef = useCallback(
-    (node: HTMLImageElement) => {
-      if (!node) return;
+  useEffect(() => {
+    const img = new Image();
+    img.src = src;
 
-      if (node.complete) handleImageLoad();
+    // if (img.complete) {
+    //   handleImageLoad();
+    //   return;
+    // }
 
-      node.onload = handleImageLoad;
-      node.onerror = handleImageError;
-    },
-    [src],
-  );
+    img.onload = handleImageLoad;
+    img.onerror = handleImageError;
+  }, [src]);
 
   return (
-    <div className={containerClassname}>
-      <div className="relative">
-        {!error && (
-          <img
-            src={src}
-            alt={alt}
-            loading="lazy"
-            className={
-              loading ? "opacity-0" + " " + skeletonClassName : className
-            }
-            ref={imageRef}
-            width={width}
-            height={height}
-          />
-        )}
-        {loading && !error && (
-          <Skeleton
-            className={["absolute top-0 left-0", skeletonClassName].join(" ")}
-            style={{
-              maxWidth: width,
-              maxHeight: height,
-              backgroundColor: skeletonBgColor,
-            }}
-          />
-        )}
-      </div>
+    <>
+      {!error && !loading && (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className={className}
+          width={width}
+          height={height}
+          style={{
+            ...(skeletonBgColor && { backgroundColor: skeletonBgColor }),
+          }}
+        />
+      )}
+      {loading && !error && (
+        <Skeleton
+          className={[
+            "w-full h-full",
+            `${!skeletonBgColor && "bg-neutral-300"}`,
+            skeletonClassName,
+          ].join(" ")}
+          style={{
+            ...(width && height && { width, height }),
+            ...(skeletonBgColor && { backgroundColor: skeletonBgColor }),
+          }}
+        />
+      )}
       {error && <ErrorComponent containerClassName={skeletonClassName} />}
-    </div>
+    </>
   );
 }
 

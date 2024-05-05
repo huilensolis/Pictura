@@ -1,5 +1,4 @@
 import { LazyImage } from "@/components/feature/lazy-image";
-import { PostsGrid } from "@/components/feature/posts-grid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ClientRouting } from "@/models/routing/client";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
@@ -22,10 +21,59 @@ export default async function CollectionPage({
 
   if (!collection) return <p>not found</p>;
 
+  const { data: collectionItems } = await supabase
+    .from("collection_item")
+    .select("*")
+    .limit(3)
+    .eq("collection_id", collection.id)
+    .order("created_at", { ascending: false });
+
+  const { data: collectionPosts } = collectionItems
+    ? await supabase
+        .from("posts")
+        .select("*")
+        .in(
+          "id",
+          collectionItems.map((item) => item.post_id),
+        )
+    : { data: null };
+
   return (
     <main className="flex flex-col px-2 py-10">
       <header className="md:grid md:grid-cols-2 flex flex-col gap-4 w-full max-w-3xl">
-        <Skeleton className="w-full h-56" />
+        <div className="h-60 w-full rounded-sm overflow-hidden">
+          <ul className="grid grid-cols-2 grid-rows-2 h-full">
+            {collectionPosts &&
+              collectionPosts.length > 0 &&
+              collectionPosts.map((post, i, posts) => (
+                <li
+                  key={post.id}
+                  className={`${
+                    posts.length === 2
+                      ? "col-span-1 row-span-2"
+                      : posts.length === 3
+                        ? `${
+                            i === 0
+                              ? "row-span-2 col-span-1"
+                              : "row-span-1 col-span-1"
+                          }`
+                        : "col-span-2 row-span-2"
+                  }`}
+                >
+                  <LazyImage
+                    src={post.asset_url}
+                    alt={post.title}
+                    className="w-full object-cover object-center h-full"
+                    skeletonBgColor={post.asset_color || undefined}
+                  />
+                </li>
+              ))}{" "}
+            {!collectionPosts ||
+              (collectionPosts.length === 0 && (
+                <Skeleton className="w-full h-full row-span-2 col-span-2" />
+              ))}
+          </ul>
+        </div>
         <section className="flex flex-col gap-2">
           <h1 className="font-bold text-2xl">{collection.title}</h1>
           {collection.description && (

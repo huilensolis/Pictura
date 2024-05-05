@@ -76,8 +76,6 @@ export function PostsGrid({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    console.log("running use Effect");
-
     function eventListenerForWidthResize() {
       if (containerRef.current === null) return;
       calculateColumnWidth(containerRef.current.offsetWidth);
@@ -148,7 +146,7 @@ export function PostsGrid({
             return;
           }
           if (error.code === "20") {
-            return; // this means there is been throwed an error because the request has been aborted
+            return; // this means there has been throwed an error because the request has been aborted
           }
           throw new Error("eror fetching new posts");
         }
@@ -178,24 +176,22 @@ export function PostsGrid({
   }, [page]);
 
   return (
-    <>
-      <PostsGridContainer ref={setContainerRef}>
-        {!isLoadingFirstTime && posts.length > 0 && columnWidth && (
-          <>
-            {posts.map((post, i) => (
-              <PostsGridRow
-                columnWidth={
-                  columnWidth && !isNaN(columnWidth) ? columnWidth : 400
-                }
-                key={i}
-                post={post}
-              />
-            ))}
-            <div ref={lastItemRef} className="h-96 w-full" />
-          </>
-        )}
-        {isLoadingFirstTime && <PostsGridSkeleton cuantity={32} />}
-      </PostsGridContainer>
-    </>
+    <PostsGridContainer ref={setContainerRef}>
+      {!isLoadingFirstTime && posts.length > 0 && columnWidth && (
+        <>
+          {posts.map((post, i) => (
+            <PostsGridRow
+              columnWidth={
+                columnWidth && !isNaN(columnWidth) ? columnWidth : 400
+              }
+              key={i}
+              post={post}
+            />
+          ))}
+          <div ref={lastItemRef} className="h-96 w-full" />
+        </>
+      )}
+      {isLoadingFirstTime && <PostsGridSkeleton cuantity={32} />}
+    </PostsGridContainer>
   );
 }

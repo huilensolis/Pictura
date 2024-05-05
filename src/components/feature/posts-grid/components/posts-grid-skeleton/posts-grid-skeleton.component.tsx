@@ -6,7 +6,16 @@ export function PostsGridSkeleton({ cuantity = 16 }: { cuantity?: number }) {
       {Array(cuantity)
         .fill(" ")
         .map((_, i) => (
-          <Skeleton key={i} className={`w-full h-96 mb-2 rounded-md`} />
+          <Skeleton
+            key={i}
+            className={`inline-block w-full mb-2 rounded-md transition-all animate-pulse duration-150`}
+            style={{
+              height: Math.min(
+                Math.max(Math.round(Math.random() * 1000), 250),
+                500,
+              ),
+            }}
+          />
         ))}
     </>
   );
