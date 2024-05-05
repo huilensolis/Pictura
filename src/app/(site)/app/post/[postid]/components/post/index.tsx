@@ -11,9 +11,9 @@ export async function Post({
   post: Database["public"]["Tables"]["posts"]["Row"];
   doesUserOwnPost: boolean;
 }) {
-  const { title, profile_id, asset_url, asset_width, asset_height } = post;
+  const { title, profile_id, asset_url } = post;
 
-  const supabase = await getSuapabaseServerComponent();
+  const supabase = getSuapabaseServerComponent();
 
   const { data: postOwnerProfile } = await supabase
     .from("profiles")
@@ -62,7 +62,6 @@ export async function Post({
         alt={title}
         className="w-full h-full min-h-96 max-h-[1300px] object-cover object-center rounded-md"
         skeletonClassName="w-full h-96 rounded-md"
-        containerClassname="w-full h-full"
         skeletonBgColor={post.asset_color || undefined}
       />
     </article>

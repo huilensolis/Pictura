@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { type INavLink } from "./header.interface";
 import { Logo } from "@/components/ui/logo";
-import { ThemeSwitcher } from "@/components/feature/theme-switcher";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/hooks/use-session";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -42,7 +41,6 @@ export function Header() {
               <Link href={link.href}>{link.title}</Link>
             </li>
           ))}
-          <ThemeSwitcher />
         </ul>
         {session && !isLoading && (
           <AuthenticatedButtons onLogout={handleLogOut} />

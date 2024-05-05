@@ -9,7 +9,7 @@ export default async function PostPage({
 }: {
   params: { postid: string };
 }) {
-  const supabase = await getSuapabaseServerComponent();
+  const supabase = getSuapabaseServerComponent();
 
   const { data: postData, error: postError } = await supabase
     .from("posts")

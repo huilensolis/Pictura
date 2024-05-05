@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { LazyImage } from "@/components/feature/lazy-image";
 import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
+import { LazyImage } from "@/components/feature/lazy-image";
 
 export function PostsGridRow({
   post,
@@ -15,7 +15,7 @@ export function PostsGridRow({
   const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
     <li
-      className="flex w-full mb-2 rounded-md"
+      className="inline-block w-full mb-2 rounded-md"
       style={{ width: columnWidth, height: imageHeight }}
     >
       <Link
@@ -25,10 +25,10 @@ export function PostsGridRow({
         <LazyImage
           src={post.asset_url}
           alt={post.title}
-          className="flex w-full h-auto rounded-md object-cover object-center"
-          skeletonClassName="w-full h-full rounded-md"
+          className="flex w-full h-full rounded-md object-cover object-center"
           height={Math.round(imageHeight)}
           width={Math.round(columnWidth)}
+          skeletonClassName="w-full h-full rounded-md"
           skeletonBgColor={post.asset_color || undefined}
         />
       </Link>
