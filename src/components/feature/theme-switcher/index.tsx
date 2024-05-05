@@ -1,7 +1,5 @@
 "use client";
 
-import "@theme-toggles/react/css/Within.css";
-import { Within } from "@theme-toggles/react";
 import { useTheme } from "../../../hooks/use-theme";
 
 export function ThemeSwitcher() {
@@ -15,12 +13,5 @@ export function ThemeSwitcher() {
     }
   }
 
-  return (
-    <Within
-      duration={750}
-      onToggle={toggleTheme}
-      toggled={theme === "dark"}
-      placeholder={null}
-    />
-  );
+  return <></>;
 }
