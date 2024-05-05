@@ -18,9 +18,9 @@ export function PostOptions({
 }) {
   return (
     <div className="w-full flex justify-between gap-2">
-      {doesUserOwnPost && (
-        <>
-          <ul className="flex gap-2">
+      <ul className="flex gap-2">
+        {doesUserOwnPost && (
+          <>
             <li className="flex w-full">
               <DeletePostBtn postId={post_id} imageUrl={image_url} />
             </li>
@@ -32,15 +32,15 @@ export function PostOptions({
                 <Pencil className="text-neutral-800 dark:text-neutral-300" />
               </Link>
             </li>
-            <li className="flex w-full">
-              <DownloadPostImage image_url={image_url} />
-            </li>
-          </ul>
-          <div>
-            <AddPostToCollectionBtn postId={post_id} />
-          </div>
-        </>
-      )}
+          </>
+        )}
+        <li className="flex w-full">
+          <DownloadPostImage image_url={image_url} />
+        </li>
+      </ul>
+      <div>
+        <AddPostToCollectionBtn postId={post_id} />
+      </div>
     </div>
   );
 }
