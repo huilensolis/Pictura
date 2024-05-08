@@ -33,7 +33,7 @@ export async function CollectionFolder({
 
   return (
     <CollectionFolderContinerRedirectOnClick collectionId={collection.id}>
-      <header className="flex flex-wrap w-full h-60 rounded-t-md overflow-hidden">
+      <header className="flex flex-wrap w-full h-52 rounded-t-md overflow-hidden">
         <ul className="grid grid-cols-2 grid-rows-2 h-full w-full">
           {collectionPosts &&
             collectionPosts.length > 0 &&
@@ -62,14 +62,14 @@ export async function CollectionFolder({
                   skeletonBgColor={post.asset_color || undefined}
                 />
               </li>
-            ))}{" "}
+            ))}
           {!collectionPosts ||
             (collectionPosts.length === 0 && (
               <Skeleton className="w-full h-full row-span-2 col-span-2" />
             ))}
         </ul>
       </header>
-      <footer className="p-3 flex flex-col gap-2">
+      <footer className="p-3 flex flex-col justify-between gap-2 h-full flex-1">
         <section className="flex flex-col gap-1">
           <Heading level={10}>{getShortName(collection.title, 30)}</Heading>
           {collection.description && (
