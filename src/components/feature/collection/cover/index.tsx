@@ -5,7 +5,6 @@ import { LazyImage } from "../../lazy-image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSupabase } from "@/hooks/use-supabase";
 import { useEffect, useState } from "react";
-import { abort } from "process";
 
 export function CollectionCover({
   collectionId,
