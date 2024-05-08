@@ -6,6 +6,7 @@ import { DefaultCollectionList } from "./views/default";
 import { OwnCollectionList } from "./views/own-collection-list";
 import { BookmarkedCollectionList } from "./views/bookmarked-collection-list";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
+import { CollectionContainer } from "./container";
 
 export default async function CollectionPage({
   searchParams: { filter = "default" },
@@ -40,7 +41,7 @@ export default async function CollectionPage({
       {user && (
         <>
           <CollectionsNavBar filter={filter} />
-          {FilteredView}
+          <CollectionContainer>{FilteredView}</CollectionContainer>
         </>
       )}
     </main>

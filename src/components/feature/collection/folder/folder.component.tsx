@@ -34,22 +34,25 @@ export async function CollectionFolder({
   return (
     <CollectionFolderContinerRedirectOnClick collectionId={collection.id}>
       <header className="flex flex-wrap w-full h-60 rounded-t-md overflow-hidden">
-        <ul className="grid grid-cols-2 grid-rows-2 h-full">
+        <ul className="grid grid-cols-2 grid-rows-2 h-full w-full">
           {collectionPosts &&
             collectionPosts.length > 0 &&
             collectionPosts.map((post, i, posts) => (
               <li
                 key={post.id}
                 className={`${
+                  // if there are 2 posts, we make each image occupie 50%
                   posts.length === 2
                     ? "col-span-1 row-span-2"
-                    : posts.length === 3
+                    : // if there are 3 posts, we check for the index, the first image occupies 50% of the cols and 100% of the row, and the 2d and 3d img occupie 50% of the row and 50% of the col
+                      posts.length === 3
                       ? `${
                           i === 0
                             ? "row-span-2 col-span-1"
                             : "row-span-1 col-span-1"
                         }`
-                      : "col-span-2 row-span-2"
+                      : // if there are 1 image, we make the image occupie 100% the col and 100% the row
+                        "col-span-2 row-span-2"
                 }`}
               >
                 <LazyImage

@@ -12,13 +12,13 @@ export function CollectionFolderOptions({
 }) {
   return (
     <ul className="flex items-center gap-2">
-      <li className="flex">
-        <EditCollectionFolderBtn collectionId={collection.id} />
+      <li>
+        <ShareCollectionBtn collectionId={collection.id} />
       </li>
       {doesUserOwnCollection && (
         <>
-          <li>
-            <ShareCollectionBtn collectionId={collection.id} />
+          <li className="flex">
+            <EditCollectionFolderBtn collectionId={collection.id} />
           </li>
           <li>
             <DeleteCollectionBtn collection={collection} />
