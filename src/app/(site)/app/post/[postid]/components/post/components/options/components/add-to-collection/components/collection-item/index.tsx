@@ -1,8 +1,8 @@
 "use client";
 
 import { revalidatePathOnEdge } from "@/actions/revalidate-path";
+import { CollectionCover } from "@/components/feature/collection/cover";
 import { PlainButton } from "@/components/ui/buttons/plain";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useSupabase } from "@/hooks/use-supabase";
 import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
@@ -43,7 +43,9 @@ export function CollectionItem({
       isLoading={loading}
       className="px-0 py-0"
     >
-      <Skeleton className="w-14 h-14 rounded-sm" />
+      <header className="h-14 w-14">
+        <CollectionCover collectionId={collection.id} />
+      </header>
       <div className="flex flex-col flex-1">
         <h1 className="font-bold text-lg text-start w-11/12">
           {getShortName(collection.title, 23)}
