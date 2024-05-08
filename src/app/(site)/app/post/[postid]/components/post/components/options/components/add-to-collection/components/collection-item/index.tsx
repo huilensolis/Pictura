@@ -1,8 +1,10 @@
 "use client";
 
+import { revalidatePathOnEdge } from "@/actions/revalidate-path";
 import { PlainButton } from "@/components/ui/buttons/plain";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSupabase } from "@/hooks/use-supabase";
+import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
 import { getShortName } from "@/utils/get-short-name";
 import { useState } from "react";
@@ -29,6 +31,10 @@ export function CollectionItem({
       .from("collection_item")
       .insert({ post_id: postId, collection_id: collection.id });
 
+    await revalidatePathOnEdge(
+      ClientRouting.collection().list({ filter: "default" }),
+      "page",
+    );
     setLoading(false);
   }
   return (
