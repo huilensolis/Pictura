@@ -7,6 +7,9 @@ import { TextArea } from "@/components/ui/textarea";
 import { PrimaryButton } from "@/components/ui/buttons/primary";
 import { useState } from "react";
 import { useSupabase } from "@/hooks/use-supabase";
+import { useRouter } from "next/navigation";
+import { ClientRouting } from "@/models/routing/client";
+import { revalidatePathOnEdge } from "@/actions/revalidate-path";
 
 export function NewCollectionForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,6 +22,8 @@ export function NewCollectionForm() {
   const { errors, isValid } = formState;
 
   const { supabase } = useSupabase();
+
+  const router = useRouter();
 
   async function createNewCollection(data: TFormAreas) {
     if (!data) return;
@@ -36,9 +41,15 @@ export function NewCollectionForm() {
         user_id: user.id,
       });
       if (error) throw new Error("error inserting collection");
+
+      await revalidatePathOnEdge(
+        ClientRouting.collection().list({ filter: "default" }),
+        "page",
+      );
+
+      router.push(ClientRouting.collection().list({ filter: "default" }));
     } catch (error) {
       setError(true);
-    } finally {
       setLoading(false);
     }
   }

@@ -22,7 +22,7 @@ export async function BookmarkedCollectionList({ userId }: { userId: string }) {
     ),
   );
   return (
-    <ul className="flex flex-col gap-2">
+    <>
       {collections &&
         collections.length > 0 &&
         collections.map(({ data }) => (
@@ -37,6 +37,6 @@ export async function BookmarkedCollectionList({ userId }: { userId: string }) {
             )}
           </>
         ))}
-    </ul>
+    </>
   );
 }

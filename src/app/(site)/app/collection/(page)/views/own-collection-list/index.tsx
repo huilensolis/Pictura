@@ -10,7 +10,7 @@ export async function OwnCollectionList({ userId }: { userId: string }) {
     .eq("user_id", userId);
 
   return (
-    <ul className="flex flex-wrap gap-4">
+    <>
       {ownCollections &&
         ownCollections.length > 0 &&
         ownCollections.map((collection) => (
@@ -21,6 +21,6 @@ export async function OwnCollectionList({ userId }: { userId: string }) {
             />
           </li>
         ))}
-    </ul>
+    </>
   );
 }

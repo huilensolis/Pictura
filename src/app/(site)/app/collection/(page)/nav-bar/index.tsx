@@ -20,7 +20,7 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
   }
 
   return (
-    <nav className="w-full flex justify-between items-center">
+    <nav className="w-full flex flex-wrap justify-between items-end">
       <Input
         label="search"
         type="search"
