@@ -22,8 +22,15 @@ export async function Post({
     .single();
 
   return (
-    <article className="w-full h-full flex flex-col-reverse gap-2 items-start justify-end bg-neutral-200 dark:bg-neutral-900">
-      <header className="flex flex-col items-start justify-center gap-2 w-full xl:min-w-64 min-w-full">
+    <article className="w-full h-full flex flex-col gap-2 items-start justify-end bg-neutral-200 dark:bg-neutral-900">
+      <LazyImage
+        src={asset_url}
+        alt={title}
+        className="w-full h-full min-h-96 max-h-[75vh] object-cover object-center rounded-md"
+        skeletonClassName="w-full h-96 rounded-md"
+        skeletonBgColor={post.asset_color || undefined}
+      />
+      <footer className="flex flex-col items-start justify-center gap-2 w-full xl:min-w-64 min-w-full">
         <h3 className="w-full text-neutral-800 dark:text-neutral-300 font-bold text-2xl text-balance">
           {title}
         </h3>
@@ -56,14 +63,7 @@ export async function Post({
           doesUserOwnPost={doesUserOwnPost}
           image_url={post.asset_url}
         />
-      </header>
-      <LazyImage
-        src={asset_url}
-        alt={title}
-        className="w-full h-full min-h-96 max-h-[1300px] object-cover object-center rounded-md"
-        skeletonClassName="w-full h-96 rounded-md"
-        skeletonBgColor={post.asset_color || undefined}
-      />
+      </footer>
     </article>
   );
 }

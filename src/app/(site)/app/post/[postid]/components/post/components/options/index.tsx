@@ -27,7 +27,7 @@ export function PostOptions({
             <li className="flex w-full">
               <Link
                 href={ClientRouting.post().edit(post_id)}
-                className="w-full flex items-center justify-center px-4 py-2 dark:hover:brightness-125 hover:brightness-90 transition-all duration-75 bg-neutral-300 dark:bg-neutral-700"
+                className="w-full flex items-center justify-center p-2 dark:hover:brightness-125 hover:brightness-90 transition-all duration-75 bg-neutral-300 dark:bg-neutral-700"
               >
                 <Pencil className="text-neutral-800 dark:text-neutral-300" />
               </Link>
