@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { NavLinks } from "./nav-links";
 import { UserProfileCard } from "./user-profile-card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { UserCardSkeleton } from "@/components/feature/user-card/skeleton";
 
 export function AppLeftAside() {
   return (
@@ -9,12 +9,8 @@ export function AppLeftAside() {
       <nav className="w-full">
         <NavLinks />
       </nav>
-      <footer>
-        <Suspense
-          fallback={
-            <Skeleton className="w-full h-16 rounded-full animate-pulse" />
-          }
-        >
+      <footer className="w-full">
+        <Suspense fallback={<UserCardSkeleton />}>
           <UserProfileCard />
         </Suspense>
       </footer>

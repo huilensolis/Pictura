@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Heading } from "@/components/ui/typography/heading";
 import { CollectionsNavBar } from "./nav-bar";
 import { TFilter } from "./models";
@@ -7,6 +7,7 @@ import { OwnCollectionList } from "./views/own-collection-list";
 import { BookmarkedCollectionList } from "./views/bookmarked-collection-list";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { CollectionContainer } from "./container";
+import { CollectionFolderSkeleton } from "@/components/feature/collection/skeleton";
 
 export default async function CollectionPage({
   searchParams: { filter = "default" },
@@ -36,14 +37,30 @@ export default async function CollectionPage({
   const FilteredView = FILTERS_VIEWS[filter];
 
   return (
-    <main className="flex flex-col gap-4 px-2 py-10">
+    <>
       <Heading level={6}>Collections</Heading>
       {user && (
         <>
           <CollectionsNavBar filter={filter} />
-          <CollectionContainer>{FilteredView}</CollectionContainer>
+          <CollectionContainer>
+            <Suspense
+              fallback={
+                <>
+                  {Array(5)
+                    .fill("")
+                    .map((_, i) => (
+                      <li key={i}>
+                        <CollectionFolderSkeleton />
+                      </li>
+                    ))}
+                </>
+              }
+            >
+              {FilteredView}
+            </Suspense>
+          </CollectionContainer>
         </>
       )}
-    </main>
+    </>
   );
 }

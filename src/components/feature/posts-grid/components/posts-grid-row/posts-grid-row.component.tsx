@@ -15,7 +15,7 @@ export function PostsGridRow({
   const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
     <li
-      className="inline-block w-full mb-2 rounded-md"
+      className="w-full mb-2 rounded-md"
       style={{ width: columnWidth, height: imageHeight }}
     >
       <Link
