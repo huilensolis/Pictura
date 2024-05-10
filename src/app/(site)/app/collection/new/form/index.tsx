@@ -78,9 +78,8 @@ export function NewCollectionForm() {
         validationScheme={{
           maxLength: {
             value: 250,
-            message: "Max title length is 250 characteres",
+            message: "Max description length is 250 characteres",
           },
-          required: { value: true, message: "true" },
         }}
         error={errors.description}
       />
