@@ -27,7 +27,7 @@ export default async function PostPage({
   );
 
   return (
-    <div className="flex flex-col p-2 gap-2 pb-10">
+    <>
       <nav className="w-full flex items-center gap-4 pb-2 border-b border-neutral-300 dark:border-cm-lighter-gray">
         <BackwardsNav catchHref="/app" />
         <Heading level={9}>Back</Heading>
@@ -40,7 +40,7 @@ export default async function PostPage({
       ) : (
         <Error404Box />
       )}
-    </div>
+    </>
   );
 }
 
