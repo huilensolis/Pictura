@@ -2,9 +2,10 @@ import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { NewPostBox } from "./components/new-post-box";
 import { redirect } from "next/navigation";
 import { ClientRouting } from "@/models/routing/client";
+import { Heading } from "@/components/ui/typography/heading";
 
 export default async function newPostPage() {
-  const supabase = await getSuapabaseServerComponent();
+  const supabase = getSuapabaseServerComponent();
 
   const {
     data: { session },
@@ -18,7 +19,8 @@ export default async function newPostPage() {
     .eq("user_id", session?.user.id);
 
   return (
-    <div className="w-full h-full px-2 flex flex-col items-center justify-center">
+    <>
+      <Heading level={6}>New Post</Heading>
       <NewPostBox />
       {posts && (
         <span className="text-neutral-900 dark:text-neutral-50">
@@ -26,6 +28,6 @@ export default async function newPostPage() {
           {Number(process.env.MAX_POSTS_PER_USER) || 24} limit
         </span>
       )}
-    </div>
+    </>
   );
 }
