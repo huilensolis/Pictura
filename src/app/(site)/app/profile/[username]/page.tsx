@@ -1,6 +1,5 @@
 import { CalendarIcon, ImageOff, LinkIcon, MapPinIcon } from "lucide-react";
 import Link from "next/link";
-import { Suspense } from "react";
 
 import { LazyImage } from "@/components/feature/lazy-image";
 import { BackwardsNav } from "@/components/feature/nav/backwards";
@@ -8,22 +7,12 @@ import { Heading } from "@/components/ui/typography/heading";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { Database } from "@/supabase/types";
 import { UserPosts } from "./components/user-posts";
-import { UserProfileSkeleton } from "./components/skeleton";
 
-export default function ProfilePage({
+export default async function UserProfile({
   params: { username },
 }: {
   params: { username: string };
 }) {
-  return (
-    <Suspense fallback={<UserProfileSkeleton />}>
-      <UserProfile username={username} />
-    </Suspense>
-  );
-}
-
-async function UserProfile({ username }: { username: string }) {
-  // await new Promise((resolve) => setTimeout(() => resolve(" "), 100000));
   const supabase = getSuapabaseServerComponent();
 
   const { data: userProfile, error } = await supabase
