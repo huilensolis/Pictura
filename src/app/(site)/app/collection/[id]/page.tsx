@@ -1,11 +1,11 @@
 import { LazyImage } from "@/components/feature/lazy-image";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ClientRouting } from "@/models/routing/client";
 import { getSuapabaseServerComponent } from "@/supabase/models/index.models";
 import { getShortName } from "@/utils/get-short-name";
-import Link from "next/link";
 import { Suspense } from "react";
 import { CollectionPosts } from "./collection-posts";
+import { UserCard } from "@/components/feature/user-card";
+import { UserCardSkeleton } from "@/components/feature/user-card/skeleton";
 
 export default async function CollectionPage({
   params: { id },
@@ -39,7 +39,7 @@ export default async function CollectionPage({
     : { data: null };
 
   return (
-    <main className="flex flex-col px-2 py-10">
+    <>
       <header className="md:grid md:grid-cols-2 flex flex-col gap-4 w-full max-w-3xl">
         <div className="h-60 w-full rounded-sm overflow-hidden">
           <ul className="grid grid-cols-2 grid-rows-2 h-full">
@@ -82,24 +82,14 @@ export default async function CollectionPage({
             </p>
           )}
           <div>
-            <Suspense
-              fallback={
-                <div className="flex gap-2 w-full">
-                  <Skeleton className="h-12 w-12 rounded-full" />
-                  <div className="flex flex-col justify-between">
-                    <Skeleton className="w-20 h-4 rounded-full" />
-                    <Skeleton className="w-48 h-4 rounded-full" />
-                  </div>
-                </div>
-              }
-            >
+            <Suspense fallback={<UserCardSkeleton />}>
               <CollectionOwner userId={collection.user_id} />
             </Suspense>
           </div>
         </section>
       </header>
       <CollectionPosts collection_id={collection.id} />
-    </main>
+    </>
   );
 }
 
@@ -114,24 +104,5 @@ async function CollectionOwner({ userId }: { userId: string }) {
 
   if (!profile) return <></>;
 
-  return (
-    <Link href={ClientRouting.profile(profile.username || "")}>
-      <article className="flex gap-2">
-        {profile.avatar_url ? (
-          <LazyImage
-            src={profile.avatar_url}
-            alt={profile.name || ""}
-            className="h-12 w-12 rounded-full"
-            skeletonClassName="h-12 w-12 rounded-full"
-          />
-        ) : (
-          <Skeleton />
-        )}
-        <div className="flex flex-col justify-between">
-          <span className="font-bold">{profile.username}</span>{" "}
-          <span>created this collection</span>
-        </div>
-      </article>
-    </Link>
-  );
+  return <UserCard userProfile={profile} className="w-max pr-20 px-0" />;
 }
