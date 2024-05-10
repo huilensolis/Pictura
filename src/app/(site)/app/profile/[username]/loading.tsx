@@ -1,3 +1,5 @@
+import { UserProfileSkeleton } from "./components/skeleton";
+
 export default function Loading() {
-  return <p>loading</p>;
+  return <UserProfileSkeleton />;
 }
