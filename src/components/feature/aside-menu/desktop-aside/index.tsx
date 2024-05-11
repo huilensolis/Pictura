@@ -10,7 +10,7 @@ export function DesktopAside({
   showBorderOnLinks = false,
 }: DesktopAsideProps) {
   return (
-    <nav className="w-full dark:bg-cm-gray bg-neutral-200 p-5">
+    <nav className="w-full p-5">
       {header && header.title && header.subtitle && (
         <article className="flex flex-col w-full">
           <Heading extraClasses="font-semibold" level={8}>

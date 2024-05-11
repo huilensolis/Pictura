@@ -30,13 +30,13 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
         validationScheme={{}}
         className="w-full"
       />
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex items-center justify-center gap-2">
         <button
           onClick={toggleFiltersOpen}
-          className={`focus:outline-transparent text-neutral-300 focus-visible:outline-transparent p-2 duration-150 rounded-md ${
+          className={`focus:outline-transparent dark:text-neutral-300 focus-visible:outline-transparent p-2 duration-150 rounded-md ${
             areFiltersOpen
               ? "bg-neutral-300 dark:bg-neutral-700"
-              : "hover:bg-neutral-700"
+              : "dark:hover:bg-neutral-700 hover:bg-neutral-300"
           }`}
         >
           {areFiltersOpen ? <FilterX className="duration-150" /> : <Filter />}
