@@ -21,7 +21,7 @@ export async function CollectionFolder({
         <section className="flex flex-col gap-1">
           <Heading level={10}>{getShortName(collection.title, 30)}</Heading>
           {collection.description && (
-            <p className="text-neutral-800 text-pretty">
+            <p className="text-neutral-800 dark:text-neutral-400 text-pretty">
               {getShortName(collection.description, 50)}
             </p>
           )}
