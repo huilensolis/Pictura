@@ -5,7 +5,7 @@ import { UserCardSkeleton } from "@/components/feature/user-card/skeleton";
 
 export function AppLeftAside() {
   return (
-    <aside className="h-screen w-full flex flex-col items-center justify-between gap-4 px-4 py-2 pt-4 bg-neutral-200 dark:bg-cm-gray">
+    <aside className="h-screen w-full flex flex-col items-center justify-between gap-4 px-4 py-2 pt-4 bg-neutral-200 dark:bg-cm-darker-gray">
       <nav className="w-full">
         <NavLinks />
       </nav>

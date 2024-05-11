@@ -32,7 +32,7 @@ const LINKS: IRLink[] = [
 
 export function SettingsAside() {
   return (
-    <div className="w-full h-full bg-neutral-200 dark:bg-cm-gray">
+    <div className="w-full h-full bg-neutral-200 dark:bg-cm-darker-gray">
       <div className="pt-5 flex items-center justify-center">
         <BackwardsNav catchHref="/app" />
       </div>
