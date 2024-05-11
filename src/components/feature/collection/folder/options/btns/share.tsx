@@ -17,7 +17,7 @@ export function ShareCollectionBtn({
   }
   return (
     <button
-      className="p-2 duration-150 hover:bg-neutral-300 rounded-md"
+      className="p-2 duration-150 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray rounded-md"
       onClick={handleCopyToClickBoard}
     >
       <Share2 />

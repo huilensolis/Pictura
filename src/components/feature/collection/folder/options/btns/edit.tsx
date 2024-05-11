@@ -14,7 +14,7 @@ export function EditCollectionFolderBtn({
     <Link
       onClick={(e) => e.stopPropagation()}
       href={ClientRouting.collection().edit(collectionId)}
-      className="p-2 duration-150 hover:bg-neutral-300 rounded-md"
+      className="p-2 duration-150 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray rounded-md"
     >
       <Pencil />
     </Link>

@@ -33,24 +33,28 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
       <div className="relative flex items-center justify-center">
         <button
           onClick={toggleFiltersOpen}
-          className={`focus:outline-transparent focus-visible:outline-transparent p-2 duration-150 rounded-md ${
-            areFiltersOpen ? "bg-neutral-300" : "hover:bg-neutral-300"
+          className={`focus:outline-transparent text-neutral-300 focus-visible:outline-transparent p-2 duration-150 rounded-md ${
+            areFiltersOpen
+              ? "bg-neutral-300 dark:bg-neutral-700"
+              : "hover:bg-neutral-700"
           }`}
         >
           {areFiltersOpen ? <FilterX className="duration-150" /> : <Filter />}
         </button>
         {areFiltersOpen && (
-          <ul className="absolute top-12 right-0 flex flex-col gap-2 items-center justify-center p-2 border border-neutral-300 shadow-xl shadow-neutral-300 rounded-md">
+          <ul className="absolute top-12 right-0 flex flex-col gap-2 items-center justify-center p-2 border border-neutral-300 dark:border-cm-lighter-gray shadow-xl shadow-neutral-300 dark:shadow-cm-lighter-gray rounded-md bg-neutral-200 dark:bg-cm-darker-gray">
             <li className="w-full">
-              <h1 className="text-md font-medium">Filter collections</h1>
+              <h1 className="text-md text-neutral-800 dark:text-neutral-300 font-medium">
+                Filter collections
+              </h1>
             </li>
             <li className="w-full">
               <Link
                 href={ClientRouting.collection().list({ filter: "own" })}
-                className={`flex gap-1 py-1 px-2 w-full duration-150 rounded-sm font-medium ${
+                className={`flex gap-1 py-1 px-2 w-full duration-150 rounded-md font-medium ${
                   filter === "own"
-                    ? "bg-neutral-300 text-neutral-950"
-                    : "hover:bg-neutral-300 text-neutral-700 hover:text-neutral-950"
+                    ? "bg-neutral-300 dark:bg-neutral-700 text-neutral-950 dark:text-neutral-300"
+                    : "hover:bg-neutral-300 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-300"
                 }`}
               >
                 <FolderArchive /> Own
@@ -61,10 +65,10 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
                 href={ClientRouting.collection().list({
                   filter: "bookmarked",
                 })}
-                className={`flex gap-1 py-1 px-2 w-full duration-150 rounded-sm font-medium ${
+                className={`flex gap-1 py-1 px-2 w-full duration-150 rounded-md font-medium ${
                   filter === "bookmarked"
-                    ? "bg-neutral-300 text-neutral-950"
-                    : "hover:bg-neutral-300 text-neutral-700 hover:text-neutral-950"
+                    ? "bg-neutral-300 dark:bg-neutral-700 text-neutral-950 dark:text-neutral-300"
+                    : "hover:bg-neutral-300 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-300"
                 }`}
               >
                 <FolderHeart /> Bookmarked
@@ -76,7 +80,7 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
                   href={ClientRouting.collection().list({
                     filter: "default",
                   })}
-                  className={`flex gap-1 py-1 px-2 w-full rounded-sm font-medium hover:bg-neutral-300 duration-150 text-neutral-950`}
+                  className={`flex gap-1 py-1 px-2 w-full rounded-md font-medium duration-150 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray bg-neutral-200 dark:bg-cm-darker-gray text-neutral-950 dark:text-neutral-300`}
                 >
                   <FilterX /> Clear Filters
                 </Link>
@@ -86,7 +90,7 @@ export function CollectionsNavBar({ filter }: { filter: TFilter }) {
         )}
         <Link
           href={ClientRouting.collection().new()}
-          className="px-3 py-1.5 text-sm bg-neutral-950 text-center rounded-md text-neutral-50 font-medium"
+          className="px-3 py-1.5 text-sm bg-neutral-950 dark:bg-neutral-50 text-center rounded-md text-neutral-50 dark:text-neutral-700 font-medium"
         >
           Create Collection
         </Link>

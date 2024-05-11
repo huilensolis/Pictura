@@ -75,9 +75,11 @@ export default async function CollectionPage({
           </ul>
         </div>
         <section className="flex flex-col gap-2">
-          <h1 className="font-bold text-2xl">{collection.title}</h1>
+          <h1 className="font-bold text-2xl text-neutral-800 dark:text-neutral-300">
+            {collection.title}
+          </h1>
           {collection.description && (
-            <p className="text-pretty text-neutral-700">
+            <p className="text-pretty text-neutral-700 dark:text-neutral-400">
               {getShortName(collection.description, 250)}
             </p>
           )}

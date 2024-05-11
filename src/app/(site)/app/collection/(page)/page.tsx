@@ -24,7 +24,9 @@ export default async function CollectionPage({
     return (
       <main className="flex flex-col gap-4 px-2 py-10">
         <Heading level={6}>Collections</Heading>
-        <p>could not get session, please reload the page</p>
+        <p className="text-neutral-300">
+          could not get session, please reload the page
+        </p>
       </main>
     );
 

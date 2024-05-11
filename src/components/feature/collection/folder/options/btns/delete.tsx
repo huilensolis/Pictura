@@ -40,7 +40,7 @@ export function DeleteCollectionBtn({
   return (
     <BaseButton
       isLoading={loading}
-      className="p-2 duration-150 hover:bg-neutral-300 rounded-md"
+      className="p-2 duration-150 hover:bg-neutral-300 dark:hover:bg-cm-lighter-gray rounded-md"
       onClick={handleClickOnDeleteBtn}
     >
       <Trash />
