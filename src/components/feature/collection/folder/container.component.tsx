@@ -21,7 +21,7 @@ export function CollectionFolderContinerRedirectOnClick({
   return (
     <article
       onClick={redirectToCollection}
-      className="h-full w-full cursor-pointer flex flex-col gap-2 border dark:border-cm-lighter-gray border-neutral-300 text-neutral-300 rounded-md"
+      className="h-full w-full cursor-pointer flex flex-col gap-2 border dark:border-cm-lighter-gray border-neutral-300 dark:text-neutral-300 rounded-md"
     >
       {children}
     </article>
