@@ -27,6 +27,9 @@ const config: Config = {
       animation: {
         "shrink-from-left": "shrink-from-left 1.5s ease-out forwards",
       },
+      screens: {
+        ss: "400px",
+      },
     },
   },
   plugins: [],
