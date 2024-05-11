@@ -14,7 +14,7 @@ export default function Loading() {
         <Skeleton className="w-full h-[1px] rounded-sm" />
       </div>
       <div className="grid lg:grid-cols-2 gap-2">
-        <Skeleton className="h-[75vh] rounded-md" />
+        <Skeleton className="h-[400px] rounded-md" />
         <div className="flex flex-col gap-2">
           <Skeleton className="w-60 h-8 rounded-md" />
           <UserCardSkeleton />

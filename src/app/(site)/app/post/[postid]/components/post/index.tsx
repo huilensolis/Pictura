@@ -27,7 +27,7 @@ export async function Post({
         <LazyImage
           src={asset_url}
           alt={title}
-          className="h-full w-full lg:w-auto lg:min-h-96 object-cover object-center rounded-md"
+          className="h-full w-full lg:w-auto object-cover object-center rounded-md"
           skeletonClassName="w-full h-96 rounded-md"
           skeletonBgColor={post.asset_color || undefined}
         />
