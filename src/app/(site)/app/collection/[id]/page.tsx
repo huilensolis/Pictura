@@ -40,8 +40,8 @@ export default async function CollectionPage({
 
   return (
     <>
-      <header className="md:grid md:grid-cols-2 flex flex-col gap-4 w-full max-w-3xl">
-        <div className="h-60 w-full rounded-sm overflow-hidden">
+      <header className="lg:grid lg:grid-cols-3 flex flex-col gap-2 w-full">
+        <div className="h-60 w-full rounded-md overflow-hidden col-span-1">
           <ul className="grid grid-cols-2 grid-rows-2 h-full">
             {collectionPosts &&
               collectionPosts.length > 0 &&
@@ -74,7 +74,7 @@ export default async function CollectionPage({
               ))}
           </ul>
         </div>
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-col gap-2 col-span-2">
           <h1 className="font-bold text-2xl text-neutral-800 dark:text-neutral-300">
             {collection.title}
           </h1>
