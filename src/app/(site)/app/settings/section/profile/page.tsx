@@ -123,9 +123,6 @@ export default function ProfileConfigPage() {
                     size: (files: File[]) => {
                       const file = files[0];
 
-                      console.log("running");
-                      console.log({ imageSize: file.size });
-
                       if (!file) return undefined;
 
                       const maxSizeInBytes = 400; // in KB

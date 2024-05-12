@@ -37,7 +37,7 @@ export function UserCard({
         )}
         <div>
           <span className="text-neutral-800 dark:text-neutral-50 font-semibold text-lg">
-            {getShortName(userProfile.name ?? "no name yet", 9)}
+            {getShortName(userProfile.name ?? "no name yet", 15)}
           </span>
           <p className="text-neutral-600 dark:text-gray-300">
             @{getShortName(userProfile.username ?? "no username yet", 9)}
