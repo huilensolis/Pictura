@@ -118,7 +118,7 @@ export function PostsGrid({
   }, [lastElementRef]);
 
   const [posts, setPosts] = useState<TPost[]>([]);
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
@@ -139,7 +139,6 @@ export function PostsGrid({
           currentPage: page,
           pageSize: PAGE_SIZE,
         });
-
         if (error) {
           if (error instanceof Error && error.message === "AbortError") {
             // error is caused by an abortcontroller abort signal
