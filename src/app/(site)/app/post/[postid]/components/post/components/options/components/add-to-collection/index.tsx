@@ -73,7 +73,7 @@ export function AddPostToCollectionBtn({
   return (
     <div className="w-full flex">
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center justify-center gap-1 px-4 py-2">
+        <DropdownMenuTrigger className="flex items-center justify-center gap-1 px-4 py-2 text-neutral-800 dark:text-neutral-300">
           <ChevronDown /> Save to collection
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-neutral-200 max-w-80">
