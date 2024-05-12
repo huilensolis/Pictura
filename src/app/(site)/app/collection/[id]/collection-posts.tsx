@@ -26,9 +26,6 @@ export function CollectionPosts({ collection_id }: { collection_id: number }) {
       .select("*")
       .eq("collection_id", collection_id);
 
-    console.log(collectionItems.map((item) => `"${item.post_id}"`).join(","));
-    console.log({ pageSize, currentPage });
-
     return await supabase
       .from("posts")
       .select("*")
