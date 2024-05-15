@@ -6,8 +6,10 @@ import { Database } from "@/supabase/types";
 
 export function RecentPosts({
   excludedPostId,
+  userId,
 }: {
   excludedPostId: Database["public"]["Tables"]["posts"]["Row"]["id"];
+  userId: Database["public"]["Tables"]["users"]["Row"]["id"];
 }) {
   const { supabase } = useSupabase();
 
@@ -29,5 +31,5 @@ export function RecentPosts({
       .abortSignal(signal);
   }
 
-  return <PostsGrid onFetchNewPosts={fetchNewPosts} />;
+  return <PostsGrid onFetchNewPosts={fetchNewPosts} userId={userId} />;
 }

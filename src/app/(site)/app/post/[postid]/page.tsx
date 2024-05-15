@@ -35,7 +35,7 @@ export default async function PostPage({
       {postData && !postError ? (
         <section className="flex flex-col gap-2">
           <Post post={postData} doesUserOwnPost={doesUserOwnPost} />
-          <RecentPosts excludedPostId={postData.id} />
+          <RecentPosts excludedPostId={postData.id} userId={user?.id || ""} />
         </section>
       ) : (
         <Error404Box />

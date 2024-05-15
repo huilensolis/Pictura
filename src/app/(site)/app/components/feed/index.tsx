@@ -2,8 +2,13 @@
 
 import { useSupabase } from "@/hooks/use-supabase";
 import { PostsGrid } from "@/components/feature/posts-grid/posts-grid.component";
+import { Database } from "@/supabase/types";
 
-export function Feed() {
+export function Feed({
+  userId,
+}: {
+  userId: Database["public"]["Tables"]["users"]["Row"]["id"];
+}) {
   const { supabase } = useSupabase();
 
   async function fetchNewPosts({
@@ -22,5 +27,5 @@ export function Feed() {
       .abortSignal(signal);
   }
 
-  return <PostsGrid onFetchNewPosts={fetchNewPosts} />;
+  return <PostsGrid onFetchNewPosts={fetchNewPosts} userId={userId} />;
 }

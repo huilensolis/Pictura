@@ -40,11 +40,6 @@ export function LazyImage({
     const img = new Image();
     img.src = src;
 
-    // if (img.complete) {
-    //   handleImageLoad();
-    //   return;
-    // }
-
     img.onload = handleImageLoad;
     img.onerror = handleImageError;
   }, [src]);

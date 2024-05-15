@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PostsGridRow } from "./components/posts-grid-row";
-import { PostsGridContainer } from "./components/posts-grid-container";
 import { type Database } from "@/supabase/types";
 import { type PostgrestSingleResponse } from "@supabase/supabase-js";
-import { PostsGridSkeleton } from "./components/posts-grid-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
+import { PostsGridContainer } from "./components/posts-grid-container";
 
 type TPost = Database["public"]["Tables"]["posts"]["Row"];
 
@@ -23,70 +23,13 @@ type TOnFetchNewPosts = ({
 
 export function PostsGrid({
   onFetchNewPosts,
+  collection,
+  userId,
 }: {
   onFetchNewPosts: TOnFetchNewPosts;
+  collection?: Database["public"]["Tables"]["collection"]["Row"];
+  userId: Database["public"]["Tables"]["users"]["Row"]["id"];
 }) {
-  const [columnWidth, setColumnWidth] = useState<number | null>(null);
-
-  const containerRef = useRef<HTMLUListElement | null>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const setContainerRef = useCallback((node: HTMLUListElement) => {
-    if (!node) return;
-
-    calculateColumnWidth(node.offsetWidth);
-    containerRef.current = node;
-    return;
-  }, []);
-
-  function handleResize() {
-    if (!containerRef.current) return;
-
-    if (window.innerWidth < 1340 && window.innerWidth > 750) {
-      calculateColumnWidth(window.innerWidth - 350);
-      return;
-    }
-
-    if (window.innerWidth < 750) {
-      calculateColumnWidth(window.innerWidth);
-      return;
-    }
-
-    calculateColumnWidth(containerRef.current.offsetWidth);
-  }
-
-  function calculateColumnWidth(containerWidth: number) {
-    if (typeof window === "undefined") return;
-
-    if (containerWidth <= 0 || !containerWidth) return;
-
-    const columnCount = window.innerWidth > 1024 ? 3 : 2;
-    setColumnWidth((containerWidth - 8 * 2) / columnCount);
-  }
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    function eventListenerForWidthResize() {
-      if (containerRef.current === null) return;
-      calculateColumnWidth(containerRef.current.offsetWidth);
-    }
-
-    window.addEventListener("resize", eventListenerForWidthResize);
-
-    return () =>
-      window.removeEventListener("resize", eventListenerForWidthResize);
-  }, []);
-
   const [lastElementRef, setLastElementRef] = useState<HTMLDivElement | null>(
     null,
   );
@@ -175,22 +118,35 @@ export function PostsGrid({
   }, [page]);
 
   return (
-    <PostsGridContainer ref={setContainerRef}>
-      {!isLoadingFirstTime && posts.length > 0 && columnWidth && (
-        <>
-          {posts.map((post, i) => (
-            <PostsGridRow
-              columnWidth={
-                columnWidth && !isNaN(columnWidth) ? columnWidth : 400
-              }
+    <PostsGridContainer>
+      {!isLoadingFirstTime &&
+        posts.length > 0 &&
+        posts.map((post, i) => (
+          <PostsGridRow
+            key={i}
+            userId={userId}
+            post={post}
+            collection={collection}
+          />
+        ))}
+      {!isLoadingFirstTime && posts.length > 0 && (
+        <div ref={lastItemRef} className="h-96 w-full" />
+      )}
+      {isLoadingFirstTime &&
+        Array(32)
+          .fill(" ")
+          .map((_, i) => (
+            <Skeleton
               key={i}
-              post={post}
+              className={`inline-block w-full mb-2 rounded-md transition-all animate-pulse duration-150`}
+              style={{
+                height: Math.min(
+                  Math.max(Math.round(Math.random() * 1000), 250),
+                  500,
+                ),
+              }}
             />
           ))}
-          <div ref={lastItemRef} className="h-96 w-full" />
-        </>
-      )}
-      {isLoadingFirstTime && <PostsGridSkeleton cuantity={32} />}
     </PostsGridContainer>
   );
 }

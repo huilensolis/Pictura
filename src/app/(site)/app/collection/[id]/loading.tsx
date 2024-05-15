@@ -1,5 +1,4 @@
 import { PostsGridContainer } from "@/components/feature/posts-grid/components/posts-grid-container";
-import { PostsGridSkeleton } from "@/components/feature/posts-grid/components/posts-grid-skeleton";
 import { UserCardSkeleton } from "@/components/feature/user-card/skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -15,7 +14,20 @@ export default function Loading() {
         </div>
       </div>
       <PostsGridContainer>
-        <PostsGridSkeleton />
+        {Array(32)
+          .fill(" ")
+          .map((_, i) => (
+            <Skeleton
+              key={i}
+              className={`inline-block w-full mb-2 rounded-md transition-all animate-pulse duration-150`}
+              style={{
+                height: Math.min(
+                  Math.max(Math.round(Math.random() * 1000), 250),
+                  500,
+                ),
+              }}
+            />
+          ))}
       </PostsGridContainer>
     </>
   );
