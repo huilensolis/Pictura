@@ -4,20 +4,17 @@ import Link from "next/link";
 import { ClientRouting } from "@/models/routing/client";
 import { Database } from "@/supabase/types";
 import { LazyImage } from "@/components/feature/lazy-image";
+import { PostRowFooter } from "../post-row-footer";
 
 export function PostsGridRow({
   post,
-  columnWidth,
+  collectionId,
 }: {
   post: Database["public"]["Tables"]["posts"]["Row"];
-  columnWidth: number;
+  collectionId?: Database["public"]["Tables"]["collection"]["Row"]["id"];
 }) {
-  const imageHeight = (post.asset_height * columnWidth) / post.asset_width;
   return (
-    <li
-      className="w-full mb-2 rounded-md"
-      style={{ width: columnWidth, height: imageHeight }}
-    >
+    <li className="w-full mb-6 rounded-md flex flex-col gap-1">
       <Link
         href={ClientRouting.post().page(post.id)}
         className="w-full rounded-md"
@@ -26,12 +23,15 @@ export function PostsGridRow({
           src={post.asset_url}
           alt={post.title}
           className="flex w-full h-full rounded-md object-cover object-center"
-          height={Math.round(imageHeight)}
-          width={Math.round(columnWidth)}
           skeletonClassName="w-full h-full rounded-md"
           skeletonBgColor={post.asset_color || undefined}
         />
       </Link>
+      <PostRowFooter
+        collectionId={collectionId}
+        userId={post.user_id}
+        postTitle={post.title}
+      />
     </li>
   );
 }
