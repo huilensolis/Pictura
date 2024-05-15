@@ -94,7 +94,7 @@ export default async function CollectionPage({
           </div>
         </section>
       </header>
-      <CollectionPosts collection_id={collection.id} userId={user?.id || ""} />
+      <CollectionPosts collection={collection} userId={user?.id || ""} />
     </>
   );
 }

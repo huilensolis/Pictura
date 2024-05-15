@@ -8,11 +8,11 @@ import { PostRowFooter } from "../post-row-footer";
 
 export function PostsGridRow({
   post,
-  collectionId,
+  collection,
   userId,
 }: {
   post: Database["public"]["Tables"]["posts"]["Row"];
-  collectionId?: Database["public"]["Tables"]["collection"]["Row"]["id"];
+  collection?: Database["public"]["Tables"]["collection"]["Row"];
   userId: Database["public"]["Tables"]["users"]["Row"]["id"];
 }) {
   return (
@@ -29,7 +29,7 @@ export function PostsGridRow({
           skeletonBgColor={post.asset_color || undefined}
         />
       </Link>
-      <PostRowFooter collectionId={collectionId} userId={userId} post={post} />
+      <PostRowFooter collection={collection} userId={userId} post={post} />
     </li>
   );
 }
