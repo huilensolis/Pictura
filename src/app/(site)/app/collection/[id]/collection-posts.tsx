@@ -13,7 +13,13 @@ type TOnFetchNewPostsProps = {
   pageSize: number;
 };
 
-export function CollectionPosts({ collection_id }: { collection_id: number }) {
+export function CollectionPosts({
+  collection_id,
+  userId,
+}: {
+  collection_id: number;
+  userId: Database["public"]["Tables"]["users"]["Row"]["id"];
+}) {
   const { supabase } = useSupabase();
 
   async function fetchCollectionPosts({
@@ -42,5 +48,5 @@ export function CollectionPosts({ collection_id }: { collection_id: number }) {
       .abortSignal(signal);
   }
 
-  return <PostsGrid onFetchNewPosts={fetchCollectionPosts} />;
+  return <PostsGrid onFetchNewPosts={fetchCollectionPosts} userId={userId} />;
 }

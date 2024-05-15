@@ -38,6 +38,10 @@ export default async function CollectionPage({
         )
     : { data: null };
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <>
       <header className="lg:grid lg:grid-cols-3 flex flex-col gap-2 w-full">
@@ -90,7 +94,7 @@ export default async function CollectionPage({
           </div>
         </section>
       </header>
-      <CollectionPosts collection_id={collection.id} />
+      <CollectionPosts collection_id={collection.id} userId={user?.id || ""} />
     </>
   );
 }

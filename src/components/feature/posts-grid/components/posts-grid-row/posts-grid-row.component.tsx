@@ -9,9 +9,11 @@ import { PostRowFooter } from "../post-row-footer";
 export function PostsGridRow({
   post,
   collectionId,
+  userId,
 }: {
   post: Database["public"]["Tables"]["posts"]["Row"];
   collectionId?: Database["public"]["Tables"]["collection"]["Row"]["id"];
+  userId: Database["public"]["Tables"]["users"]["Row"]["id"];
 }) {
   return (
     <li className="w-full mb-6 rounded-md flex flex-col gap-1">
@@ -27,11 +29,7 @@ export function PostsGridRow({
           skeletonBgColor={post.asset_color || undefined}
         />
       </Link>
-      <PostRowFooter
-        collectionId={collectionId}
-        userId={post.user_id}
-        postTitle={post.title}
-      />
+      <PostRowFooter collectionId={collectionId} userId={userId} post={post} />
     </li>
   );
 }

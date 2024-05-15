@@ -8,7 +8,7 @@ export default async function EditPostPage({
 }: {
   params: { postid: string };
 }) {
-  const supabase = await getSuapabaseServerComponent();
+  const supabase = getSuapabaseServerComponent();
 
   const { data } = await supabase
     .from("posts")
@@ -21,17 +21,17 @@ export default async function EditPostPage({
   }
 
   return (
-    <main className="flex justify-center w-full">
+    <main className="flex justify-center w-full h-full">
       <div className="flex py-10 flex-col gap-2">
         <Heading level={6}>Edit Post</Heading>
         <div className="flex gap-2 justify-center items-cente">
           <LazyImage
-            className="w-96 h-full object-cover object-center"
+            className="h-full object-cover object-center"
             alt={data.title}
             src={data.asset_url}
             skeletonBgColor={data.asset_color ?? undefined}
             skeletonClassName="w-96 h-96"
-            height={data.asset_height}
+            width={384}
           />
           <EditPostForm post={data} />
         </div>

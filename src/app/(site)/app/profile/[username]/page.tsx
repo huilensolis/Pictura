@@ -142,7 +142,7 @@ function Profile({
           </section>
         </article>
       </header>
-      <UserPosts profileId={profile.id} />
+      <UserPosts profileId={profile.id} userId={currentUserId} />
     </>
   );
 }

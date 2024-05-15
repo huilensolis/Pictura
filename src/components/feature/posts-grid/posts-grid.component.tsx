@@ -24,9 +24,11 @@ type TOnFetchNewPosts = ({
 export function PostsGrid({
   onFetchNewPosts,
   collectionId,
+  userId,
 }: {
   onFetchNewPosts: TOnFetchNewPosts;
   collectionId?: Database["public"]["Tables"]["collection"]["Row"]["id"];
+  userId: Database["public"]["Tables"]["users"]["Row"]["id"];
 }) {
   const [lastElementRef, setLastElementRef] = useState<HTMLDivElement | null>(
     null,
@@ -120,7 +122,12 @@ export function PostsGrid({
       {!isLoadingFirstTime &&
         posts.length > 0 &&
         posts.map((post, i) => (
-          <PostsGridRow key={i} post={post} collectionId={collectionId} />
+          <PostsGridRow
+            key={i}
+            userId={userId}
+            post={post}
+            collectionId={collectionId}
+          />
         ))}
       {!isLoadingFirstTime && posts.length > 0 && (
         <div ref={lastItemRef} className="h-96 w-full" />
