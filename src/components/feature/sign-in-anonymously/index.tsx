@@ -42,7 +42,7 @@ export function SignInAnonymouslyBtn() {
         className="bg-indigo-600 dark:bg-indigo-700 text-neutral-50"
         isLoading={loading}
         disabled={loading}
-        onClick={SignInAnonymously}
+        onClick={() => SignInAnonymously()}
       >
         Sign In Anonymously <VenetianMask />
       </PlainButton>
