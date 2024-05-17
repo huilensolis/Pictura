@@ -67,24 +67,39 @@ export function LazyImage({
             skeletonClassName,
           ].join(" ")}
           style={{
-            ...(width && height && { width, height }),
+            ...(height && { height }),
+            ...(width && { width }),
             ...(skeletonBgColor && { backgroundColor: skeletonBgColor }),
           }}
         />
       )}
-      {error && <ErrorComponent containerClassName={skeletonClassName} />}
+      {error && (
+        <ErrorComponent
+          height={height}
+          width={width}
+          containerClassName={skeletonClassName}
+        />
+      )}
     </>
   );
 }
 
 function ErrorComponent({
   containerClassName,
+  width,
+  height,
 }: {
   containerClassName: string;
+  width?: number;
+  height?: number;
 }) {
   return (
     <div
       className={`flex justify-center items-center bg-neutral-300 dark:bg-neutral-800 ${containerClassName}`}
+      style={{
+        ...(height && { height }),
+        ...(width && { width }),
+      }}
     >
       <ImageOff className="h-5 w-5 text-neutral-400 dark:text-neutral-500" />
     </div>
