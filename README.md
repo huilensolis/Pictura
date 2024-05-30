@@ -1,5 +1,6 @@
 # Pictura
-![811shots_so](https://github.com/Huilensolis/Pictura/assets/113150193/1da56e5b-e331-45e0-ad00-a0dab3fabfb2)
+![811shots_so (1)](https://github.com/Huilensolis/Pictura/assets/113150193/a72c5b93-e7f0-4208-ad7c-3f8df68af5d1)
+
 
 
 
