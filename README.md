@@ -24,7 +24,7 @@
     - [x]  User profiles to showcase uploaded images and user information.
     - [x]  Allow to edit user profiles information
 6. **Favourite/Bookmark Feature:**
-    - [ ] Allow users to create image collections, something similar to “pins”.
+    - [x] Allow users to create image collections, something similar to “pins”.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
